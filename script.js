@@ -263,12 +263,4 @@ function finishPartTwo() {
     },
     0
   );
-
-  partTwoSummary.innerHTML = `
-    <p>
-      Completed ${consequenceResponses.length} classifications
-      with ${totalErrors} incorrect
-      ${totalErrors === 1 ? "attempt" : "attempts"}.
-    </p>
-  `;
 }
