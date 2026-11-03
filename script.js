@@ -1,56 +1,162 @@
-const stimuli = [
+const genderStimuli = [
   "financially supports a partner",
   "asks others for emotional reassurance",
   "takes the lead in decision-making",
   "prioritizes caregiving responsibilities",
   "admits feeling afraid",
   "allows a partner to take control",
-  "compromises career advancement for family",
+  "sacrifices career advancement for family",
   "solves personal problems independently"
 ];
 
+const consequenceStimuli = [
+  {
+    text: "receives public praise",
+    category: "Rewarded"
+  },
+  {
+    text: "is mocked by peers",
+    category: "Penalized"
+  },
+  {
+    text: "gains respect from others",
+    category: "Rewarded"
+  },
+  {
+    text: "is excluded from leadership",
+    category: "Penalized"
+  },
+  {
+    text: "is portrayed positively by the media",
+    category: "Rewarded"
+  },
+  {
+    text: "is portrayed negatively by the media",
+    category: "Penalized"
+  },
+  {
+    text: "gains influence within a group",
+    category: "Rewarded"
+  },
+  {
+    text: "is judged as incompetent",
+    category: "Penalized"
+  }
+];
+
 const introScreen = document.getElementById("intro-screen");
-const testScreen = document.getElementById("test-screen");
-const completionScreen = document.getElementById("completion-screen");
+const partOneScreen = document.getElementById("part-one-screen");
+const partOneCompletion =
+  document.getElementById("part-one-completion");
+
+const partTwoIntro = document.getElementById("part-two-intro");
+const partTwoScreen = document.getElementById("part-two-screen");
+const partTwoCompletion =
+  document.getElementById("part-two-completion");
 
 const startButton = document.getElementById("start-button");
-const reviewButton = document.getElementById("review-button");
+const partTwoButton = document.getElementById("part-two-button");
+const beginPartTwoButton =
+  document.getElementById("begin-part-two-button");
 
-const stimulusText = document.getElementById("stimulus-text");
-const progressText = document.getElementById("progress-text");
-const responseSummary = document.getElementById("response-summary");
+const partOneProgress =
+  document.getElementById("part-one-progress");
+const partOneStimulus =
+  document.getElementById("part-one-stimulus");
 
+const partTwoProgress =
+  document.getElementById("part-two-progress");
+const partTwoStimulus =
+  document.getElementById("part-two-stimulus");
+
+const errorMark = document.getElementById("error-mark");
+const partTwoSummary =
+  document.getElementById("part-two-summary");
+
+let activePart = 0;
 let currentTrial = 0;
 let trialStartTime = 0;
-let testActive = false;
-let responses = [];
 
-startButton.addEventListener("click", startTest);
-reviewButton.addEventListener("click", showResponses);
+let genderResponses = [];
+let consequenceResponses = [];
+let currentErrorCount = 0;
+
+startButton.addEventListener("click", startPartOne);
+
+partTwoButton.addEventListener("click", showPartTwoIntro);
+
+beginPartTwoButton.addEventListener(
+  "click",
+  startPartTwo
+);
+
 window.addEventListener("keydown", handleKeyPress, true);
 
-function startTest() {
+function startPartOne() {
   introScreen.classList.add("hidden");
-  testScreen.classList.remove("hidden");
+  partOneScreen.classList.remove("hidden");
 
+  activePart = 1;
   currentTrial = 0;
-  responses = [];
-  testActive = true;
+  genderResponses = [];
 
-  showTrial();
+  showPartOneTrial();
 }
 
-function showTrial() {
-  progressText.textContent =
-    `Description ${currentTrial + 1} of ${stimuli.length}`;
+function showPartOneTrial() {
+  partOneProgress.textContent =
+    `Description ${currentTrial + 1} of ${genderStimuli.length}`;
 
-  stimulusText.textContent = stimuli[currentTrial];
+  partOneStimulus.textContent =
+    genderStimuli[currentTrial];
 
   trialStartTime = performance.now();
 }
 
+function finishPartOne() {
+  activePart = 0;
+
+  partOneScreen.classList.add("hidden");
+  partOneCompletion.classList.remove("hidden");
+
+  sessionStorage.setItem(
+    "genderClassifications",
+    JSON.stringify(genderResponses)
+  );
+}
+
+function showPartTwoIntro() {
+  partOneCompletion.classList.add("hidden");
+  partTwoIntro.classList.remove("hidden");
+}
+
+function startPartTwo() {
+  partTwoIntro.classList.add("hidden");
+  partTwoScreen.classList.remove("hidden");
+
+  activePart = 2;
+  currentTrial = 0;
+  consequenceResponses = [];
+  currentErrorCount = 0;
+
+  showPartTwoTrial();
+}
+
+function showPartTwoTrial() {
+  errorMark.classList.add("hidden");
+
+  partTwoProgress.textContent =
+    `Consequence ${currentTrial + 1} of ${consequenceStimuli.length}`;
+
+  partTwoStimulus.textContent =
+    consequenceStimuli[currentTrial].text;
+
+  currentErrorCount = 0;
+  trialStartTime = performance.now();
+}
+
 function handleKeyPress(event) {
-  if (!testActive || event.repeat) {
+  if (activePart === 0 || event.repeat) {
     return;
   }
 
@@ -73,6 +179,16 @@ function handleKeyPress(event) {
 
   event.preventDefault();
 
+  if (activePart === 1) {
+    recordPartOneResponse(pressedE);
+  }
+
+  if (activePart === 2) {
+    checkPartTwoResponse(pressedE);
+  }
+}
+
+function recordPartOneResponse(pressedE) {
   const reactionTime = Math.round(
     performance.now() - trialStartTime
   );
@@ -81,51 +197,78 @@ function handleKeyPress(event) {
     ? "Masculinity"
     : "Femininity";
 
-  responses.push({
-    description: stimuli[currentTrial],
+  genderResponses.push({
+    description: genderStimuli[currentTrial],
     category: selectedCategory,
     reactionTime: reactionTime
   });
 
   currentTrial++;
 
-  if (currentTrial < stimuli.length) {
-    showTrial();
+  if (currentTrial < genderStimuli.length) {
+    showPartOneTrial();
   } else {
     finishPartOne();
   }
 }
 
-function finishPartOne() {
-  testActive = false;
+function checkPartTwoResponse(pressedE) {
+  const selectedCategory = pressedE
+    ? "Rewarded"
+    : "Penalized";
 
-  testScreen.classList.add("hidden");
-  completionScreen.classList.remove("hidden");
+  const correctCategory =
+    consequenceStimuli[currentTrial].category;
 
-  // Keep the responses available for later sections.
-  sessionStorage.setItem(
-    "genderClassifications",
-    JSON.stringify(responses)
+  if (selectedCategory !== correctCategory) {
+    currentErrorCount++;
+    errorMark.classList.remove("hidden");
+    return;
+  }
+
+  const reactionTime = Math.round(
+    performance.now() - trialStartTime
   );
-}
 
-function showResponses() {
-  responseSummary.innerHTML = "";
-
-  responses.forEach(function (response) {
-    const responseItem = document.createElement("div");
-    responseItem.className = "response-item";
-
-    responseItem.innerHTML = `
-      <strong>${response.description}</strong>
-      <span>
-        ${response.category} · ${response.reactionTime} ms
-      </span>
-    `;
-
-    responseSummary.appendChild(responseItem);
+  consequenceResponses.push({
+    description: consequenceStimuli[currentTrial].text,
+    category: correctCategory,
+    reactionTime: reactionTime,
+    errors: currentErrorCount
   });
 
-  responseSummary.classList.remove("hidden");
-  reviewButton.classList.add("hidden");
+  currentTrial++;
+
+  if (currentTrial < consequenceStimuli.length) {
+    showPartTwoTrial();
+  } else {
+    finishPartTwo();
+  }
+}
+
+function finishPartTwo() {
+  activePart = 0;
+
+  partTwoScreen.classList.add("hidden");
+  partTwoCompletion.classList.remove("hidden");
+
+  sessionStorage.setItem(
+    "socialConsequences",
+    JSON.stringify(consequenceResponses)
+  );
+
+  const totalErrors = consequenceResponses.reduce(
+    function (sum, response) {
+      return sum + response.errors;
+    },
+    0
+  );
+
+  partTwoSummary.innerHTML = `
+    <p>
+      Completed ${consequenceResponses.length} classifications
+      with ${totalErrors} incorrect
+      ${totalErrors === 1 ? "attempt" : "attempts"}.
+    </p>
+  `;
 }
