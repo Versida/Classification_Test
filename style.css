@@ -184,12 +184,6 @@ button:hover {
   line-height: 1.35;
 }
 
-#part-two-summary {
-  margin-top: 25px;
-  padding: 14px;
-  background-color: #f1eee8;
-}
-
 .pairing-guide {
   display: flex;
   justify-content: space-around;
