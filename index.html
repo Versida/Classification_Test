@@ -4,76 +4,71 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Classification Test</title>
+  <title>Gender Implicit Association Test</title>
 
-  <style>
-    body {
-      margin: 0;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-family: Arial, sans-serif;
-      background-color: #f4f1ec;
-      color: #222222;
-    }
-
-    .test-container {
-      width: 90%;
-      max-width: 700px;
-      padding: 50px;
-      text-align: center;
-      background-color: white;
-      border: 1px solid #222222;
-    }
-
-    h1 {
-      font-size: 32px;
-    }
-
-    p {
-      line-height: 1.6;
-    }
-
-    button {
-      margin-top: 24px;
-      padding: 12px 28px;
-      border: none;
-      background-color: #222222;
-      color: white;
-      font-size: 16px;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background-color: #555555;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
   <main class="test-container">
-    <h1>Classification Test</h1>
 
-    <p>
-      This reaction-time classification test explores how gender categories
-      are constructed through everyday judgments.
-    </p>
+    <!-- Opening screen -->
+    <section id="intro-screen">
+      <p class="part-label">A quest for a speculative journey</p>
 
-    <p>
-      The experience is speculative and does not provide a psychological
-      diagnosis.
-    </p>
+      <h1>How do we do gender?</h1>
 
-    <button id="start-button">Start Test</button>
+      <p>
+        You will see a series of descriptions that do not identify any gender.
+        Classify each description according to your first thought as quickly as possible.
+      </p>
+
+      <p class="Disclaimer">
+        There are no correct answers in this section. This speculative
+        experience is not a psychological assessment.
+      </p>
+
+      <button id="Start">Begin Part 1</button>
+    </section>
+
+    <!-- Classification screen -->
+    <section id="test-screen" class="hidden">
+      <div class="category-row">
+        <div class="category">
+          <span class="key">E</span>
+          <strong>Masculinity</strong>
+        </div>
+
+        <div class="category">
+          <span class="key">I</span>
+          <strong>Femininity</strong>
+        </div>
+      </div>
+
+      <p id="progress-text"></p>
+
+      <div class="stimulus-area">
+        <p id="stimulus-text"></p>
+      </div>
+
+      <p class="instruction">Press E or I to classify the description.</p>
+    </section>
+
+    <!-- Completion screen -->
+    <section id="completion-screen" class="hidden">
+      <p class="part-label">Part 1 complete</p>
+
+      <h2>Your classifications have been recorded.</h2>
+
+      <p>
+        The system will use these initial choices as your personalized
+        category mapping in the later rounds.
+      </p>
+
+    </section>
+
   </main>
 
-  <script>
-    const startButton = document.getElementById("start-button");
-
-    startButton.addEventListener("click", function () {
-      alert("Start!");
-    });
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
