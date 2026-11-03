@@ -130,7 +130,89 @@
       </p>
 
       <div id="part-two-summary"></div>
+      <button id="part-three-button">Continue to Part 3</button>
     </section>
+
+    <!-- Part 3 instructions -->
+<section id="part-three-intro" class="hidden">
+  <p class="part-label">Part 3</p>
+
+  <h2>Combined classification</h2>
+
+  <p>
+    Descriptions and social consequences will now appear together
+    in a randomly mixed order.
+  </p>
+
+  <div class="pairing-guide">
+    <div>
+      <span class="key">E</span>
+      <p>
+        <strong>Masculinity</strong><br>
+        + Socially Rewarded
+      </p>
+    </div>
+
+    <div>
+      <span class="key">I</span>
+      <p>
+        <strong>Femininity</strong><br>
+        + Socially Penalized
+      </p>
+    </div>
+  </div>
+
+  <p class="disclaimer">
+    Classify gender descriptions according to the choices you made
+    in Part 1. Incorrect responses will display a red cross.
+  </p>
+
+  <button id="begin-part-three-button">Begin Part 3</button>
+</section>
+
+<!-- Part 3 test -->
+<section id="part-three-screen" class="hidden">
+  <div class="category-row">
+    <div class="category combined-category">
+      <span class="key">E</span>
+
+      <div>
+        <strong>Masculinity</strong>
+        <span>Socially Rewarded</span>
+      </div>
+    </div>
+
+    <div class="category combined-category">
+      <span class="key">I</span>
+
+      <div>
+        <strong>Femininity</strong>
+        <span>Socially Penalized</span>
+      </div>
+    </div>
+  </div>
+
+  <p id="part-three-progress"></p>
+
+  <div class="stimulus-area">
+    <p id="part-three-stimulus"></p>
+  </div>
+
+  <div id="part-three-error" class="error-mark hidden">×</div>
+
+  <p class="instruction">
+    Press E or I according to the combined categories.
+  </p>
+</section>
+
+<!-- Part 3 completion -->
+<section id="part-three-completion" class="hidden">
+  <p class="part-label">Part 3 complete</p>
+
+  <h2>The first combined classification is complete.</h2>
+
+  <div id="part-three-summary"></div>
+</section>
 
   </main>
 
