@@ -1,0 +1,161 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 24px;
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: #f1eee8;
+  color: #1f1f1f;
+}
+
+.test-container {
+  width: 100%;
+  max-width: 760px;
+  min-height: 520px;
+  padding: 48px;
+  text-align: center;
+  background-color: #ffffff;
+  border: 1px solid #1f1f1f;
+}
+
+.hidden {
+  display: none;
+}
+
+.part-label {
+  margin-bottom: 16px;
+  color: #6c675f;
+  font-size: 14px;
+  font-weight: bold;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+h1 {
+  margin: 0 0 24px;
+  font-size: 38px;
+}
+
+h2 {
+  margin-bottom: 24px;
+  font-size: 30px;
+}
+
+p {
+  line-height: 1.7;
+}
+
+.disclaimer {
+  margin-top: 24px;
+  color: #666666;
+  font-size: 14px;
+}
+
+button {
+  margin-top: 24px;
+  padding: 13px 28px;
+  border: 1px solid #1f1f1f;
+  background-color: #1f1f1f;
+  color: #ffffff;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #4b4b4b;
+}
+
+.category-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.category {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.key {
+  display: inline-flex;
+  width: 42px;
+  height: 42px;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid #1f1f1f;
+  border-radius: 5px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+#progress-text {
+  margin-top: 45px;
+  color: #777777;
+  font-size: 14px;
+}
+
+.stimulus-area {
+  min-height: 190px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#stimulus-text {
+  max-width: 600px;
+  font-size: 31px;
+  font-weight: bold;
+  line-height: 1.35;
+}
+
+.instruction {
+  color: #777777;
+  font-size: 14px;
+}
+
+#response-summary {
+  margin-top: 30px;
+  text-align: left;
+}
+
+.response-item {
+  padding: 12px 0;
+  border-bottom: 1px solid #dddddd;
+}
+
+.response-item span {
+  display: block;
+  margin-top: 5px;
+  color: #666666;
+  font-size: 14px;
+}
+
+@media (max-width: 600px) {
+  .test-container {
+    padding: 28px 20px;
+  }
+
+  h1 {
+    font-size: 30px;
+  }
+
+  .category-row {
+    align-items: flex-start;
+  }
+
+  .category {
+    max-width: 45%;
+    flex-direction: column;
+  }
+
+  #stimulus-text {
+    font-size: 25px;
+  }
+}
