@@ -260,6 +260,6 @@ function finishPartTwo() {
   const totalErrors = consequenceResponses.reduce(
     function (sum, response) {
       return sum + response.errors;
-    },
-  );
+    }
+  )
 }
