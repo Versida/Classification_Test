@@ -80,8 +80,7 @@ const partTwoStimulus =
   document.getElementById("part-two-stimulus");
 
 const errorMark = document.getElementById("error-mark");
-const partTwoSummary =
-  document.getElementById("part-two-summary");
+
 const partThreeProgress =
   document.getElementById("part-three-progress");
 
@@ -89,8 +88,6 @@ const partThreeStimulus =
   document.getElementById("part-three-stimulus");
 const partThreeError =
   document.getElementById("part-three-error");
-const partThreeSummary =
-  document.getElementById("part-three-summary");
 
 let activePart = 0;
 let currentTrial = 0;
@@ -298,12 +295,6 @@ function finishPartTwo() {
     "socialConsequences",
     JSON.stringify(consequenceResponses)
   );
-
-  const totalErrors = consequenceResponses.reduce(
-    function (sum, response) {
-      return sum + response.errors;
-    }
-  )
 }
 
 function shuffleArray(originalArray) {
