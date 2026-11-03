@@ -27,7 +27,7 @@ let responses = [];
 
 startButton.addEventListener("click", startTest);
 reviewButton.addEventListener("click", showResponses);
-document.addEventListener("keydown", handleKeyPress);
+window.addEventListener("keydown", handleKeyPress, true);
 
 function startTest() {
   introScreen.classList.add("hidden");
@@ -54,20 +54,32 @@ function handleKeyPress(event) {
     return;
   }
 
-  const pressedKey = event.code === "KeyE"
-  ? "e"
-  : event.code === "KeyI"
-    ? "i"
-    : "";
+  const keyCode = event.code;
+  const keyName = event.key.toLowerCase();
 
-  if (pressedKey !== "e" && pressedKey !== "i") {
+  const pressedE =
+    keyCode === "KeyE" ||
+    keyName === "e" ||
+    event.keyCode === 69;
+
+  const pressedI =
+    keyCode === "KeyI" ||
+    keyName === "i" ||
+    event.keyCode === 73;
+
+  if (!pressedE && !pressedI) {
     return;
   }
 
-  const reactionTime = Math.round(performance.now() - trialStartTime);
+  event.preventDefault();
 
-  const selectedCategory =
-    pressedKey === "e" ? "Masculinity" : "Femininity";
+  const reactionTime = Math.round(
+    performance.now() - trialStartTime
+  );
+
+  const selectedCategory = pressedE
+    ? "Masculinity"
+    : "Femininity";
 
   responses.push({
     description: stimuli[currentTrial],
