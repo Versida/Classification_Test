@@ -261,6 +261,5 @@ function finishPartTwo() {
     function (sum, response) {
       return sum + response.errors;
     },
-    0
   );
 }
