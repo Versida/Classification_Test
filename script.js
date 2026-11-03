@@ -81,6 +81,9 @@ let genderResponses = [];
 let consequenceResponses = [];
 let currentErrorCount = 0;
 
+let genderTrialStimuli = [];
+let consequenceTrialStimuli = [];
+
 startButton.addEventListener("click", startPartOne);
 
 partTwoButton.addEventListener("click", showPartTwoIntro);
@@ -100,15 +103,17 @@ function startPartOne() {
   currentTrial = 0;
   genderResponses = [];
 
+  genderTrialStimuli = shuffleArray(genderStimuli);
+
   showPartOneTrial();
 }
 
 function showPartOneTrial() {
   partOneProgress.textContent =
-    `Description ${currentTrial + 1} of ${genderStimuli.length}`;
+    `Description ${currentTrial + 1} of ${genderTrialStimuli.length}`;
 
   partOneStimulus.textContent =
-    genderStimuli[currentTrial];
+    genderTrialStimuli[currentTrial];
 
   trialStartTime = performance.now();
 }
@@ -139,6 +144,8 @@ function startPartTwo() {
   consequenceResponses = [];
   currentErrorCount = 0;
 
+  consequenceTrialStimuli = shuffleArray(consequenceStimuli);
+
   showPartTwoTrial();
 }
 
@@ -146,10 +153,10 @@ function showPartTwoTrial() {
   errorMark.classList.add("hidden");
 
   partTwoProgress.textContent =
-    `Consequence ${currentTrial + 1} of ${consequenceStimuli.length}`;
+    `Consequence ${currentTrial + 1} of ${consequenceTrialStimuli.length}`;
 
   partTwoStimulus.textContent =
-    consequenceStimuli[currentTrial].text;
+    consequenceTrialStimuli[currentTrial].text;
 
   currentErrorCount = 0;
   trialStartTime = performance.now();
@@ -198,14 +205,14 @@ function recordPartOneResponse(pressedE) {
     : "Femininity";
 
   genderResponses.push({
-    description: genderStimuli[currentTrial],
+    description: genderTrialStimuli[currentTrial],
     category: selectedCategory,
     reactionTime: reactionTime
   });
 
   currentTrial++;
 
-  if (currentTrial < genderStimuli.length) {
+  if (currentTrial < genderTrialStimuli.length) {
     showPartOneTrial();
   } else {
     finishPartOne();
@@ -218,7 +225,7 @@ function checkPartTwoResponse(pressedE) {
     : "Penalized";
 
   const correctCategory =
-    consequenceStimuli[currentTrial].category;
+    consequenceTrialStimuli[currentTrial].category;
 
   if (selectedCategory !== correctCategory) {
     currentErrorCount++;
@@ -231,7 +238,7 @@ function checkPartTwoResponse(pressedE) {
   );
 
   consequenceResponses.push({
-    description: consequenceStimuli[currentTrial].text,
+    description: consequenceTrialStimuli[currentTrial].text,
     category: correctCategory,
     reactionTime: reactionTime,
     errors: currentErrorCount
@@ -239,7 +246,7 @@ function checkPartTwoResponse(pressedE) {
 
   currentTrial++;
 
-  if (currentTrial < consequenceStimuli.length) {
+  if (currentTrial < consequenceTrialStimuli.length) {
     showPartTwoTrial();
   } else {
     finishPartTwo();
@@ -262,4 +269,19 @@ function finishPartTwo() {
       return sum + response.errors;
     }
   )
+}
+
+function shuffleArray(originalArray) {
+  const shuffledArray = [...originalArray];
+
+  for (let i = shuffledArray.length - 1; i > 0; i--) {
+    const randomIndex = Math.floor(
+      Math.random() * (i + 1)
+    );
+
+    [shuffledArray[i], shuffledArray[randomIndex]] =
+      [shuffledArray[randomIndex], shuffledArray[i]];
+  }
+
+  return shuffledArray;
 }
