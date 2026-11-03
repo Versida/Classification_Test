@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -31,8 +32,8 @@
       <button id="start-button">Begin Part 1</button>
     </section>
 
-    <!-- Classification screen -->
-    <section id="test-screen" class="hidden">
+    <!-- Part 1 -->
+    <section id="part-one-screen" class="hidden">
       <div class="category-row">
         <div class="category">
           <span class="key">E</span>
@@ -45,29 +46,90 @@
         </div>
       </div>
 
-      <p id="progress-text"></p>
+      <p id="part-one-progress"></p>
 
       <div class="stimulus-area">
-        <p id="stimulus-text"></p>
+        <p id="part-one-stimulus"></p>
       </div>
 
       <p class="instruction">Press E or I to classify the description.</p>
     </section>
 
-    <!-- Completion screen -->
-    <section id="completion-screen" class="hidden">
+    <!-- Part 1 completion -->
+    <section id="part-one-completion" class="hidden">
       <p class="part-label">Part 1 complete</p>
 
-      <h2>Your classifications have been recorded.</h2>
+      <h2>Your initial classifications have been recorded.</h2>
 
       <p>
-        The system will use these initial choices as your personalized
-        category mapping in the later rounds.
+        In later rounds, the system will treat these choices as your
+        personalized category mapping.
       </p>
 
-      <button id="review-button">View recorded responses</button>
+      <button id="part-two-button">Continue to Part 2</button>
+    </section>
 
-      <div id="response-summary" class="hidden"></div>
+    <!-- Part 2 instructions -->
+    <section id="part-two-intro" class="hidden">
+      <p class="part-label">Part 2</p>
+
+      <h2>Classify social consequences</h2>
+
+      <p>
+        You will now see descriptions of how a person may be treated by
+        other people, institutions, or media.
+      </p>
+
+      <p>
+        Press <strong>E</strong> for a socially rewarded consequence and
+        <strong>I</strong> for a socially penalized consequence.
+      </p>
+
+      <p class="Reminder">
+        If you make an incorrect classification, a red cross will appear.
+        Select the other category to continue.
+      </p>
+
+      <button id="begin-part-two-button">Begin Part 2</button>
+    </section>
+
+    <!-- Part 2 -->
+    <section id="part-two-screen" class="hidden">
+      <div class="category-row">
+        <div class="category">
+          <span class="key">E</span>
+          <strong>Socially Rewarded</strong>
+        </div>
+
+        <div class="category">
+          <span class="key">I</span>
+          <strong>Socially Penalized</strong>
+        </div>
+      </div>
+
+      <p id="part-two-progress"></p>
+
+      <div class="stimulus-area">
+        <p id="part-two-stimulus"></p>
+      </div>
+
+      <div id="error-mark" class="error-mark hidden">×</div>
+
+      <p class="instruction">Press E or I to classify the consequence.</p>
+    </section>
+
+    <!-- Part 2 completion -->
+    <section id="part-two-completion" class="hidden">
+      <p class="part-label">Part 2 complete</p>
+
+      <h2>The category rules have been established.</h2>
+
+      <p>
+        You have now completed the two classification tasks that will be
+        combined in the following rounds.
+      </p>
+
+      <div id="part-two-summary"></div>
     </section>
 
   </main>
