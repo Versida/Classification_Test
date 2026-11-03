@@ -54,7 +54,11 @@ function handleKeyPress(event) {
     return;
   }
 
-  const pressedKey = event.key.toLowerCase();
+  const pressedKey = event.code === "KeyE"
+  ? "e"
+  : event.code === "KeyI"
+    ? "i"
+    : "";
 
   if (pressedKey !== "e" && pressedKey !== "i") {
     return;
