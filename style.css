@@ -159,3 +159,33 @@ button:hover {
     font-size: 25px;
   }
 }
+
+.error-mark {
+  height: 55px;
+  margin-top: -40px;
+  color: #c62828;
+  font-size: 58px;
+  font-weight: bold;
+  line-height: 1;
+}
+
+#part-one-progress,
+#part-two-progress {
+  margin-top: 45px;
+  color: #777777;
+  font-size: 14px;
+}
+
+#part-one-stimulus,
+#part-two-stimulus {
+  max-width: 600px;
+  font-size: 31px;
+  font-weight: bold;
+  line-height: 1.35;
+}
+
+#part-two-summary {
+  margin-top: 25px;
+  padding: 14px;
+  background-color: #f1eee8;
+}
