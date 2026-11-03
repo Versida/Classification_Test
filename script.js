@@ -1,45 +1,45 @@
 const genderStimuli = [
-  "financially supports a partner",
-  "asks others for emotional reassurance",
-  "takes the lead in decision-making",
-  "prioritizes caregiving responsibilities",
-  "admits feeling afraid",
-  "allows a partner to take control",
-  "compromises career advancement for family",
-  "solves personal problems independently"
+  "Financially supports a partner",
+  "Tends to ask others for emotional reassurance",
+  "Takes the lead in decision-making",
+  "Prioritizes more caregiving responsibilities",
+  "Feels comfortable admitting feeling afraid",
+  "Allows a partner to take more control",
+  "Compromises more career advancement for family",
+  "Tends to solve personal problems independently"
 ];
 
 const consequenceStimuli = [
   {
-    text: "receives public praise",
+    text: "Receives public praise",
     category: "Rewarded"
   },
   {
-    text: "is mocked by peers",
+    text: "Is mocked by peers",
     category: "Penalized"
   },
   {
-    text: "gains respect from others",
+    text: "Gains respect from others",
     category: "Rewarded"
   },
   {
-    text: "is excluded from leadership",
+    text: "Is excluded from leadership",
     category: "Penalized"
   },
   {
-    text: "is portrayed positively by the media",
+    text: "Is portrayed positively by the media",
     category: "Rewarded"
   },
   {
-    text: "is portrayed negatively by the media",
+    text: "Is portrayed negatively by the media",
     category: "Penalized"
   },
   {
-    text: "gains influence within a group",
+    text: "Gains influence within a group",
     category: "Rewarded"
   },
   {
-    text: "is judged as incompetent",
+    text: "Is judged as incompetent",
     category: "Penalized"
   }
 ];
