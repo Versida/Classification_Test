@@ -5,7 +5,7 @@ const genderStimuli = [
   "prioritizes caregiving responsibilities",
   "admits feeling afraid",
   "allows a partner to take control",
-  "sacrifices career advancement for family",
+  "compromises career advancement for family",
   "solves personal problems independently"
 ];
 
