@@ -127,26 +127,6 @@ let partFourResponses = [];
 
 startButton.addEventListener("click", startPartOne);
 
-partTwoButton.addEventListener("click", showPartTwoIntro);
-
-beginPartTwoButton.addEventListener(
-  "click",
-  startPartTwo
-);
-
-partThreeButton.addEventListener(
-  "click",
-  showPartThreeIntro
-);
-beginPartThreeButton.addEventListener(
-  "click",
-  startPartThree
-);
-
-partFourButton.addEventListener(
-  "click",
-  showPartFourIntro
-);
 beginPartFourButton.addEventListener(
   "click",
   startPartFour
@@ -181,7 +161,7 @@ function finishPartOne() {
   activePart = 0;
 
   partOneScreen.classList.add("hidden");
-  partOneCompletion.classList.remove("hidden");
+  partTwoIntro.classList.remove("hidden");
 
   sessionStorage.setItem(
     "genderClassifications",
@@ -326,7 +306,7 @@ function finishPartTwo() {
   activePart = 0;
 
   partTwoScreen.classList.add("hidden");
-  partTwoCompletion.classList.remove("hidden");
+  partThreeIntro.classList.remove("hidden");
 
   sessionStorage.setItem(
     "socialConsequences",
@@ -446,7 +426,7 @@ function finishPartThree() {
   activePart = 0;
 
   partThreeScreen.classList.add("hidden");
-  partThreeCompletion.classList.remove("hidden");
+  partFourIntro.classList.remove("hidden");
 
   sessionStorage.setItem(
     "partThreeResponses",
