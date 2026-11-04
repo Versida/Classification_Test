@@ -237,3 +237,16 @@ button:hover {
     width: 100%;
   }
 }
+
+#part-four-progress {
+  margin-top: 45px;
+  color: #777777;
+  font-size: 14px;
+}
+
+#part-four-stimulus {
+  max-width: 600px;
+  font-size: 31px;
+  font-weight: bold;
+  line-height: 1.35;
+}
