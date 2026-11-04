@@ -53,12 +53,20 @@ const partTwoIntro = document.getElementById("part-two-intro");
 const partTwoScreen = document.getElementById("part-two-screen");
 const partTwoCompletion =
   document.getElementById("part-two-completion");
+
 const partThreeIntro =
   document.getElementById("part-three-intro");
 const partThreeScreen =
   document.getElementById("part-three-screen");
 const partThreeCompletion =
   document.getElementById("part-three-completion");
+
+const partFourIntro =
+  document.getElementById("part-four-intro");
+const partFourScreen =
+  document.getElementById("part-four-screen");
+const partFourCompletion =
+  document.getElementById("part-four-completion");
 
 const startButton = document.getElementById("start-button");
 const partTwoButton = document.getElementById("part-two-button");
@@ -68,6 +76,11 @@ const partThreeButton =
   document.getElementById("part-three-button");
 const beginPartThreeButton =
   document.getElementById("begin-part-three-button");
+
+const partFourButton =
+  document.getElementById("part-four-button");
+const beginPartFourButton =
+  document.getElementById("begin-part-four-button");
 
 const partOneProgress =
   document.getElementById("part-one-progress");
@@ -83,11 +96,17 @@ const errorMark = document.getElementById("error-mark");
 
 const partThreeProgress =
   document.getElementById("part-three-progress");
-
 const partThreeStimulus =
   document.getElementById("part-three-stimulus");
 const partThreeError =
   document.getElementById("part-three-error");
+
+const partFourProgress =
+  document.getElementById("part-four-progress");
+const partFourStimulus =
+  document.getElementById("part-four-stimulus");
+const partFourError =
+  document.getElementById("part-four-error");
 
 let activePart = 0;
 let currentTrial = 0;
@@ -102,6 +121,9 @@ let consequenceTrialStimuli = [];
 
 let partThreeTrials = [];
 let partThreeResponses = [];
+
+let partFourTrials = [];
+let partFourResponses = [];
 
 startButton.addEventListener("click", startPartOne);
 
@@ -119,6 +141,15 @@ partThreeButton.addEventListener(
 beginPartThreeButton.addEventListener(
   "click",
   startPartThree
+);
+
+partFourButton.addEventListener(
+  "click",
+  showPartFourIntro
+);
+beginPartFourButton.addEventListener(
+  "click",
+  startPartFour
 );
 
 window.addEventListener("keydown", handleKeyPress, true);
@@ -225,7 +256,11 @@ function handleKeyPress(event) {
   }
 
   if (activePart === 3) {
-    checkPartThreeResponse(pressedE);
+  checkPartThreeResponse(pressedE);
+  return;
+  }
+  if (activePart === 4) {
+  checkPartFourResponse(pressedE);
   }
 }
 
@@ -418,3 +453,107 @@ function finishPartThree() {
     JSON.stringify(partThreeResponses)
   );
 }
+
+function showPartFourIntro() {
+  partThreeCompletion.classList.add("hidden");
+  partFourIntro.classList.remove("hidden");
+}
+
+function startPartFour() {
+  partFourIntro.classList.add("hidden");
+  partFourScreen.classList.remove("hidden");
+
+  activePart = 4;
+  currentTrial = 0;
+  currentErrorCount = 0;
+  partFourResponses = [];
+
+  const genderTrials = genderResponses.map(
+    function (response) {
+      return {
+        text: response.description,
+        stimulusType: "Gender description",
+        category: response.category,
+        correctKey:
+          response.category === "Masculinity" ? "E" : "I"
+      };
+    }
+  );
+
+  const consequenceTrials = consequenceStimuli.map(
+    function (stimulus) {
+      return {
+        text: stimulus.text,
+        stimulusType: "Social consequence",
+        category: stimulus.category,
+        correctKey:
+          stimulus.category === "Rewarded" ? "E" : "I"
+      };
+    }
+  );
+
+  partFourTrials = shuffleArray([
+    ...genderTrials,
+    ...consequenceTrials
+  ]);
+
+  showPartFourTrial();
+}
+
+function showPartFourTrial() {
+  partFourError.classList.add("hidden");
+
+  partFourProgress.textContent =
+    `Item ${currentTrial + 1} of ${partFourTrials.length}`;
+
+  partFourStimulus.textContent =
+    partFourTrials[currentTrial].text;
+
+  currentErrorCount = 0;
+  trialStartTime = performance.now();
+}
+
+function checkPartFourResponse(pressedE) {
+  const selectedKey = pressedE ? "E" : "I";
+  const currentStimulus = partFourTrials[currentTrial];
+
+  if (selectedKey !== currentStimulus.correctKey) {
+    currentErrorCount++;
+    partFourError.classList.remove("hidden");
+    return;
+  }
+
+  const reactionTime = Math.round(
+    performance.now() - trialStartTime
+  );
+
+  partFourResponses.push({
+    description: currentStimulus.text,
+    stimulusType: currentStimulus.stimulusType,
+    category: currentStimulus.category,
+    selectedKey: selectedKey,
+    reactionTime: reactionTime,
+    errors: currentErrorCount
+  });
+
+  currentTrial++;
+
+  if (currentTrial < partFourTrials.length) {
+    showPartFourTrial();
+  } else {
+    finishPartFour();
+  }
+}
+
+function finishPartFour() {
+  activePart = 0;
+
+  partFourScreen.classList.add("hidden");
+  partFourCompletion.classList.remove("hidden");
+
+  sessionStorage.setItem(
+    "partFourResponses",
+    JSON.stringify(partFourResponses)
+  );
+}
+
