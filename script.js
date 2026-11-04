@@ -202,6 +202,26 @@ function showPartTwoTrial() {
 }
 
 function handleKeyPress(event) {
+  if (
+    activePart === 0 &&
+    event.code === "Space" &&
+    !event.repeat
+  ) {
+    event.preventDefault();
+
+    const visibleBeginButton = Array.from(
+      document.querySelectorAll(".begin-button")
+    ).find(function (button) {
+      return !button.closest("section").classList.contains("hidden");
+    });
+
+    if (visibleBeginButton) {
+      visibleBeginButton.click();
+    }
+
+    return;
+  }
+
   if (activePart === 0 || event.repeat) {
     return;
   }
