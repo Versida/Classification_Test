@@ -229,10 +229,6 @@ function handleKeyPress(event) {
   }
 }
 
-if (activePart === 3) {
-  checkPartThreeResponse(pressedE);
-}
-
 function recordPartOneResponse(pressedE) {
   const reactionTime = Math.round(
     performance.now() - trialStartTime
