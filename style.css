@@ -204,9 +204,8 @@ button:hover {
   line-height: 1.4;
 }
 
-.combined-category span:not(.key) {
-  color: #666666;
-  font-size: 14px;
+.combined-category .consequence-category {
+  color: #2454c6;
 }
 
 #part-three-progress {
