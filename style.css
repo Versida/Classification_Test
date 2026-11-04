@@ -250,3 +250,32 @@ button:hover {
   font-weight: bold;
   line-height: 1.35;
 }
+
+.part-intro {
+  text-align: left;
+}
+
+.part-intro h2,
+.part-intro .part-label {
+  text-align: left;
+}
+
+.part-intro button {
+  display: block;
+  margin: 32px auto 0;
+}
+
+.previous-part-note {
+  margin-bottom: 38px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #d6d2cb;
+}
+
+.key-instructions {
+  margin: 28px 0;
+}
+
+.key-instructions p {
+  margin: 10px 0;
+  line-height: 1.6;
+}
