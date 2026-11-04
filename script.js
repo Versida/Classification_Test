@@ -216,10 +216,16 @@ function handleKeyPress(event) {
 
   if (activePart === 1) {
     recordPartOneResponse(pressedE);
+    return;
   }
 
   if (activePart === 2) {
     checkPartTwoResponse(pressedE);
+    return;
+  }
+
+  if (activePart === 3) {
+    checkPartThreeResponse(pressedE);
   }
 }
 
