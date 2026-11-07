@@ -46,32 +46,56 @@ const consequenceStimuli = [
 
 const introScreen = document.getElementById("intro-screen");
 const partOneScreen = document.getElementById("part-one-screen");
-const partOneCompletion =
-  document.getElementById("part-one-completion");
 
 const partTwoIntro = document.getElementById("part-two-intro");
 const partTwoScreen = document.getElementById("part-two-screen");
-const partTwoCompletion =
-  document.getElementById("part-two-completion");
 
 const partThreeIntro =
   document.getElementById("part-three-intro");
 const partThreeScreen =
   document.getElementById("part-three-screen");
-const partThreeCompletion =
-  document.getElementById("part-three-completion");
 
 const partFourIntro =
   document.getElementById("part-four-intro");
 const partFourScreen =
   document.getElementById("part-four-screen");
-const partFourCompletion =
-  document.getElementById("part-four-completion");
+
+const partFiveIntro =
+  document.getElementById("part-five-intro");
+const partFiveScreen =
+  document.getElementById("part-five-screen");
+
+const partSixIntro =
+  document.getElementById("part-six-intro");
+const partSixScreen =
+  document.getElementById("part-six-screen");
+const partSixCompletion =
+  document.getElementById("part-six-completion");
+
+const beginPartFiveButton =
+  document.getElementById("begin-part-five-button");
+const beginPartSixButton =
+  document.getElementById("begin-part-six-button");
+
+const partFiveProgress =
+  document.getElementById("part-five-progress");
+const partFiveStimulus =
+  document.getElementById("part-five-stimulus");
+const partFiveError =
+  document.getElementById("part-five-error");
+
+const partSixProgress =
+  document.getElementById("part-six-progress");
+const partSixStimulus =
+  document.getElementById("part-six-stimulus");
+const partSixError =
+  document.getElementById("part-six-error");
 
 const startButton = document.getElementById("start-button");
 const partTwoButton = document.getElementById("part-two-button");
 const beginPartTwoButton =
   document.getElementById("begin-part-two-button");
+
 const partThreeButton =
   document.getElementById("part-three-button");
 const beginPartThreeButton =
@@ -125,6 +149,12 @@ let partThreeResponses = [];
 let partFourTrials = [];
 let partFourResponses = [];
 
+let partFiveTrials = [];
+let partFiveResponses = [];
+
+let partSixTrials = [];
+let partSixResponses = [];
+
 startButton.addEventListener(
   "click",
   startPartOne
@@ -143,6 +173,16 @@ beginPartThreeButton.addEventListener(
 beginPartFourButton.addEventListener(
   "click",
   startPartFour
+);
+
+beginPartFiveButton.addEventListener(
+  "click",
+  startPartFive
+);
+
+beginPartSixButton.addEventListener(
+  "click",
+  startPartSix
 );
 
 window.addEventListener(
@@ -278,8 +318,19 @@ function handleKeyPress(event) {
   checkPartThreeResponse(pressedE);
   return;
   }
+
   if (activePart === 4) {
   checkPartFourResponse(pressedE);
+  return;
+  }
+
+  if (activePart === 5) {
+  checkPartFiveResponse(pressedE);
+  return;
+  }
+
+  if (activePart === 6) {
+  checkPartSixResponse(pressedE);
   }
 }
 
@@ -568,7 +619,7 @@ function finishPartFour() {
   activePart = 0;
 
   partFourScreen.classList.add("hidden");
-  partFourCompletion.classList.remove("hidden");
+  partFiveIntro.classList.remove("hidden");
 
   sessionStorage.setItem(
     "partFourResponses",
@@ -576,3 +627,177 @@ function finishPartFour() {
   );
 }
 
+function buildReversedTrials(itemsPerType) {
+  const genderTrials = shuffleArray(genderResponses)
+    .slice(0, itemsPerType)
+    .map(function (response) {
+      return {
+        text: response.description,
+        stimulusType: "Gender description",
+        category: response.category,
+        correctKey:
+          response.category === "Femininity" ? "E" : "I"
+      };
+    });
+
+  const consequenceTrials = shuffleArray(consequenceStimuli)
+    .slice(0, itemsPerType)
+    .map(function (stimulus) {
+      return {
+        text: stimulus.text,
+        stimulusType: "Social consequence",
+        category: stimulus.category,
+        correctKey:
+          stimulus.category === "Rewarded" ? "E" : "I"
+      };
+    });
+
+  return shuffleArray([
+    ...genderTrials,
+    ...consequenceTrials
+  ]);
+}
+
+function startPartFive() {
+  partFiveIntro.classList.add("hidden");
+  partFiveScreen.classList.remove("hidden");
+
+  activePart = 5;
+  currentTrial = 0;
+  currentErrorCount = 0;
+  partFiveResponses = [];
+
+  // Four gender descriptions + four social consequences.
+  partFiveTrials = buildReversedTrials(4);
+
+  showPartFiveTrial();
+}
+
+function showPartFiveTrial() {
+  partFiveError.classList.add("hidden");
+
+  partFiveProgress.textContent =
+    `Item ${currentTrial + 1} of ${partFiveTrials.length}`;
+
+  partFiveStimulus.textContent =
+    partFiveTrials[currentTrial].text;
+
+  currentErrorCount = 0;
+  trialStartTime = performance.now();
+}
+
+function checkPartFiveResponse(pressedE) {
+  const selectedKey = pressedE ? "E" : "I";
+  const currentStimulus = partFiveTrials[currentTrial];
+
+  if (selectedKey !== currentStimulus.correctKey) {
+    currentErrorCount++;
+    partFiveError.classList.remove("hidden");
+    return;
+  }
+
+  const reactionTime = Math.round(
+    performance.now() - trialStartTime
+  );
+
+  partFiveResponses.push({
+    description: currentStimulus.text,
+    stimulusType: currentStimulus.stimulusType,
+    category: currentStimulus.category,
+    selectedKey: selectedKey,
+    reactionTime: reactionTime,
+    errors: currentErrorCount
+  });
+
+  currentTrial++;
+
+  if (currentTrial < partFiveTrials.length) {
+    showPartFiveTrial();
+  } else {
+    finishPartFive();
+  }
+}
+
+function finishPartFive() {
+  activePart = 0;
+
+  partFiveScreen.classList.add("hidden");
+  partSixIntro.classList.remove("hidden");
+
+  sessionStorage.setItem(
+    "partFiveResponses",
+    JSON.stringify(partFiveResponses)
+  );
+}
+
+function startPartSix() {
+  partSixIntro.classList.add("hidden");
+  partSixScreen.classList.remove("hidden");
+
+  activePart = 6;
+  currentTrial = 0;
+  currentErrorCount = 0;
+  partSixResponses = [];
+
+  // Eight gender descriptions + eight social consequences.
+  partSixTrials = buildReversedTrials(8);
+
+  showPartSixTrial();
+}
+
+function showPartSixTrial() {
+  partSixError.classList.add("hidden");
+
+  partSixProgress.textContent =
+    `Item ${currentTrial + 1} of ${partSixTrials.length}`;
+
+  partSixStimulus.textContent =
+    partSixTrials[currentTrial].text;
+
+  currentErrorCount = 0;
+  trialStartTime = performance.now();
+}
+
+function checkPartSixResponse(pressedE) {
+  const selectedKey = pressedE ? "E" : "I";
+  const currentStimulus = partSixTrials[currentTrial];
+
+  if (selectedKey !== currentStimulus.correctKey) {
+    currentErrorCount++;
+    partSixError.classList.remove("hidden");
+    return;
+  }
+
+  const reactionTime = Math.round(
+    performance.now() - trialStartTime
+  );
+
+  partSixResponses.push({
+    description: currentStimulus.text,
+    stimulusType: currentStimulus.stimulusType,
+    category: currentStimulus.category,
+    selectedKey: selectedKey,
+    reactionTime: reactionTime,
+    errors: currentErrorCount
+  });
+
+  currentTrial++;
+
+  if (currentTrial < partSixTrials.length) {
+    showPartSixTrial();
+  } else {
+    finishPartSix();
+  }
+}
+
+function finishPartSix() {
+  activePart = 0;
+
+  partSixScreen.classList.add("hidden");
+  partSixCompletion.classList.remove("hidden");
+
+  sessionStorage.setItem(
+    "partSixResponses",
+    JSON.stringify(partSixResponses)
+  );
+}
