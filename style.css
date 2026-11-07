@@ -300,11 +300,17 @@ button:hover {
 }
 
 .start-hint {
-  margin-top: 30px;
+  margin: 14px 0 0;
   color: #777777;
   font-size: 14px;
   font-weight: normal;
   line-height: 1.5;
+  text-align: center;
+}
+
+#intro-screen .start-hint,
+.part-intro .start-hint {
+  text-align: center;
 }
 
 #part-five-progress,
@@ -320,4 +326,14 @@ button:hover {
   font-size: 31px;
   font-weight: bold;
   line-height: 1.35;
+}
+
+#part-one-progress,
+#part-two-progress,
+#part-three-progress,
+#part-four-progress,
+#part-five-progress,
+#part-six-progress,
+.instruction {
+  display: none;
 }
