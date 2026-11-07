@@ -169,6 +169,14 @@ button:hover {
   line-height: 1;
 }
 
+#intro-screen {
+  text-align: left;
+}
+#intro-screen button {
+  display: block;
+  margin: 32px auto 0;
+}
+
 #part-one-progress,
 #part-two-progress {
   margin-top: 45px;
@@ -206,6 +214,7 @@ button:hover {
 
 .combined-category .consequence-category {
   color: #2454c6;
+  font-weight: 700;
 }
 
 #part-three-progress {
@@ -265,9 +274,7 @@ button:hover {
 }
 
 .previous-part-note {
-  margin-bottom: 38px;
-  padding-bottom: 24px;
-  border-bottom: 1px solid #d6d2cb;
+  display: none;
 }
 
 .key-instructions {
@@ -284,10 +291,12 @@ button:hover {
 }
 .consequence-category {
   color: #2454c6;
+  font-weight: 700;
 }
 
 .combined-category .consequence-category {
   color: #2454c6;
+  font-weight: 700;
 }
 
 .start-hint {
