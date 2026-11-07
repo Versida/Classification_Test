@@ -184,14 +184,6 @@ button:hover {
   font-size: 14px;
 }
 
-#part-one-stimulus,
-#part-two-stimulus {
-  max-width: 600px;
-  font-size: 18px;
-  font-weight: bold;
-  line-height: 1.35;
-}
-
 .pairing-guide {
   display: flex;
   justify-content: space-around;
@@ -223,13 +215,6 @@ button:hover {
   font-size: 14px;
 }
 
-#part-three-stimulus {
-  max-width: 600px;
-  font-size: 18px;
-  font-weight: bold;
-  line-height: 1.35;
-}
-
 #part-three-summary {
   margin-top: 25px;
   padding: 14px;
@@ -250,13 +235,6 @@ button:hover {
   margin-top: 45px;
   color: #777777;
   font-size: 14px;
-}
-
-#part-four-stimulus {
-  max-width: 600px;
-  font-size: 31px;
-  font-weight: bold;
-  line-height: 1.35;
 }
 
 .part-intro {
@@ -320,14 +298,6 @@ button:hover {
   font-size: 14px;
 }
 
-#part-five-stimulus,
-#part-six-stimulus {
-  max-width: 600px;
-  font-size: 31px;
-  font-weight: bold;
-  line-height: 1.35;
-}
-
 #part-one-progress,
 #part-two-progress,
 #part-three-progress,
@@ -336,4 +306,17 @@ button:hover {
 #part-six-progress,
 .instruction {
   display: none;
+}
+
+#part-one-stimulus,
+#part-two-stimulus,
+#part-three-stimulus,
+#part-four-stimulus,
+#part-five-stimulus,
+#part-six-stimulus {
+  max-width: 600px;
+  margin: 0;
+  font-size: 18px;
+  font-weight: bold;
+  line-height: 1.35;
 }
