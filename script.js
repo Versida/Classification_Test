@@ -125,11 +125,30 @@ let partThreeResponses = [];
 let partFourTrials = [];
 let partFourResponses = [];
 
-startButton.addEventListener("click", startPartOne);
+startButton.addEventListener(
+  "click",
+  startPartOne
+);
+
+beginPartTwoButton.addEventListener(
+  "click",
+  startPartTwo
+);
+
+beginPartThreeButton.addEventListener(
+  "click",
+  startPartThree
+);
 
 beginPartFourButton.addEventListener(
   "click",
   startPartFour
+);
+
+window.addEventListener(
+  "keydown",
+  handleKeyPress,
+  true
 );
 
 window.addEventListener("keydown", handleKeyPress, true);
