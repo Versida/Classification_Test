@@ -15,6 +15,7 @@ body {
 }
 
 .test-container {
+  position: relative;
   width: 100%;
   max-width: 760px;
   min-height: 520px;
@@ -102,10 +103,13 @@ button:hover {
 }
 
 .stimulus-area {
-  min-height: 190px;
+  position: absolute;
+  inset: 0;
+  min-height: 0;
   display: flex;
   justify-content: center;
   align-items: center;
+  pointer-events: none;
 }
 
 #stimulus-text {
@@ -319,4 +323,14 @@ button:hover {
   font-size: 18px;
   font-weight: bold;
   line-height: 1.35;
+}
+
+#part-one-screen,
+#part-two-screen,
+#part-three-screen,
+#part-four-screen,
+#part-five-screen,
+#part-six-screen {
+  position: absolute;
+  inset: 48px;
 }
