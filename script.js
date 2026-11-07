@@ -363,34 +363,34 @@ function startPartThree() {
   currentErrorCount = 0;
   partThreeResponses = [];
 
-  const genderTrials = genderResponses.map(
-    function (response) {
-      return {
-        text: response.description,
-        stimulusType: "Gender description",
-        category: response.category,
-        correctKey:
-          response.category === "Masculinity" ? "E" : "I"
-      };
-    }
-  );
+  const genderTrials = shuffleArray(genderResponses)
+  .slice(0, 4)
+  .map(function (response) {
+    return {
+      text: response.description,
+      stimulusType: "Gender description",
+      category: response.category,
+      correctKey:
+        response.category === "Masculinity" ? "E" : "I"
+    };
+  });
 
-  const consequenceTrials = consequenceStimuli.map(
-    function (stimulus) {
-      return {
-        text: stimulus.text,
-        stimulusType: "Social consequence",
-        category: stimulus.category,
-        correctKey:
-          stimulus.category === "Rewarded" ? "E" : "I"
-      };
-    }
-  );
+const consequenceTrials = shuffleArray(consequenceStimuli)
+  .slice(0, 4)
+  .map(function (stimulus) {
+    return {
+      text: stimulus.text,
+      stimulusType: "Social consequence",
+      category: stimulus.category,
+      correctKey:
+        stimulus.category === "Rewarded" ? "E" : "I"
+    };
+  });
 
-  partThreeTrials = shuffleArray([
-    ...genderTrials,
-    ...consequenceTrials
-  ]);
+partThreeTrials = shuffleArray([
+  ...genderTrials,
+  ...consequenceTrials
+]);
 
   showPartThreeTrial();
 }
