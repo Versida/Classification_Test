@@ -285,3 +285,8 @@ button:hover {
 .consequence-category {
   color: #2454c6;
 }
+
+.start-hint {
+  margin-top: 30px;
+  font-weight: 600;
+}
