@@ -158,10 +158,8 @@ const resultsScreen =
 
 const personalPatternText =
   document.getElementById("personal-pattern-text");
-const pairingDifferenceValue =
-  document.getElementById("pairing-difference-value");
-const pairingDifferenceText =
-  document.getElementById("pairing-difference-text");
+const pairingDifferenceGrid =
+  document.getElementById("pairing-difference-grid");
 
 const masculinityMapping =
   document.getElementById("masculinity-mapping");
@@ -1337,9 +1335,6 @@ function buildCompleteResult() {
       compatibleMedian: compatibleMedian,
       reversedMedian: reversedMedian,
 
-      pairingDifference:
-        reversedMedian - compatibleMedian,
-
       masculinityRewardedMedian:
         masculinityRewardedMedian,
 
@@ -1421,26 +1416,7 @@ function showResultsPage(completeResult) {
     longestResponseTime
   );
 
-  pairingDifferenceValue.textContent =
-    Math.abs(result.pairingDifference) + " ms";
-
-  if (Math.abs(result.pairingDifference) < 100) {
-    pairingDifferenceText.textContent =
-      "No substantial response-time difference appeared " +
-      "between the two combined pairing configurations.";
-  } else if (result.pairingDifference > 0) {
-    pairingDifferenceText.textContent =
-      "The Masculinity + Socially Rewarded / Femininity + " +
-      "Socially Penalized configuration was " +
-      Math.abs(result.pairingDifference) +
-      " ms faster overall.";
-  } else {
-    pairingDifferenceText.textContent =
-      "The Femininity + Socially Rewarded / Masculinity + " +
-      "Socially Penalized configuration was " +
-      Math.abs(result.pairingDifference) +
-      " ms faster overall.";
-  }
+  renderPairingDifferences(result);
 
   masculinityRewardedErrors.textContent =
     result.masculinityRewardedErrors;
@@ -1465,6 +1441,134 @@ function showResultsPage(completeResult) {
     behavior: "smooth"
   });
 }
+
+
+function renderPairingDifferences(result) {
+  const comparisons = [
+    {
+      title: "Masculinity: consequence difference",
+      firstLabel: "Masculinity + Socially Rewarded",
+      secondLabel: "Masculinity + Socially Penalized",
+      firstValue: result.masculinityRewardedMedian,
+      secondValue: result.masculinityPenalizedMedian
+    },
+    {
+      title: "Femininity: consequence difference",
+      firstLabel: "Femininity + Socially Rewarded",
+      secondLabel: "Femininity + Socially Penalized",
+      firstValue: result.femininityRewardedMedian,
+      secondValue: result.femininityPenalizedMedian
+    },
+    {
+      title: "Socially Rewarded: gender difference",
+      firstLabel: "Masculinity + Socially Rewarded",
+      secondLabel: "Femininity + Socially Rewarded",
+      firstValue: result.masculinityRewardedMedian,
+      secondValue: result.femininityRewardedMedian
+    },
+    {
+      title: "Socially Penalized: gender difference",
+      firstLabel: "Masculinity + Socially Penalized",
+      secondLabel: "Femininity + Socially Penalized",
+      firstValue: result.masculinityPenalizedMedian,
+      secondValue: result.femininityPenalizedMedian
+    }
+  ];
+
+  const calculatedComparisons =
+    comparisons.map(function (comparison) {
+      return {
+        ...comparison,
+        difference:
+          comparison.firstValue -
+          comparison.secondValue
+      };
+    });
+
+  const largestDifference =
+    calculatedComparisons.reduce(
+      function (largest, current) {
+        return Math.abs(current.difference) >
+          Math.abs(largest.difference)
+          ? current
+          : largest;
+      }
+    );
+
+  pairingDifferenceGrid.innerHTML = "";
+
+  calculatedComparisons.forEach(
+    function (comparison) {
+      const card = document.createElement("article");
+
+      card.className = "pairing-difference-card";
+
+      if (comparison === largestDifference) {
+        card.classList.add("largest-difference");
+      }
+
+      const absoluteDifference =
+        Math.abs(comparison.difference);
+
+      let fasterStatement;
+
+      if (comparison.difference < 0) {
+        fasterStatement =
+          comparison.firstLabel +
+          " was faster by " +
+          absoluteDifference +
+          " ms.";
+      } else if (comparison.difference > 0) {
+        fasterStatement =
+          comparison.secondLabel +
+          " was faster by " +
+          absoluteDifference +
+          " ms.";
+      } else {
+        fasterStatement =
+          "Both pairings had the same median response time.";
+      }
+
+      const signedDifference =
+        comparison.difference > 0
+          ? "+" + comparison.difference
+          : String(comparison.difference);
+
+      card.innerHTML = `
+        ${
+          comparison === largestDifference
+            ? `
+              <p class="difference-highlight-label">
+                Largest response-time difference
+              </p>
+            `
+            : ""
+        }
+
+        <h4>${comparison.title}</h4>
+
+        <p class="difference-pairing">
+          ${comparison.firstLabel}<br>
+          − ${comparison.secondLabel}
+        </p>
+
+        <p class="difference-formula">
+          ${comparison.firstValue} ms
+          − ${comparison.secondValue} ms
+          =
+          <strong>${signedDifference} ms</strong>
+        </p>
+
+        <p class="difference-result">
+          ${fasterStatement}
+        </p>
+      `;
+
+      pairingDifferenceGrid.appendChild(card);
+    }
+  );
+}
+
 
 function setResponseBar(
   barElement,
