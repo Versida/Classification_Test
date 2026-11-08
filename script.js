@@ -88,8 +88,7 @@ const partSixIntro =
   document.getElementById("part-six-intro");
 const partSixScreen =
   document.getElementById("part-six-screen");
-const partSixCompletion =
-  document.getElementById("part-six-completion");
+
 
 const beginPartFiveButton =
   document.getElementById("begin-part-five-button");
