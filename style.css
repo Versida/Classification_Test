@@ -440,7 +440,7 @@ body.results-active .test-container {
   width: 100%;
   max-width: none;
   min-height: 100vh;
-  padding: 36px 42px;
+  padding: 0 32px 28px;
   border: 0;
 }
 
@@ -467,15 +467,40 @@ body.results-active .test-container {
 }
 
 .results-header {
-  max-width: 1200px;
-  margin: 0 auto 30px;
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 10px 0 12px;
+  border-bottom: 1px solid #d8d4ce;
+  background-color: #ffffff;
+}
+
+.results-header .part-label {
+  margin: 0 0 4px;
+  font-size: 11px;
+}
+
+.results-header h2 {
+  margin: 0 0 5px;
+  font-size: 24px;
+  line-height: 1.2;
+}
+
+.results-header p {
+  margin: 0;
+  color: #555555;
+  font-size: 13px;
+  line-height: 1.4;
 }
 
 .results-columns {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 24px;
-  height: 72vh;
+  height: calc(100vh - 145px);
   min-height: 560px;
 }
 
@@ -523,14 +548,16 @@ body.results-active .test-container {
 
 .response-chart-row {
   display: grid;
-  grid-template-columns: 210px 1fr 80px;
-  gap: 16px;
+  grid-template-columns: max-content minmax(100px, 1fr) 70px;
+  gap: 12px;
   align-items: center;
-  margin: 18px 0;
+  margin: 16px 0;
 }
 
 .response-chart-label {
-  line-height: 1.4;
+  font-size: 12px;
+  line-height: 1.3;
+  white-space: nowrap;
 }
 
 .response-bar-track {
@@ -567,8 +594,9 @@ body.results-active .test-container {
 
 .response-chart-value {
   color: #555555;
-  font-size: 14px;
+  font-size: 12px;
   text-align: right;
+  white-space: nowrap;
 }
 
 .result-explanation {
@@ -664,6 +692,18 @@ body.results-active .test-container {
   font-weight: bold;
   letter-spacing: 0.04em;
   text-transform: uppercase;
+}
+
+.positive-difference {
+  color: #2f7d32;
+}
+
+.negative-difference {
+  color: #c62828;
+}
+
+.neutral-difference {
+  color: #555555;
 }
 
 .result-note {
@@ -792,24 +832,29 @@ body.results-active .test-container {
 }
 
 .critical-reveal {
-  mwidth: 100%;
+  width: 100%;
   margin: 48px 0 0;
-  padding: 48px;
+  padding: 56px 48px;
   background-color: #1f1f1f;
   color: #ffffff;
+  text-align: center;
 }
 
 .critical-reveal p {
-  margin: 0 0 20px;
+  max-width: 1050px;
+  margin: 0 auto 24px;
   font-size: 18px;
   line-height: 1.6;
+  text-align: center;
 }
 
 .critical-reveal h3 {
-  margin: 32px 0 0;
+  max-width: 1050px;
+  margin: 38px auto 0;
   color: #ffffff;
   font-size: 25px;
   line-height: 1.4;
+  text-align: center;
 }
 
 @media (max-width: 600px) {
@@ -883,9 +928,19 @@ body.results-active .test-container {
 }
 
 .difference-pairing {
-  min-height: 0;
   margin: 0 0 10px;
+  overflow-x: auto;
+  font-size: 13px;
+  line-height: 1.5;
+  white-space: nowrap;
+}
+
+.difference-formula {
+  margin: 0 0 8px;
+  overflow-x: auto;
   font-size: 14px;
+  line-height: 1.5;
+  white-space: nowrap;
 }
 
 .difference-formula {
