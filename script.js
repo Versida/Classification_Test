@@ -1528,6 +1528,13 @@ function renderPairingDifferences(result) {
         comparison.difference > 0
           ? "+" + comparison.difference
           : String(comparison.difference);
+      
+      const differenceClass =
+        comparison.difference > 0
+          ? "positive-difference"
+          : comparison.difference < 0
+            ? "negative-difference"
+            : "neutral-difference";
 
       card.innerHTML = `
         ${
@@ -1543,17 +1550,16 @@ function renderPairingDifferences(result) {
         <h4>${comparison.title}</h4>
 
         <p class="difference-pairing">
-          ${comparison.firstLabel}<br>
-          − ${comparison.secondLabel}
+          (${comparison.firstLabel}) − (${comparison.secondLabel})
         </p>
 
         <p class="difference-formula">
-          ${comparison.firstValue} ms
-          − ${comparison.secondValue} ms
-          =
-          <strong>${signedDifference} ms</strong>
+          ${comparison.firstValue} ms −
+          ${comparison.secondValue} ms =
+          <strong class="${differenceClass}">
+            ${signedDifference} ms
+          </strong>
         </p>
-
         <p class="difference-result">
           ${fasterStatement}
         </p>
