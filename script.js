@@ -1606,7 +1606,7 @@ function renderPersonalPatternExplanation(result) {
 
   if (Math.abs(masculinityDifference) < 100) {
     masculinityText.textContent =
-      "Your response times for Masculinity were similar " +
+      "▸ Your response times for Masculinity were similar " +
       "across the Rewarded and Penalized pairings.";
   } else if (masculinityDifference > 0) {
     masculinityText.textContent =
@@ -1620,7 +1620,7 @@ function renderPersonalPatternExplanation(result) {
 
   if (Math.abs(femininityDifference) < 100) {
     femininityText.textContent =
-      "Your response times for Femininity were similar " +
+      "▸ Your response times for Femininity were similar " +
       "across the Rewarded and Penalized pairings.";
   } else if (femininityDifference > 0) {
     femininityText.textContent =
