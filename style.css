@@ -682,9 +682,12 @@ body.results-active .test-container {
 }
 
 .difference-pairing {
-  min-height: 72px;
-  margin: 0 0 18px;
-  line-height: 1.5;
+  min-height: 0;
+  margin: 0 0 6px;
+  overflow-x: auto;
+  font-size: 11px;
+  line-height: 1.35;
+  white-space: nowrap;
 }
 
 .difference-formula {
@@ -935,13 +938,34 @@ body.results-active .test-container {
 }
 
 .pairing-difference-grid {
+  display: grid;
   grid-template-columns: 1fr;
-  gap: 12px;
-  margin: 18px 0;
+  gap: 7px;
+  margin: 8px 0;
 }
 
 .pairing-difference-card {
-  padding: 16px;
+  display: block;
+  position: relative;
+  height: auto;
+  min-height: 0;
+  padding: 9px 12px;
+  border: 1px solid #d8d4ce;
+  background-color: #ffffff;
+}
+
+.pairing-difference-card h4 {
+  margin: 0 0 4px;
+  font-size: 13px;
+  line-height: 1.25;
+}
+
+.difference-formula {
+  margin: 0;
+  overflow-x: auto;
+  font-size: 12px;
+  line-height: 1.35;
+  white-space: nowrap;
 }
 
 .pairing-difference-card h4 {
