@@ -1412,6 +1412,7 @@ function showResultsPage(completeResult) {
   );
 
   renderPairingDifferences(result);
+  renderPersonalPatternExplanation(result);
 
   masculinityRewardedErrors.textContent =
     result.masculinityRewardedErrors;
@@ -1424,116 +1425,6 @@ function showResultsPage(completeResult) {
 
   femininityPenalizedErrors.textContent =
     result.femininityPenalizedErrors;
-
-  function renderPersonalPatternExplanation(result) {
-  const similarityThreshold = 100;
-
-  const masculinityDifference =
-    result.masculinityPenalizedMedian -
-    result.masculinityRewardedMedian;
-
-  const femininityDifference =
-    result.femininityPenalizedMedian -
-    result.femininityRewardedMedian;
-
-  const masculinityIsSimilar =
-    Math.abs(masculinityDifference) < similarityThreshold;
-
-  const femininityIsSimilar =
-    Math.abs(femininityDifference) < similarityThreshold;
-
-  let resultStatement;
-
-  if (
-    masculinityIsSimilar &&
-    femininityIsSimilar
-  ) {
-    resultStatement =
-      "Your response times were similar across the four combined pairings.";
-  } else if (masculinityIsSimilar) {
-    const fasterFemininityPairing =
-      femininityDifference > 0
-        ? "Socially Rewarded"
-        : "Socially Penalized";
-
-    const slowerFemininityPairing =
-      femininityDifference > 0
-        ? "Socially Penalized"
-        : "Socially Rewarded";
-
-    resultStatement =
-      "Your Masculinity response times were similar, while you " +
-      "responded faster when Femininity was paired with " +
-      fasterFemininityPairing +
-      " than with " +
-      slowerFemininityPairing +
-      ".";
-  } else if (femininityIsSimilar) {
-    const fasterMasculinityPairing =
-      masculinityDifference > 0
-        ? "Socially Rewarded"
-        : "Socially Penalized";
-
-    const slowerMasculinityPairing =
-      masculinityDifference > 0
-        ? "Socially Penalized"
-        : "Socially Rewarded";
-
-    resultStatement =
-      "Your Femininity response times were similar, while you " +
-      "responded faster when Masculinity was paired with " +
-      fasterMasculinityPairing +
-      " than with " +
-      slowerMasculinityPairing +
-      ".";
-  } else {
-    const fasterMasculinityPairing =
-      masculinityDifference > 0
-        ? "Socially Rewarded"
-        : "Socially Penalized";
-
-    const slowerMasculinityPairing =
-      masculinityDifference > 0
-        ? "Socially Penalized"
-        : "Socially Rewarded";
-
-    const fasterFemininityPairing =
-      femininityDifference > 0
-        ? "Socially Rewarded"
-        : "Socially Penalized";
-
-    const slowerFemininityPairing =
-      femininityDifference > 0
-        ? "Socially Penalized"
-        : "Socially Rewarded";
-
-    resultStatement =
-      "You responded faster when Masculinity was paired with " +
-      fasterMasculinityPairing +
-      " and Femininity with " +
-      fasterFemininityPairing +
-      " than when Masculinity was paired with " +
-      slowerMasculinityPairing +
-      " and Femininity with " +
-      slowerFemininityPairing +
-      ".";
-  }
-
-  personalPatternText.innerHTML = "";
-
-  const resultParagraph =
-    document.createElement("p");
-
-  resultParagraph.className =
-    "iat-result-statement";
-
-  resultParagraph.textContent =
-    resultStatement;
-
-  personalPatternText.appendChild(
-    resultParagraph
-  );
-}
 
   renderInitialMapping(
     completeResult.partOneResponses
@@ -1610,28 +1501,6 @@ function renderPairingDifferences(result) {
         card.classList.add("largest-difference");
       }
 
-      const absoluteDifference =
-        Math.abs(comparison.difference);
-
-      let fasterStatement;
-
-      if (comparison.difference < 0) {
-        fasterStatement =
-          comparison.firstLabel +
-          " was faster by " +
-          absoluteDifference +
-          " ms.";
-      } else if (comparison.difference > 0) {
-        fasterStatement =
-          comparison.secondLabel +
-          " was faster by " +
-          absoluteDifference +
-          " ms.";
-      } else {
-        fasterStatement =
-          "Both pairings had the same median response time.";
-      }
-
       const signedDifference =
         comparison.difference > 0
           ? "+" + comparison.difference
@@ -1668,9 +1537,6 @@ function renderPairingDifferences(result) {
             ${signedDifference} ms
           </strong>
         </p>
-        <p class="difference-result">
-          ${fasterStatement}
-        </p>
       `;
 
       pairingDifferenceGrid.appendChild(card);
@@ -1697,6 +1563,8 @@ function setResponseBar(
 }
 
 function renderPersonalPatternExplanation(result) {
+  const similarityThreshold = 100;
+
   const masculinityDifference =
     result.masculinityPenalizedMedian -
     result.masculinityRewardedMedian;
@@ -1705,46 +1573,54 @@ function renderPersonalPatternExplanation(result) {
     result.femininityPenalizedMedian -
     result.femininityRewardedMedian;
 
+  let resultStatement = "";
+
+  if (
+    Math.abs(masculinityDifference) < similarityThreshold &&
+    Math.abs(femininityDifference) < similarityThreshold
+  ) {
+    resultStatement =
+      "Your response times were similar across the four combined pairings.";
+  } else {
+    const fasterMasculinityPairing =
+      masculinityDifference >= 0
+        ? "Socially Rewarded"
+        : "Socially Penalized";
+
+    const slowerMasculinityPairing =
+      masculinityDifference >= 0
+        ? "Socially Penalized"
+        : "Socially Rewarded";
+
+    const fasterFemininityPairing =
+      femininityDifference >= 0
+        ? "Socially Rewarded"
+        : "Socially Penalized";
+
+    const slowerFemininityPairing =
+      femininityDifference >= 0
+        ? "Socially Penalized"
+        : "Socially Rewarded";
+
+    resultStatement =
+      "You responded faster when Masculinity was paired with " +
+      fasterMasculinityPairing +
+      " and Femininity with " +
+      fasterFemininityPairing +
+      " than when Masculinity was paired with " +
+      slowerMasculinityPairing +
+      " and Femininity with " +
+      slowerFemininityPairing +
+      ".";
+  }
+
   personalPatternText.innerHTML = "";
 
-  const masculinityText =
-    document.createElement("p");
+  const resultParagraph = document.createElement("p");
+  resultParagraph.className = "iat-result-statement";
+  resultParagraph.textContent = resultStatement;
 
-  const femininityText =
-    document.createElement("p");
-
-  if (Math.abs(masculinityDifference) < 100) {
-    masculinityText.textContent =
-      "▸ Your response times for Masculinity were similar " +
-      "across the Rewarded and Penalized pairings.";
-  } else if (masculinityDifference > 0) {
-    masculinityText.textContent =
-      "▸ You responded more quickly when Masculinity was " +
-      "paired with Socially Rewarded.";
-  } else {
-    masculinityText.textContent =
-      "▸ You responded more quickly when Masculinity was " +
-      "paired with Socially Penalized.";
-  }
-
-  if (Math.abs(femininityDifference) < 100) {
-    femininityText.textContent =
-      "▸ Your response times for Femininity were similar " +
-      "across the Rewarded and Penalized pairings.";
-  } else if (femininityDifference > 0) {
-    femininityText.textContent =
-      "▸ You responded more quickly when Femininity was " +
-      "paired with Socially Rewarded.";
-  } else {
-    femininityText.textContent =
-      "▸ You responded more quickly when Femininity was " +
-      "paired with Socially Penalized.";
-  }
-
-  personalPatternText.append(
-    masculinityText,
-    femininityText
-  );
+  personalPatternText.appendChild(resultParagraph);
 }
 
 
