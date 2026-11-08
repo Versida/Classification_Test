@@ -1114,30 +1114,57 @@
         <h3>Consistency and Corrections</h3>
 
         <div class="correction-grid">
+
           <div>
             <span
-              id="compatible-error-count"
+              id="masculinity-rewarded-errors"
               class="detail-number"
             ></span>
-
+        
             <span>
               corrections during Masculinity +
               Socially Rewarded
             </span>
           </div>
-
+        
           <div>
             <span
-              id="reversed-error-count"
+              id="masculinity-penalized-errors"
               class="detail-number"
             ></span>
-
+        
+            <span>
+              corrections during Masculinity +
+              Socially Penalized
+            </span>
+          </div>
+        
+          <div>
+            <span
+              id="femininity-rewarded-errors"
+              class="detail-number"
+            ></span>
+        
             <span>
               corrections during Femininity +
               Socially Rewarded
             </span>
-          </div>
         </div>
+
+    <div>
+    
+    <span
+      id="femininity-penalized-errors"
+      class="detail-number"
+    ></span>
+
+    <span>
+      corrections during Femininity +
+      Socially Penalized
+    </span>
+  </div>
+
+</div>
 
         <p class="result-note">
           Corrections indicate moments when a response did not
@@ -1147,7 +1174,7 @@
 
       <!-- Collective gender classification -->
       <section class="detail-section">
-        <h3>Collective Gender Classification</h3>
+        <h3>Collective Classification Patterns</h3>
 
         <div class="result-controls">
           <div
@@ -1186,11 +1213,23 @@
             </option>
           </select>
 
-          <label for="classification-question-select">
-            Description
+          <label for="classification-module-select">
+            Analysis module
           </label>
-
-          <select id="classification-question-select"></select>
+          
+          <select id="classification-module-select">
+            <option value="genderClassification">
+              Gender classification
+            </option>
+          
+            <option value="socialConsequence">
+              Social consequence
+            </option>
+          
+            <option value="crossClassification">
+              Gender classification × Social consequence
+            </option>
+          </select>
         </div>
 
         <div
