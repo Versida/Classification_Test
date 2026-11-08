@@ -6,47 +6,48 @@ const APP_CONFIG = {
 };
 
 const genderStimuli = [
-  "Financially supports a partner",
-  "Tends to ask others for emotional reassurance",
-  "Takes the lead in decision-making",
+  "Financially supports a household more",
+  "Tends to assume a dominant role in decision-making",
+  "Compromises less career advancement for family",
+  "Tends to solve personal problems independently",
+  
+  "Allows the other partner to be in the driver's seat",
+  "Tends to seek emotional reassurance",
   "Prioritizes more caregiving responsibilities",
-  "Feels comfortable admitting feeling afraid",
-  "Allows a partner to take more control",
-  "Compromises more career advancement for family",
-  "Tends to solve personal problems independently"
+  "Feels more comfortable expressing uneasy feelings"
 ];
 
 const consequenceStimuli = [
   {
-    text: "Receives public praise",
+    text: "Publicly praised",
     category: "Rewarded"
   },
   {
-    text: "Is mocked by peers",
+    text: "Mocked",
     category: "Penalized"
   },
   {
-    text: "Gains respect from others",
+    text: "Respected",
     category: "Rewarded"
   },
   {
-    text: "Is excluded from leadership",
+    text: "Excluded from leadership",
     category: "Penalized"
   },
   {
-    text: "Is portrayed positively by the media",
+    text: "Positively portrayed",
     category: "Rewarded"
   },
   {
-    text: "Is portrayed negatively by the media",
+    text: "Negatively portrayed",
     category: "Penalized"
   },
   {
-    text: "Gains influence within a group",
+    text: "Promoted to leadership",
     category: "Rewarded"
   },
   {
-    text: "Is judged as incompetent",
+    text: "Judged incompetent",
     category: "Penalized"
   }
 ];
