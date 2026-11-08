@@ -1373,6 +1373,8 @@ function buildCompleteResult() {
 
 function showResultsPage(completeResult) {
   const result = completeResult.finalResult;
+  
+  document.body.classList.add("results-active");
 
   resultsScreen.classList.remove("hidden");
 
