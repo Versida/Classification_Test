@@ -151,6 +151,50 @@ const partFourStimulus =
 const partFourError =
   document.getElementById("part-four-error");
 
+
+const resultsScreen =
+  document.getElementById("results-screen");
+
+const compatibleResponseBar =
+  document.getElementById("compatible-response-bar");
+const reversedResponseBar =
+  document.getElementById("reversed-response-bar");
+
+const compatibleResponseValue =
+  document.getElementById("compatible-response-value");
+const reversedResponseValue =
+  document.getElementById("reversed-response-value");
+
+const personalPatternText =
+  document.getElementById("personal-pattern-text");
+const pairingDifferenceValue =
+  document.getElementById("pairing-difference-value");
+const pairingDifferenceText =
+  document.getElementById("pairing-difference-text");
+
+const masculinityMapping =
+  document.getElementById("masculinity-mapping");
+const femininityMapping =
+  document.getElementById("femininity-mapping");
+
+const compatibleErrorCount =
+  document.getElementById("compatible-error-count");
+const reversedErrorCount =
+  document.getElementById("reversed-error-count");
+const viewMoreResultsButton =
+  document.getElementById("view-more-results-button");
+
+const additionalResults =
+  document.getElementById("additional-results");
+const classificationQuestionSelect =
+  document.getElementById("classification-question-select");
+const classificationFactorSelect =
+  document.getElementById("classification-factor-select");
+const collectiveFactorSelect =
+  document.getElementById("collective-factor-select");
+
+
+
 let activePart = 0;
 let currentTrial = 0;
 let trialStartTime = 0;
@@ -257,6 +301,28 @@ window.addEventListener(
   handleKeyPress,
   true
 );
+
+
+viewMoreResultsButton.addEventListener(
+  "click",
+  toggleAdditionalResults
+);
+
+function toggleAdditionalResults() {
+  const isHidden =
+    additionalResults.classList.contains("hidden");
+
+  additionalResults.classList.toggle("hidden");
+
+  viewMoreResultsButton.textContent =
+    isHidden ? "Hide details" : "View more details";
+
+  viewMoreResultsButton.setAttribute(
+    "aria-expanded",
+    String(isHidden)
+  );
+}
+
 
 function showBackgroundForm() {
   introScreen.classList.add("hidden");
@@ -951,14 +1017,432 @@ function checkPartSixResponse(pressedE) {
   }
 }
 
-function finishPartSix() {
+async function finishPartSix() {
   activePart = 0;
 
   partSixScreen.classList.add("hidden");
-  partSixCompletion.classList.remove("hidden");
 
   sessionStorage.setItem(
     "partSixResponses",
     JSON.stringify(partSixResponses)
   );
+
+  const completeResult = buildCompleteResult();
+
+  sessionStorage.setItem(
+    "completeTestResult",
+    JSON.stringify(completeResult)
+  );
+
+  if (APP_CONFIG.saveToSupabase) {
+    try {
+      await saveResultToSupabase(completeResult);
+
+      console.info(
+        "The completed result was saved to Supabase."
+      );
+    } catch (error) {
+      console.error(error);
+
+      /*
+        The result page still opens if saving fails.
+        The participant should not lose the completed result
+        because of a database connection problem.
+      */
+    }
+  } else {
+    console.info(
+      "Test mode: this result was not saved to Supabase.",
+      completeResult
+    );
+  }
+
+  showResultsPage(completeResult);
+}
+
+
+const demographicFactorOptions = [
+  {
+    value: "all",
+    label: "All participants"
+  },
+  {
+    value: "age",
+    label: "Age"
+  },
+  {
+    value: "genderIdentity",
+    label: "Gender identity"
+  },
+  {
+    value: "transgenderIdentity",
+    label: "Transgender identity"
+  }
+];
+
+const mediaFactorOptions = [
+  {
+    value: "socialMediaPlatforms",
+    label: "Social media platforms"
+  },
+  {
+    value: "dailySocialMediaTime",
+    label: "Daily social media time"
+  },
+  {
+    value: "contentPreferences",
+    label: "Content preferences"
+  }
+];
+
+document
+  .querySelectorAll(".filter-toggle")
+  .forEach(function (button) {
+    button.addEventListener("click", function () {
+      activateToggle(
+        ".filter-toggle",
+        button
+      );
+
+      updateFactorSelect(
+        classificationFactorSelect,
+        button.dataset.module
+      );
+    });
+  });
+
+document
+  .querySelectorAll(".collective-toggle")
+  .forEach(function (button) {
+    button.addEventListener("click", function () {
+      activateToggle(
+        ".collective-toggle",
+        button
+      );
+
+      updateFactorSelect(
+        collectiveFactorSelect,
+        button.dataset.module
+      );
+    });
+  });
+
+function activateToggle(selector, selectedButton) {
+  document
+    .querySelectorAll(selector)
+    .forEach(function (button) {
+      button.classList.remove("active");
+    });
+
+  selectedButton.classList.add("active");
+}
+
+function updateFactorSelect(selectElement, moduleName) {
+  const options =
+    moduleName === "media"
+      ? mediaFactorOptions
+      : demographicFactorOptions;
+
+  selectElement.innerHTML = "";
+
+  options.forEach(function (option) {
+    const optionElement =
+      document.createElement("option");
+
+    optionElement.value = option.value;
+    optionElement.textContent = option.label;
+
+    selectElement.appendChild(optionElement);
+  });
+}
+
+function populateClassificationQuestions() {
+  classificationQuestionSelect.innerHTML = "";
+
+  genderStimuli.forEach(function (description) {
+    const option = document.createElement("option");
+
+    option.value = description;
+    option.textContent = description;
+
+    classificationQuestionSelect.appendChild(option);
+  });
+}
+
+
+function calculateMedian(values) {
+  if (values.length === 0) {
+    return 0;
+  }
+
+  const sortedValues = [...values].sort(
+    function (a, b) {
+      return a - b;
+    }
+  );
+
+  const middleIndex =
+    Math.floor(sortedValues.length / 2);
+
+  if (sortedValues.length % 2 === 0) {
+    return Math.round(
+      (
+        sortedValues[middleIndex - 1] +
+        sortedValues[middleIndex]
+      ) / 2
+    );
+  }
+
+  return sortedValues[middleIndex];
+}
+
+function calculateTotalErrors(responses) {
+  return responses.reduce(
+    function (total, response) {
+      return total + (response.errors || 0);
+    },
+    0
+  );
+}
+
+function buildCompleteResult() {
+  const compatibleResponses = [
+    ...partThreeResponses,
+    ...partFourResponses
+  ];
+
+  const reversedResponses = [
+    ...partFiveResponses,
+    ...partSixResponses
+  ];
+
+  const compatibleMedian = calculateMedian(
+    compatibleResponses.map(
+      function (response) {
+        return response.reactionTime;
+      }
+    )
+  );
+
+  const reversedMedian = calculateMedian(
+    reversedResponses.map(
+      function (response) {
+        return response.reactionTime;
+      }
+    )
+  );
+
+  const pairingDifference =
+    reversedMedian - compatibleMedian;
+
+  const participantBackground = JSON.parse(
+    sessionStorage.getItem("participantBackground") || "{}"
+  );
+
+  return {
+    participantBackground: participantBackground,
+
+    partOneResponses: genderResponses,
+    partTwoResponses: consequenceResponses,
+    partThreeResponses: partThreeResponses,
+    partFourResponses: partFourResponses,
+    partFiveResponses: partFiveResponses,
+    partSixResponses: partSixResponses,
+
+    finalResult: {
+      compatibleMedian: compatibleMedian,
+      reversedMedian: reversedMedian,
+      pairingDifference: pairingDifference,
+
+      compatibleErrors:
+        calculateTotalErrors(compatibleResponses),
+
+      reversedErrors:
+        calculateTotalErrors(reversedResponses)
+    }
+  };
+}
+
+
+function showResultsPage(completeResult) {
+  const result = completeResult.finalResult;
+
+  resultsScreen.classList.remove("hidden");
+
+  const longestResponseTime = Math.max(
+    result.compatibleMedian,
+    result.reversedMedian,
+    1
+  );
+
+  compatibleResponseBar.style.width =
+    (
+      result.compatibleMedian /
+      longestResponseTime *
+      100
+    ) + "%";
+
+  reversedResponseBar.style.width =
+    (
+      result.reversedMedian /
+      longestResponseTime *
+      100
+    ) + "%";
+
+  compatibleResponseValue.textContent =
+    result.compatibleMedian + " ms";
+
+  reversedResponseValue.textContent =
+    result.reversedMedian + " ms";
+
+  pairingDifferenceValue.textContent =
+    Math.abs(result.pairingDifference) + " ms";
+
+  if (Math.abs(result.pairingDifference) < 100) {
+    personalPatternText.textContent =
+      "Your response times were similar across the two pairings.";
+
+    pairingDifferenceText.textContent =
+      "No substantial response-time difference appeared between " +
+      "the two pairings in this experience.";
+  } else if (result.pairingDifference > 0) {
+    personalPatternText.textContent =
+      "You responded more quickly when Masculinity was paired " +
+      "with Socially Rewarded.";
+
+    pairingDifferenceText.textContent =
+      "The Masculinity + Socially Rewarded pairing was " +
+      Math.abs(result.pairingDifference) +
+      " ms faster.";
+  } else {
+    personalPatternText.textContent =
+      "You responded more quickly when Femininity was paired " +
+      "with Socially Rewarded.";
+
+    pairingDifferenceText.textContent =
+      "The Femininity + Socially Rewarded pairing was " +
+      Math.abs(result.pairingDifference) +
+      " ms faster.";
+  }
+
+  renderInitialMapping(
+    completeResult.partOneResponses
+  );
+
+  compatibleErrorCount.textContent =
+    result.compatibleErrors;
+
+  reversedErrorCount.textContent =
+    result.reversedErrors;
+
+  populateClassificationQuestions();
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+}
+
+function renderInitialMapping(partOneResponses) {
+  masculinityMapping.innerHTML = "";
+  femininityMapping.innerHTML = "";
+
+  partOneResponses.forEach(function (response) {
+    const listItem =
+      document.createElement("li");
+
+    listItem.textContent = response.description;
+
+    if (response.category === "Masculinity") {
+      masculinityMapping.appendChild(listItem);
+    } else {
+      femininityMapping.appendChild(listItem);
+    }
+  });
+}
+
+
+async function saveResultToSupabase(completeResult) {
+  if (
+    !APP_CONFIG.supabaseUrl ||
+    APP_CONFIG.supabaseUrl.includes("YOUR_") ||
+    !APP_CONFIG.supabaseAnonKey ||
+    APP_CONFIG.supabaseAnonKey.includes("YOUR_")
+  ) {
+    throw new Error(
+      "Supabase URL or anon key has not been configured."
+    );
+  }
+
+  const background =
+    completeResult.participantBackground;
+
+  const databaseRecord = {
+    age: background.age,
+    gender_identity: background.genderIdentity,
+    transgender_identity:
+      background.transgenderIdentity,
+
+    social_media_platforms:
+      background.socialMediaPlatforms,
+
+    social_media_other:
+      background.socialMediaOther,
+
+    daily_social_media_time:
+      background.dailySocialMediaTime,
+
+    content_preferences:
+      background.contentPreferences,
+
+    content_preference_other:
+      background.contentPreferenceOther,
+
+    part_1_results:
+      completeResult.partOneResponses,
+
+    part_2_results:
+      completeResult.partTwoResponses,
+
+    part_3_results:
+      completeResult.partThreeResponses,
+
+    part_4_results:
+      completeResult.partFourResponses,
+
+    part_5_results:
+      completeResult.partFiveResponses,
+
+    part_6_results:
+      completeResult.partSixResponses,
+
+    final_result:
+      completeResult.finalResult
+  };
+
+  const response = await fetch(
+    APP_CONFIG.supabaseUrl +
+      "/rest/v1/participant_results",
+    {
+      method: "POST",
+
+      headers: {
+        "Content-Type": "application/json",
+        "apikey": APP_CONFIG.supabaseAnonKey,
+        "Authorization":
+          "Bearer " + APP_CONFIG.supabaseAnonKey,
+        "Prefer": "return=minimal"
+      },
+
+      body: JSON.stringify(databaseRecord)
+    }
+  );
+
+  if (!response.ok) {
+    const errorMessage = await response.text();
+
+    throw new Error(
+      "Supabase submission failed: " + errorMessage
+    );
+  }
 }
