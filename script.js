@@ -6,15 +6,15 @@ const APP_CONFIG = {
 };
 
 const genderStimuli = [
-  "Financially supports a household more",
-  "Tends to assume a dominant role in decision-making",
-  "Compromises less career advancement for family",
-  "Tends to solve personal problems independently",
+  "Financially supports a household",
+  "Takes the lead in decision-making",
+  "Prioritizes career advancement",
+  "Solves personal problems independently",
   
-  "Allows the other partner to be in the driver's seat",
-  "Tends to seek emotional reassurance",
-  "Prioritizes more caregiving responsibilities",
-  "Feels more comfortable expressing uneasy feelings"
+  "Lets a partner take the lead",
+  "Seeks emotional reassurance",
+  "Prioritizes caregiving responsibilities",
+  "Expressing uneasy feelings openly"
 ];
 
 const consequenceStimuli = [
