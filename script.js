@@ -282,14 +282,7 @@ contentOtherCheckbox.addEventListener(
   }
 );
 
-startButton.addEventListener(
-  "click",
-  showBackgroundForm
-);
-backgroundForm.addEventListener(
-  "submit",
-  saveBackgroundInformation
-);
+
 beginPartOneButton.addEventListener(
   "click",
   startPartOne
