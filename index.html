@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -19,13 +18,19 @@
 
       <h1>Where Do Our Choices Begin?</h1>
 
-      <p>You are about to enter a speculative journey shaped by a series of quick decisions:</p> 
-      </p>▸ Follow the instructions in each part and respond on instinct. </p>
-      </p>▸ Observe how the journey takes shape around your decisions.</p>
-      </p>▸ The journey will make sense when you reach the end.</p>
+      <p>
+        You are about to enter a speculative journey shaped by a series
+        of quick decisions:
+      </p>
+      
+      <p>▸ Follow the instructions in each part and respond on instinct.</p>
+      
+      <p>▸ Observe how the journey takes shape around your decisions.</p>
+      
+      <p>▸ The journey will make sense when you reach the end.</p>
 
       <p class="Disclaimer">
-        6 short challenges awaits!
+        6 short challenges await!
       </p>
 
       <button id="start-button" 
@@ -937,93 +942,280 @@
 
   <header class="results-header">
     <p class="part-label">Results</p>
+
     <h2>Your response pattern</h2>
 
     <p>
-      These results describe how you responded within this speculative classification experience. 
-      Please note: They are not a psychological diagnosis.
+      These results describe how you responded within this speculative
+      classification experience. Please note: They are not a
+      psychological diagnosis.
     </p>
   </header>
 
   <div class="results-columns">
-  <div class="results-column personal-results-column">
 
-  <!-- Group distribution -->
-  <section class="result-section">
-    <h3>Pairing Difference Distribution</h3>
+    <!-- Personal results column -->
+    <div class="results-column personal-results-column">
 
-    <!-- Overall group pattern -->
-    <section class="result-section">
-      <h3>Overall Pairing Pattern</h3>
-  
-      <!-- Collective gender classification -->
-        <section class="result-section">
-          <h3>Collective Classification Patterns</h3>
+      <!-- Personal response pattern -->
+      <section class="result-section">
+        <h3>Personal Response Pattern</h3>
 
-          <!-- Explore collective patterns -->
-          <section class="result-section">
-            <h3>Explore Collective Patterns</h3>
-        
-            <div class="result-controls">
+        <div class="response-chart">
+
+          <div class="response-chart-row">
+            <div class="response-chart-label">
+              Masculinity + Socially Rewarded
+            </div>
+
+            <div class="response-bar-track">
               <div
-                class="toggle-group"
-                id="collective-module-toggle"
-              >
-                <button
-                  type="button"
-                  class="collective-toggle active"
-                  data-module="demographics"
-                >
-                  Demographics
-                </button>
-        
-                <button
-                  type="button"
-                  class="collective-toggle"
-                  data-module="media"
-                >
-                  Media Usage
-                </button>
-              </div>
-        
-              <label for="collective-factor-select">
-                Select a factor
-              </label>
-        
-              <select id="collective-factor-select">
-                <option value="age">Age</option>
-                <option value="genderIdentity">
-                  Gender identity
-                </option>
-                <option value="transgenderIdentity">
-                  Transgender identity
-                </option>
-              </select>
+                id="masculinity-rewarded-bar"
+                class="response-bar masculinity-rewarded-bar"
+              ></div>
             </div>
-        
+
             <div
-              id="collective-pattern-chart"
-              class="group-chart-placeholder"
-            >
-              <p>
-                Select a factor to explore collective response patterns.
-              </p>
+              id="masculinity-rewarded-value"
+              class="response-chart-value"
+            ></div>
+          </div>
+
+          <div class="response-chart-row">
+            <div class="response-chart-label">
+              Masculinity + Socially Penalized
             </div>
-        
+
+            <div class="response-bar-track">
+              <div
+                id="masculinity-penalized-bar"
+                class="response-bar masculinity-penalized-bar"
+              ></div>
+            </div>
+
+            <div
+              id="masculinity-penalized-value"
+              class="response-chart-value"
+            ></div>
+          </div>
+
+          <div class="response-chart-row">
+            <div class="response-chart-label">
+              Femininity + Socially Rewarded
+            </div>
+
+            <div class="response-bar-track">
+              <div
+                id="femininity-rewarded-bar"
+                class="response-bar femininity-rewarded-bar"
+              ></div>
+            </div>
+
+            <div
+              id="femininity-rewarded-value"
+              class="response-chart-value"
+            ></div>
+          </div>
+
+          <div class="response-chart-row">
+            <div class="response-chart-label">
+              Femininity + Socially Penalized
+            </div>
+
+            <div class="response-bar-track">
+              <div
+                id="femininity-penalized-bar"
+                class="response-bar femininity-penalized-bar"
+              ></div>
+            </div>
+
+            <div
+              id="femininity-penalized-value"
+              class="response-chart-value"
+            ></div>
+          </div>
+
+        </div>
+
+        <div
+          id="personal-pattern-text"
+          class="result-explanation"
+        ></div>
+      </section>
+
+      <!-- Pairing difference -->
+      <details class="result-section pairing-difference-section">
+        <summary class="pairing-difference-summary">
+          <span>Pairing Difference</span>
+          <span class="summary-hint">View calculations</span>
+        </summary>
+
+        <div class="pairing-difference-content">
+          <p class="pairing-difference-intro">
+            These comparisons present four views of the same
+            response pattern.
+          </p>
+
+          <div
+            id="pairing-difference-grid"
+            class="pairing-difference-grid"
+          ></div>
+
+          <p class="result-note">
+            A negative value means the first pairing was faster.
+            A positive value means the second pairing was faster.
+          </p>
+        </div>
+      </details>
+
+      <!-- Initial mapping -->
+      <section class="result-section">
+        <h3>Your Gender Mapping</h3>
+
+        <p>
+          These categories were created from your responses in Part 1.
+        </p>
+
+        <div class="mapping-columns">
+          <div class="mapping-column">
+            <h4 class="gender-category">Masculinity</h4>
+            <ul id="masculinity-mapping"></ul>
+          </div>
+
+          <div class="mapping-column">
+            <h4 class="gender-category">Femininity</h4>
+            <ul id="femininity-mapping"></ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- More personal details -->
+      <section class="result-section">
+        <button
+          type="button"
+          id="view-more-results-button"
+          class="secondary-button"
+          aria-expanded="false"
+        >
+          View more details
+        </button>
+
+        <div
+          id="additional-results"
+          class="hidden additional-results"
+        >
+          <section class="detail-section">
+            <h3>Consistency and Corrections</h3>
+
+            <div class="correction-grid">
+
+              <div>
+                <span
+                  id="masculinity-rewarded-errors"
+                  class="detail-number"
+                ></span>
+
+                <span>
+                  corrections during Masculinity +
+                  Socially Rewarded
+                </span>
+              </div>
+
+              <div>
+                <span
+                  id="masculinity-penalized-errors"
+                  class="detail-number"
+                ></span>
+
+                <span>
+                  corrections during Masculinity +
+                  Socially Penalized
+                </span>
+              </div>
+
+              <div>
+                <span
+                  id="femininity-rewarded-errors"
+                  class="detail-number"
+                ></span>
+
+                <span>
+                  corrections during Femininity +
+                  Socially Rewarded
+                </span>
+              </div>
+
+              <div>
+                <span
+                  id="femininity-penalized-errors"
+                  class="detail-number"
+                ></span>
+
+                <span>
+                  corrections during Femininity +
+                  Socially Penalized
+                </span>
+              </div>
+
+            </div>
+
             <p class="result-note">
-              These patterns describe associations within the current sample.
+              Corrections indicate moments when a response did not
+              match the category rules established earlier in the test.
             </p>
           </section>
-  
-          <div class="result-controls">
-            <div
-              class="toggle-group"
-              id="classification-module-toggle"
-            >
-              <button
-                type="button"
-                class="filter-toggle active"
-                data-module="demographics"
+        </div>
+      </section>
+
+    </div><!-- End personal results column -->
+
+
+    <!-- Collective results column -->
+    <div class="results-column collective-results-column">
+
+      <!-- Group distribution -->
+      <section class="result-section">
+        <h3>Pairing Difference Distribution</h3>
+
+        <div
+          id="distribution-chart"
+          class="group-chart-placeholder"
+        >
+          <p>
+            Group distribution will appear when collective data
+            are connected.
+          </p>
+        </div>
+      </section>
+
+      <!-- Overall group pattern -->
+      <section class="result-section">
+        <h3>Overall Pairing Pattern</h3>
+
+        <div
+          id="overall-pattern-chart"
+          class="group-chart-placeholder"
+        >
+          <p>
+            Overall pairing patterns will appear when collective
+            data are connected.
+          </p>
+        </div>
+      </section>
+
+      <!-- Collective classification -->
+      <section class="result-section">
+        <h3>Collective Classification Patterns</h3>
+
+        <div class="result-controls">
+          <div
+            class="toggle-group"
+            id="classification-module-toggle"
+          >
+            <button
+              type="button"
+              class="filter-toggle active"
+              data-module="demographics"
             >
               Demographics
             </button>
@@ -1055,16 +1247,16 @@
           <label for="classification-module-select">
             Analysis module
           </label>
-          
+
           <select id="classification-module-select">
             <option value="genderClassification">
               Gender classification
             </option>
-          
+
             <option value="socialConsequence">
               Social consequence
             </option>
-          
+
             <option value="crossClassification">
               Gender classification × Social consequence
             </option>
@@ -1081,241 +1273,66 @@
           </p>
         </div>
       </section>
-  </div><!-- End collective results column -->
-</div><!-- End results columns -->
-      
-    <div
-      id="overall-pattern-chart"
-      class="group-chart-placeholder"
-    >
-      <p>
-        Overall pairing patterns will appear when collective data are connected.
-      </p>
-    </div>
-  </section>
 
-    <div
-      id="distribution-chart"
-      class="group-chart-placeholder"
-    >
-      <p>
-        Group distribution will appear when collective data are connected.
-      </p>
-    </div>
-  </section>
+      <!-- Explore collective patterns -->
+      <section class="result-section">
+        <h3>Explore Collective Patterns</h3>
 
-  <!-- Personal response pattern -->
-  <section class="result-section">
-    <h3>Personal Response Pattern</h3>
-
-    <div class="response-chart">
-
-      <div class="response-chart-row">
-        <div class="response-chart-label">
-          Masculinity + Socially Rewarded
-        </div>
-
-        <div class="response-bar-track">
+        <div class="result-controls">
           <div
-            id="masculinity-rewarded-bar"
-            class="response-bar masculinity-rewarded-bar"
-          ></div>
-        </div>
-    
-        <div
-          id="masculinity-rewarded-value"
-          class="response-chart-value"
-        ></div>
-      </div>
-    
-      <div class="response-chart-row">
-        <div class="response-chart-label">
-          Masculinity + Socially Penalized
-        </div>
-    
-        <div class="response-bar-track">
-          <div
-            id="masculinity-penalized-bar"
-            class="response-bar masculinity-penalized-bar"
-          ></div>
-        </div>
-    
-        <div
-          id="masculinity-penalized-value"
-          class="response-chart-value"
-        ></div>
-      </div>
-    
-      <div class="response-chart-row">
-        <div class="response-chart-label">
-          Femininity + Socially Rewarded
-        </div>
-    
-        <div class="response-bar-track">
-          <div
-            id="femininity-rewarded-bar"
-            class="response-bar femininity-rewarded-bar"
-          ></div>
-        </div>
-    
-        <div
-          id="femininity-rewarded-value"
-          class="response-chart-value"
-        ></div>
-      </div>
-    
-      <div class="response-chart-row">
-        <div class="response-chart-label">
-          Femininity + Socially Penalized
-        </div>
-    
-        <div class="response-bar-track">
-          <div
-            id="femininity-penalized-bar"
-            class="response-bar femininity-penalized-bar"
-          ></div>
-        </div>
-    
-        <div
-          id="femininity-penalized-value"
-          class="response-chart-value"
-        ></div>
-  </div>
+            class="toggle-group"
+            id="collective-module-toggle"
+          >
+            <button
+              type="button"
+              class="collective-toggle active"
+              data-module="demographics"
+            >
+              Demographics
+            </button>
 
-</div>
-
-<div id="personal-pattern-text" class="result-explanation"></div>
-
-  </section>
-
-<!-- Pairing difference -->
-<details class="result-section pairing-difference-section">
-  <summary class="pairing-difference-summary">
-    <span>Pairing Difference</span>
-    <span class="summary-hint">View calculations</span>
-  </summary>
-
-  <div class="pairing-difference-content">
-    <p class="pairing-difference-intro">
-      These comparisons present four views of the same response pattern.
-    </p>
-
-    <div
-      id="pairing-difference-grid"
-      class="pairing-difference-grid"
-    ></div>
-
-    <p class="result-note">
-      A negative value means the first pairing was faster.
-      A positive value means the second pairing was faster.
-    </p>
-  </div>
-</details>
-
-  <!-- Initial mapping -->
-  <section class="result-section">
-    <h3>Your Gender Mapping</h3>
-
-    <p>
-      These categories were created from your responses in Part 1.
-    </p>
-
-    <div class="mapping-columns">
-      <div class="mapping-column">
-        <h4 class="gender-category">Masculinity</h4>
-        <ul id="masculinity-mapping"></ul>
-      </div>
-
-      <div class="mapping-column">
-        <h4 class="gender-category">Femininity</h4>
-        <ul id="femininity-mapping"></ul>
-      </div>
-    </div>
-  </section>
-
-  <!-- More details -->
-  <section class="result-section">
-    <button
-      type="button"
-      id="view-more-results-button"
-      class="secondary-button"
-      aria-expanded="false"
-    >
-      View more details
-    </button>
-
-    <div id="additional-results" class="hidden additional-results">
-
-      <!-- Corrections -->
-      <section class="detail-section">
-        <h3>Consistency and Corrections</h3>
-
-        <div class="correction-grid">
-
-          <div>
-            <span
-              id="masculinity-rewarded-errors"
-              class="detail-number"
-            ></span>
-        
-            <span>
-              corrections during Masculinity +
-              Socially Rewarded
-            </span>
+            <button
+              type="button"
+              class="collective-toggle"
+              data-module="media"
+            >
+              Media Usage
+            </button>
           </div>
-        
-          <div>
-            <span
-              id="masculinity-penalized-errors"
-              class="detail-number"
-            ></span>
-        
-            <span>
-              corrections during Masculinity +
-              Socially Penalized
-            </span>
-          </div>
-        
-          <div>
-            <span
-              id="femininity-rewarded-errors"
-              class="detail-number"
-            ></span>
-        
-            <span>
-              corrections during Femininity +
-              Socially Rewarded
-            </span>
+
+          <label for="collective-factor-select">
+            Select a factor
+          </label>
+
+          <select id="collective-factor-select">
+            <option value="age">Age</option>
+            <option value="genderIdentity">
+              Gender identity
+            </option>
+            <option value="transgenderIdentity">
+              Transgender identity
+            </option>
+          </select>
         </div>
-    </section>
 
-    </div>
-    <div class="results-column collective-results-column">
-    
-    <span
-      id="femininity-penalized-errors"
-      class="detail-number"
-    ></span>
-
-    <span>
-      corrections during Femininity +
-      Socially Penalized
-    </span>
-  </div>
-
-</div>
+        <div
+          id="collective-pattern-chart"
+          class="group-chart-placeholder"
+        >
+          <p>
+            Select a factor to explore collective response patterns.
+          </p>
+        </div>
 
         <p class="result-note">
-          Corrections indicate moments when a response did not
-          match the category rules established earlier in the test.
+          These patterns describe associations within the current sample.
         </p>
       </section>
 
-    </div>
-  </section>
-  
+    </div><!-- End collective results column -->
 
-  
+  </div><!-- End results columns -->
+
 
   <!-- Critical reveal -->
   <section class="critical-reveal">
@@ -1334,7 +1351,8 @@
     </p>
 
     <p>
-      Categorized choices became the rules you were later penalized for breaking.
+      Categorized choices became the rules you were later penalized
+      for breaking.
     </p>
 
     <h3>
@@ -1342,7 +1360,8 @@
       or do both at once?
     </h3>
   </section>
-</section>
+
+</section><!-- End results screen -->
 
   </main>
 
