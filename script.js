@@ -154,15 +154,6 @@ const partFourError =
 const resultsScreen =
   document.getElementById("results-screen");
 
-const compatibleResponseBar =
-  document.getElementById("compatible-response-bar");
-const reversedResponseBar =
-  document.getElementById("reversed-response-bar");
-
-const compatibleResponseValue =
-  document.getElementById("compatible-response-value");
-const reversedResponseValue =
-  document.getElementById("reversed-response-value");
 
 const personalPatternText =
   document.getElementById("personal-pattern-text");
@@ -176,22 +167,57 @@ const masculinityMapping =
 const femininityMapping =
   document.getElementById("femininity-mapping");
 
-const compatibleErrorCount =
-  document.getElementById("compatible-error-count");
-const reversedErrorCount =
-  document.getElementById("reversed-error-count");
+
 const viewMoreResultsButton =
   document.getElementById("view-more-results-button");
 
 const additionalResults =
   document.getElementById("additional-results");
-const classificationQuestionSelect =
-  document.getElementById("classification-question-select");
+
 const classificationFactorSelect =
   document.getElementById("classification-factor-select");
 const collectiveFactorSelect =
   document.getElementById("collective-factor-select");
 
+
+const masculinityRewardedBar =
+  document.getElementById("masculinity-rewarded-bar");
+
+const masculinityPenalizedBar =
+  document.getElementById("masculinity-penalized-bar");
+
+const femininityRewardedBar =
+  document.getElementById("femininity-rewarded-bar");
+
+const femininityPenalizedBar =
+  document.getElementById("femininity-penalized-bar");
+
+const masculinityRewardedValue =
+  document.getElementById("masculinity-rewarded-value");
+
+const masculinityPenalizedValue =
+  document.getElementById("masculinity-penalized-value");
+
+const femininityRewardedValue =
+  document.getElementById("femininity-rewarded-value");
+
+const femininityPenalizedValue =
+  document.getElementById("femininity-penalized-value");
+
+const masculinityRewardedErrors =
+  document.getElementById("masculinity-rewarded-errors");
+
+const masculinityPenalizedErrors =
+  document.getElementById("masculinity-penalized-errors");
+
+const femininityRewardedErrors =
+  document.getElementById("femininity-rewarded-errors");
+
+const femininityPenalizedErrors =
+  document.getElementById("femininity-penalized-errors");
+
+const classificationModuleSelect =
+  document.getElementById("classification-module-select");
 
 
 let activePart = 0;
@@ -1155,19 +1181,6 @@ function updateFactorSelect(selectElement, moduleName) {
   });
 }
 
-function populateClassificationQuestions() {
-  classificationQuestionSelect.innerHTML = "";
-
-  genderStimuli.forEach(function (description) {
-    const option = document.createElement("option");
-
-    option.value = description;
-    option.textContent = description;
-
-    classificationQuestionSelect.appendChild(option);
-  });
-}
-
 
 function calculateMedian(values) {
   if (values.length === 0) {
@@ -1215,6 +1228,44 @@ function buildCompleteResult() {
     ...partSixResponses
   ];
 
+  /*
+    Parts 3 and 4:
+    E = Masculinity + Rewarded
+    I = Femininity + Penalized
+  */
+  const masculinityRewardedResponses =
+    compatibleResponses.filter(
+      function (response) {
+        return response.selectedKey === "E";
+      }
+    );
+
+  const femininityPenalizedResponses =
+    compatibleResponses.filter(
+      function (response) {
+        return response.selectedKey === "I";
+      }
+    );
+
+  /*
+    Parts 5 and 6:
+    E = Femininity + Rewarded
+    I = Masculinity + Penalized
+  */
+  const femininityRewardedResponses =
+    reversedResponses.filter(
+      function (response) {
+        return response.selectedKey === "E";
+      }
+    );
+
+  const masculinityPenalizedResponses =
+    reversedResponses.filter(
+      function (response) {
+        return response.selectedKey === "I";
+      }
+    );
+
   const compatibleMedian = calculateMedian(
     compatibleResponses.map(
       function (response) {
@@ -1231,8 +1282,41 @@ function buildCompleteResult() {
     )
   );
 
-  const pairingDifference =
-    reversedMedian - compatibleMedian;
+  const masculinityRewardedMedian =
+    calculateMedian(
+      masculinityRewardedResponses.map(
+        function (response) {
+          return response.reactionTime;
+        }
+      )
+    );
+
+  const masculinityPenalizedMedian =
+    calculateMedian(
+      masculinityPenalizedResponses.map(
+        function (response) {
+          return response.reactionTime;
+        }
+      )
+    );
+
+  const femininityRewardedMedian =
+    calculateMedian(
+      femininityRewardedResponses.map(
+        function (response) {
+          return response.reactionTime;
+        }
+      )
+    );
+
+  const femininityPenalizedMedian =
+    calculateMedian(
+      femininityPenalizedResponses.map(
+        function (response) {
+          return response.reactionTime;
+        }
+      )
+    );
 
   const participantBackground = JSON.parse(
     sessionStorage.getItem("participantBackground") || "{}"
@@ -1251,13 +1335,41 @@ function buildCompleteResult() {
     finalResult: {
       compatibleMedian: compatibleMedian,
       reversedMedian: reversedMedian,
-      pairingDifference: pairingDifference,
 
-      compatibleErrors:
-        calculateTotalErrors(compatibleResponses),
+      pairingDifference:
+        reversedMedian - compatibleMedian,
 
-      reversedErrors:
-        calculateTotalErrors(reversedResponses)
+      masculinityRewardedMedian:
+        masculinityRewardedMedian,
+
+      masculinityPenalizedMedian:
+        masculinityPenalizedMedian,
+
+      femininityRewardedMedian:
+        femininityRewardedMedian,
+
+      femininityPenalizedMedian:
+        femininityPenalizedMedian,
+
+      masculinityRewardedErrors:
+        calculateTotalErrors(
+          masculinityRewardedResponses
+        ),
+
+      masculinityPenalizedErrors:
+        calculateTotalErrors(
+          masculinityPenalizedResponses
+        ),
+
+      femininityRewardedErrors:
+        calculateTotalErrors(
+          femininityRewardedResponses
+        ),
+
+      femininityPenalizedErrors:
+        calculateTotalErrors(
+          femininityPenalizedResponses
+        )
     }
   };
 }
@@ -1274,19 +1386,45 @@ function showResultsPage(completeResult) {
     1
   );
 
-  compatibleResponseBar.style.width =
-    (
-      result.compatibleMedian /
-      longestResponseTime *
-      100
-    ) + "%";
+  const pairingMedians = [
+  result.masculinityRewardedMedian,
+  result.masculinityPenalizedMedian,
+  result.femininityRewardedMedian,
+  result.femininityPenalizedMedian
+];
 
-  reversedResponseBar.style.width =
-    (
-      result.reversedMedian /
-      longestResponseTime *
-      100
-    ) + "%";
+const longestResponseTime = Math.max(
+  ...pairingMedians,
+  1
+);
+
+setResponseBar(
+  masculinityRewardedBar,
+  masculinityRewardedValue,
+  result.masculinityRewardedMedian,
+  longestResponseTime
+);
+
+setResponseBar(
+  masculinityPenalizedBar,
+  masculinityPenalizedValue,
+  result.masculinityPenalizedMedian,
+  longestResponseTime
+);
+
+setResponseBar(
+  femininityRewardedBar,
+  femininityRewardedValue,
+  result.femininityRewardedMedian,
+  longestResponseTime
+);
+
+setResponseBar(
+  femininityPenalizedBar,
+  femininityPenalizedValue,
+  result.femininityPenalizedMedian,
+  longestResponseTime
+);
 
   compatibleResponseValue.textContent =
     result.compatibleMedian + " ms";
@@ -1324,22 +1462,99 @@ function showResultsPage(completeResult) {
       " ms faster.";
   }
 
+  masculinityRewardedErrors.textContent =
+    result.masculinityRewardedErrors;
+  
+  masculinityPenalizedErrors.textContent =
+    result.masculinityPenalizedErrors;
+  
+  femininityRewardedErrors.textContent =
+    result.femininityRewardedErrors;
+  
+  femininityPenalizedErrors.textContent =
+    result.femininityPenalizedErrors;
+
+renderPersonalPatternExplanation(result);
+  
   renderInitialMapping(
     completeResult.partOneResponses
   );
 
-  compatibleErrorCount.textContent =
-    result.compatibleErrors;
-
-  reversedErrorCount.textContent =
-    result.reversedErrors;
-
-  populateClassificationQuestions();
+  
 
   window.scrollTo({
     top: 0,
     behavior: "smooth"
   });
+
+  function setResponseBar(
+    barElement,
+    valueElement,
+    responseTime,
+    longestResponseTime
+  ) {
+    barElement.style.width =
+      (
+        responseTime /
+        longestResponseTime *
+        100
+      ) + "%";
+
+  valueElement.textContent =
+    responseTime + " ms";
+}
+
+function renderPersonalPatternExplanation(result) {
+  const masculinityDifference =
+    result.masculinityPenalizedMedian -
+    result.masculinityRewardedMedian;
+
+  const femininityDifference =
+    result.femininityPenalizedMedian -
+    result.femininityRewardedMedian;
+
+  personalPatternText.innerHTML = "";
+
+  const masculinityText =
+    document.createElement("p");
+
+  const femininityText =
+    document.createElement("p");
+
+  if (Math.abs(masculinityDifference) < 100) {
+    masculinityText.textContent =
+      "Your response times for Masculinity were similar " +
+      "across the Rewarded and Penalized pairings.";
+  } else if (masculinityDifference > 0) {
+    masculinityText.textContent =
+      "You responded more quickly when Masculinity was " +
+      "paired with Socially Rewarded.";
+  } else {
+    masculinityText.textContent =
+      "You responded more quickly when Masculinity was " +
+      "paired with Socially Penalized.";
+  }
+
+  if (Math.abs(femininityDifference) < 100) {
+    femininityText.textContent =
+      "Your response times for Femininity were similar " +
+      "across the Rewarded and Penalized pairings.";
+  } else if (femininityDifference > 0) {
+    femininityText.textContent =
+      "You responded more quickly when Femininity was " +
+      "paired with Socially Rewarded.";
+  } else {
+    femininityText.textContent =
+      "You responded more quickly when Femininity was " +
+      "paired with Socially Penalized.";
+  }
+
+  personalPatternText.append(
+    masculinityText,
+    femininityText
+  );
+}
+  
 }
 
 function renderInitialMapping(partOneResponses) {
