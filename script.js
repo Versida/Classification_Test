@@ -54,6 +54,9 @@ const socialMediaOtherInput = document.getElementById("social-media-other");
 const contentOtherCheckbox = document.getElementById("content-other-checkbox");
 const contentOtherInput = document.getElementById("content-other");
 
+
+const partOneIntro = document.getElementById("part-one-intro");
+const beginPartOneButton = document.getElementById("begin-part-one-button");
 const partOneScreen = document.getElementById("part-one-screen");
 
 const partTwoIntro = document.getElementById("part-two-intro");
@@ -204,6 +207,18 @@ contentOtherCheckbox.addEventListener(
   }
 );
 
+startButton.addEventListener(
+  "click",
+  showBackgroundForm
+);
+backgroundForm.addEventListener(
+  "submit",
+  saveBackgroundInformation
+);
+beginPartOneButton.addEventListener(
+  "click",
+  startPartOne
+);
 
 beginPartTwoButton.addEventListener(
   "click",
@@ -299,7 +314,7 @@ function saveBackgroundInformation(event) {
 
   backgroundScreen.classList.add("hidden");
 
-  startPartOne();
+  showPartOneIntro();
 }
 
 function showBackgroundError(message) {
@@ -312,9 +327,21 @@ function showBackgroundError(message) {
   });
 }
 
+function showPartOneIntro() {
+  activePart = 0;
+
+  backgroundScreen.classList.add("hidden");
+  partOneIntro.classList.remove("hidden");
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+}
 
 function startPartOne() {
   introScreen.classList.add("hidden");
+  partOneIntro.classList.add("hidden");
   partOneScreen.classList.remove("hidden");
 
   activePart = 1;
