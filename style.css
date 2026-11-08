@@ -173,6 +173,96 @@ button:hover {
   line-height: 1;
 }
 
+.background-screen {
+  text-align: left;
+}
+
+.background-introduction {
+  margin-bottom: 32px;
+  color: #555555;
+}
+
+.background-screen fieldset {
+  margin: 0 0 32px;
+  padding: 24px;
+  border: 1px solid #cccccc;
+}
+
+.background-screen legend {
+  padding: 0 10px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.form-question {
+  margin-bottom: 30px;
+}
+
+.form-question:last-child {
+  margin-bottom: 0;
+}
+
+.form-question > label:first-child,
+.question-label {
+  display: block;
+  margin: 0 0 12px;
+  font-weight: bold;
+  line-height: 1.5;
+}
+
+.background-screen input[type="number"],
+.background-screen input[type="text"],
+.background-screen select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #999999;
+  background-color: #ffffff;
+  color: #1f1f1f;
+  font-family: inherit;
+  font-size: 16px;
+}
+
+.choice-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 10px 0;
+  font-weight: normal;
+  line-height: 1.5;
+  cursor: pointer;
+}
+
+.choice-option input {
+  margin-top: 4px;
+}
+
+.other-input {
+  margin-top: 10px;
+}
+
+.other-input:disabled {
+  background-color: #eeeeee;
+  color: #777777;
+}
+
+.form-error {
+  margin: 20px 0;
+  color: #b00020;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+#background-submit-button {
+  display: block;
+  margin: 32px auto 0;
+}
+
+@media (max-width: 600px) {
+  .background-screen fieldset {
+    padding: 18px;
+  }
+}
+
 #intro-screen {
   text-align: left;
 }
