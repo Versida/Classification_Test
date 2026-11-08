@@ -1,3 +1,10 @@
+const APP_CONFIG = {
+  saveToSupabase: false,
+
+  supabaseUrl: "YOUR_SUPABASE_PROJECT_URL",
+  supabaseAnonKey: "YOUR_SUPABASE_ANON_KEY"
+};
+
 const genderStimuli = [
   "Financially supports a partner",
   "Tends to ask others for emotional reassurance",
