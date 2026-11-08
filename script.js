@@ -1381,125 +1381,103 @@ function showResultsPage(completeResult) {
 
   resultsScreen.classList.remove("hidden");
 
+  const pairingMedians = [
+    result.masculinityRewardedMedian,
+    result.masculinityPenalizedMedian,
+    result.femininityRewardedMedian,
+    result.femininityPenalizedMedian
+  ];
+
   const longestResponseTime = Math.max(
-    result.compatibleMedian,
-    result.reversedMedian,
+    ...pairingMedians,
     1
   );
 
-  const pairingMedians = [
-  result.masculinityRewardedMedian,
-  result.masculinityPenalizedMedian,
-  result.femininityRewardedMedian,
-  result.femininityPenalizedMedian
-];
+  setResponseBar(
+    masculinityRewardedBar,
+    masculinityRewardedValue,
+    result.masculinityRewardedMedian,
+    longestResponseTime
+  );
 
-const longestResponseTime = Math.max(
-  ...pairingMedians,
-  1
-);
+  setResponseBar(
+    masculinityPenalizedBar,
+    masculinityPenalizedValue,
+    result.masculinityPenalizedMedian,
+    longestResponseTime
+  );
 
-setResponseBar(
-  masculinityRewardedBar,
-  masculinityRewardedValue,
-  result.masculinityRewardedMedian,
-  longestResponseTime
-);
+  setResponseBar(
+    femininityRewardedBar,
+    femininityRewardedValue,
+    result.femininityRewardedMedian,
+    longestResponseTime
+  );
 
-setResponseBar(
-  masculinityPenalizedBar,
-  masculinityPenalizedValue,
-  result.masculinityPenalizedMedian,
-  longestResponseTime
-);
-
-setResponseBar(
-  femininityRewardedBar,
-  femininityRewardedValue,
-  result.femininityRewardedMedian,
-  longestResponseTime
-);
-
-setResponseBar(
-  femininityPenalizedBar,
-  femininityPenalizedValue,
-  result.femininityPenalizedMedian,
-  longestResponseTime
-);
-
-  compatibleResponseValue.textContent =
-    result.compatibleMedian + " ms";
-
-  reversedResponseValue.textContent =
-    result.reversedMedian + " ms";
+  setResponseBar(
+    femininityPenalizedBar,
+    femininityPenalizedValue,
+    result.femininityPenalizedMedian,
+    longestResponseTime
+  );
 
   pairingDifferenceValue.textContent =
     Math.abs(result.pairingDifference) + " ms";
 
   if (Math.abs(result.pairingDifference) < 100) {
-    personalPatternText.textContent =
-      "Your response times were similar across the two pairings.";
-
     pairingDifferenceText.textContent =
-      "No substantial response-time difference appeared between " +
-      "the two pairings in this experience.";
+      "No substantial response-time difference appeared " +
+      "between the two combined pairing configurations.";
   } else if (result.pairingDifference > 0) {
-    personalPatternText.textContent =
-      "You responded more quickly when Masculinity was paired " +
-      "with Socially Rewarded.";
-
     pairingDifferenceText.textContent =
-      "The Masculinity + Socially Rewarded pairing was " +
+      "The Masculinity + Socially Rewarded / Femininity + " +
+      "Socially Penalized configuration was " +
       Math.abs(result.pairingDifference) +
-      " ms faster.";
+      " ms faster overall.";
   } else {
-    personalPatternText.textContent =
-      "You responded more quickly when Femininity was paired " +
-      "with Socially Rewarded.";
-
     pairingDifferenceText.textContent =
-      "The Femininity + Socially Rewarded pairing was " +
+      "The Femininity + Socially Rewarded / Masculinity + " +
+      "Socially Penalized configuration was " +
       Math.abs(result.pairingDifference) +
-      " ms faster.";
+      " ms faster overall.";
   }
 
   masculinityRewardedErrors.textContent =
     result.masculinityRewardedErrors;
-  
+
   masculinityPenalizedErrors.textContent =
     result.masculinityPenalizedErrors;
-  
+
   femininityRewardedErrors.textContent =
     result.femininityRewardedErrors;
-  
+
   femininityPenalizedErrors.textContent =
     result.femininityPenalizedErrors;
 
-renderPersonalPatternExplanation(result);
-  
+  renderPersonalPatternExplanation(result);
+
   renderInitialMapping(
     completeResult.partOneResponses
   );
-
-  
 
   window.scrollTo({
     top: 0,
     behavior: "smooth"
   });
+}
 
-  function setResponseBar(
-    barElement,
-    valueElement,
-    responseTime,
-    longestResponseTime
-  ) {
-    barElement.style.width =
-      (
-        responseTime /
-        longestResponseTime *
-        100
-      ) + "%";
+function setResponseBar(
+  barElement,
+  valueElement,
+  responseTime,
+  longestResponseTime
+) {
+  barElement.style.width =
+    (
+      responseTime /
+      longestResponseTime *
+      100
+    ) + "%";
 
   valueElement.textContent =
     responseTime + " ms";
@@ -1555,8 +1533,7 @@ function renderPersonalPatternExplanation(result) {
     femininityText
   );
 }
-  
-}
+
 
 function renderInitialMapping(partOneResponses) {
   masculinityMapping.innerHTML = "";
