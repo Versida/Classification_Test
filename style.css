@@ -792,8 +792,9 @@ body.results-active .test-container {
 }
 
 .critical-reveal {
-  margin-top: 52px;
-  padding: 36px;
+  mwidth: 100%;
+  margin: 48px 0 0;
+  padding: 48px;
   background-color: #1f1f1f;
   color: #ffffff;
 }
@@ -836,6 +837,33 @@ body.results-active .test-container {
 
   .difference-pairing {
     min-height: auto;
+  }
+
+  body.results-active .test-container {
+    padding: 20px;
+  }
+  
+  .results-columns {
+    display: block;
+    height: auto;
+    min-height: 0;
+  }
+  
+  .results-column {
+    max-height: none;
+    margin-bottom: 24px;
+    overflow-y: visible;
+    padding: 0 20px 28px;
+  }
+  
+  .results-column::before {
+    margin: 0 -20px 24px;
+    padding: 16px 20px;
+  }
+  
+  .critical-reveal {
+    margin-top: 32px;
+    padding: 30px 22px;
   }
 }
 
