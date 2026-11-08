@@ -25,14 +25,13 @@
       </p>
 
       <p class="Disclaimer">
-        There is no correct answer to the following 7 sections.
+        There is no correct answer to the following 6 sections.
       </p>
 
-      <button id=
-        "start-button" 
-        class="begin-button"
+      <button id="start-button" 
+       class="begin-button"
       >
-        Begin Part 1
+        Continue
       </button>
       
       <p class="start-hint">
@@ -41,6 +40,343 @@
       
     </section>
 
+<!-- Background information -->
+<section
+  id="background-screen"
+  class="hidden background-screen"
+>
+  <p class="part-label">Background Information</p>
+
+  <h2>Tell us about yourself</h2>
+
+  <p class="background-introduction">
+    The following questions help us understand and generate your test result. 
+    Your responses will be used in this test only.
+  </p>
+
+  <form id="background-form">
+
+    <!-- Demographics -->
+    <fieldset>
+      <legend>Demographics</legend>
+
+      <div class="form-question">
+        <label for="age">
+          What is your age?
+        </label>
+
+        <input
+          type="number"
+          id="age"
+          name="age"
+          min="0"
+          max="100"
+          inputmode="numeric"
+          required
+        >
+      </div>
+
+      <div class="form-question">
+        <label for="gender-identity">
+          What is your gender identity?
+        </label>
+
+        <select
+          id="gender-identity"
+          name="genderIdentity"
+          required
+        >
+          <option value="" selected disabled>
+            Select an option
+          </option>
+          <option value="Man">Man</option>
+          <option value="Woman">Woman</option>
+          <option value="Genderqueer">Genderqueer</option>
+          <option value="Non-binary">Non-binary</option>
+          <option value="Agender">Agender</option>
+          <option value="An identity not listed">
+            An identity not listed
+          </option>
+          <option value="Prefer not to answer">
+            Prefer not to answer
+          </option>
+        </select>
+      </div>
+
+      <div class="form-question">
+        <p class="question-label">
+          Do you identify as transgender?
+        </p>
+
+        <label class="choice-option">
+          <input
+            type="radio"
+            name="transgenderIdentity"
+            value="Yes"
+            required
+          >
+          Yes
+        </label>
+
+        <label class="choice-option">
+          <input
+            type="radio"
+            name="transgenderIdentity"
+            value="No"
+          >
+          No
+        </label>
+
+        <label class="choice-option">
+          <input
+            type="radio"
+            name="transgenderIdentity"
+            value="I'm not sure"
+          >
+          I'm not sure
+        </label>
+
+        <label class="choice-option">
+          <input
+            type="radio"
+            name="transgenderIdentity"
+            value="Prefer not to answer"
+          >
+          Prefer not to answer
+        </label>
+      </div>
+    </fieldset>
+
+    <!-- Social media usage -->
+    <fieldset>
+      <legend>Social Media Usage</legend>
+
+      <div class="form-question">
+        <p class="question-label">
+          Which social media platforms do you use?
+          (Select all that apply)
+        </p>
+
+        <label class="choice-option">
+          <input
+            type="checkbox"
+            name="socialMediaPlatforms"
+            value="Instagram"
+          >
+          Instagram
+        </label>
+
+        <label class="choice-option">
+          <input
+            type="checkbox"
+            name="socialMediaPlatforms"
+            value="Facebook"
+          >
+          Facebook
+        </label>
+
+        <label class="choice-option">
+          <input
+            type="checkbox"
+            name="socialMediaPlatforms"
+            value="TikTok"
+          >
+          TikTok
+        </label>
+
+        <label class="choice-option">
+          <input
+            type="checkbox"
+            name="socialMediaPlatforms"
+            value="RedNote"
+          >
+          RedNote
+        </label>
+
+        <label class="choice-option">
+          <input
+            type="checkbox"
+            name="socialMediaPlatforms"
+            value="X"
+          >
+          X
+        </label>
+
+        <label class="choice-option">
+          <input
+            type="checkbox"
+            name="socialMediaPlatforms"
+            value="Threads"
+          >
+          Threads
+        </label>
+
+        <label class="choice-option other-option">
+          <input
+            type="checkbox"
+            id="social-media-other-checkbox"
+            name="socialMediaPlatforms"
+            value="Other"
+          >
+          Other
+        </label>
+
+        <input
+          type="text"
+          id="social-media-other"
+          name="socialMediaOther"
+          class="other-input"
+          placeholder="Please specify"
+          disabled
+        >
+      </div>
+
+      <div class="form-question">
+        <p class="question-label">
+          On average, how much time do you spend on social media
+          each day?
+        </p>
+
+        <label class="choice-option">
+          <input
+            type="radio"
+            name="dailySocialMediaTime"
+            value="1 hour or less"
+            required
+          >
+          1 hour or less
+        </label>
+
+        <label class="choice-option">
+          <input
+            type="radio"
+            name="dailySocialMediaTime"
+            value="1 to 3 hours"
+          >
+          1 to 3 hours
+        </label>
+
+        <label class="choice-option">
+          <input
+            type="radio"
+            name="dailySocialMediaTime"
+            value="3 to 5 hours"
+          >
+          3 to 5 hours
+        </label>
+
+        <label class="choice-option">
+          <input
+            type="radio"
+            name="dailySocialMediaTime"
+            value="More than 5 hours"
+          >
+          More than 5 hours
+        </label>
+      </div>
+
+      <div class="form-question">
+        <p class="question-label">
+          Which topics best reflect your content preferences?
+          (Select all that apply)
+        </p>
+
+        <label class="choice-option">
+          <input
+            type="checkbox"
+            name="contentPreferences"
+            value="Beauty"
+          >
+          Beauty
+        </label>
+
+        <label class="choice-option">
+          <input
+            type="checkbox"
+            name="contentPreferences"
+            value="Lifestyle"
+          >
+          Lifestyle
+        </label>
+
+        <label class="choice-option">
+          <input
+            type="checkbox"
+            name="contentPreferences"
+            value="Food and Cooking"
+          >
+          Food and Cooking
+        </label>
+
+        <label class="choice-option">
+          <input
+            type="checkbox"
+            name="contentPreferences"
+            value="Animals and Pets"
+          >
+          Animals and Pets
+        </label>
+
+        <label class="choice-option">
+          <input
+            type="checkbox"
+            name="contentPreferences"
+            value="Sports"
+          >
+          Sports
+        </label>
+
+        <label class="choice-option">
+          <input
+            type="checkbox"
+            name="contentPreferences"
+            value="Technology"
+          >
+          Technology
+        </label>
+
+        <label class="choice-option">
+          <input
+            type="checkbox"
+            name="contentPreferences"
+            value="Art and Literature"
+          >
+          Art and Literature
+        </label>
+
+        <label class="choice-option other-option">
+          <input
+            type="checkbox"
+            id="content-other-checkbox"
+            name="contentPreferences"
+            value="Other"
+          >
+          Other
+        </label>
+
+        <input
+          type="text"
+          id="content-other"
+          name="contentPreferenceOther"
+          class="other-input"
+          placeholder="Please specify"
+          disabled
+        >
+      </div>
+    </fieldset>
+
+    <p
+      id="background-error"
+      class="form-error hidden"
+      aria-live="polite"
+    ></p>
+
+    <button type="submit" id="background-submit-button">
+      Begin Part 1
+    </button>
+  </form>
+</section>
+    
     <!-- Part 1 -->
     <section id="part-one-screen" class="hidden">
       <div class="category-row">
