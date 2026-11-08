@@ -945,6 +945,165 @@
     </p>
   </header>
 
+  <div class="results-columns">
+  <div class="results-column personal-results-column">
+
+  <!-- Group distribution -->
+  <section class="result-section">
+    <h3>Pairing Difference Distribution</h3>
+
+    <!-- Overall group pattern -->
+    <section class="result-section">
+      <h3>Overall Pairing Pattern</h3>
+  
+      <!-- Collective gender classification -->
+        <section class="result-section">
+          <h3>Collective Classification Patterns</h3>
+
+          <!-- Explore collective patterns -->
+          <section class="result-section">
+            <h3>Explore Collective Patterns</h3>
+        
+            <div class="result-controls">
+              <div
+                class="toggle-group"
+                id="collective-module-toggle"
+              >
+                <button
+                  type="button"
+                  class="collective-toggle active"
+                  data-module="demographics"
+                >
+                  Demographics
+                </button>
+        
+                <button
+                  type="button"
+                  class="collective-toggle"
+                  data-module="media"
+                >
+                  Media Usage
+                </button>
+              </div>
+        
+              <label for="collective-factor-select">
+                Select a factor
+              </label>
+        
+              <select id="collective-factor-select">
+                <option value="age">Age</option>
+                <option value="genderIdentity">
+                  Gender identity
+                </option>
+                <option value="transgenderIdentity">
+                  Transgender identity
+                </option>
+              </select>
+            </div>
+        
+            <div
+              id="collective-pattern-chart"
+              class="group-chart-placeholder"
+            >
+              <p>
+                Select a factor to explore collective response patterns.
+              </p>
+            </div>
+        
+            <p class="result-note">
+              These patterns describe associations within the current sample.
+            </p>
+          </section>
+  
+          <div class="result-controls">
+            <div
+              class="toggle-group"
+              id="classification-module-toggle"
+            >
+              <button
+                type="button"
+                class="filter-toggle active"
+                data-module="demographics"
+            >
+              Demographics
+            </button>
+
+            <button
+              type="button"
+              class="filter-toggle"
+              data-module="media"
+            >
+              Media Usage
+            </button>
+          </div>
+
+          <label for="classification-factor-select">
+            Filter by
+          </label>
+
+          <select id="classification-factor-select">
+            <option value="all">All participants</option>
+            <option value="age">Age</option>
+            <option value="genderIdentity">
+              Gender identity
+            </option>
+            <option value="transgenderIdentity">
+              Transgender identity
+            </option>
+          </select>
+
+          <label for="classification-module-select">
+            Analysis module
+          </label>
+          
+          <select id="classification-module-select">
+            <option value="genderClassification">
+              Gender classification
+            </option>
+          
+            <option value="socialConsequence">
+              Social consequence
+            </option>
+          
+            <option value="crossClassification">
+              Gender classification × Social consequence
+            </option>
+          </select>
+        </div>
+
+        <div
+          id="collective-classification-chart"
+          class="group-chart-placeholder"
+        >
+          <p>
+            Collective classification results will appear when
+            aggregate data are connected.
+          </p>
+        </div>
+      </section>
+  </div><!-- End collective results column -->
+</div><!-- End results columns -->
+      
+    <div
+      id="overall-pattern-chart"
+      class="group-chart-placeholder"
+    >
+      <p>
+        Overall pairing patterns will appear when collective data are connected.
+      </p>
+    </div>
+  </section>
+
+    <div
+      id="distribution-chart"
+      class="group-chart-placeholder"
+    >
+      <p>
+        Group distribution will appear when collective data are connected.
+      </p>
+    </div>
+  </section>
+
   <!-- Personal response pattern -->
   <section class="result-section">
     <h3>Personal Response Pattern</h3>
@@ -1074,34 +1233,6 @@
     </div>
   </section>
 
-  <!-- Group distribution -->
-  <section class="result-section">
-    <h3>Pairing Difference Distribution</h3>
-
-    <div
-      id="distribution-chart"
-      class="group-chart-placeholder"
-    >
-      <p>
-        Group distribution will appear when collective data are connected.
-      </p>
-    </div>
-  </section>
-
-  <!-- Overall group pattern -->
-  <section class="result-section">
-    <h3>Overall Pairing Pattern</h3>
-
-    <div
-      id="overall-pattern-chart"
-      class="group-chart-placeholder"
-    >
-      <p>
-        Overall pairing patterns will appear when collective data are connected.
-      </p>
-    </div>
-  </section>
-
   <!-- More details -->
   <section class="result-section">
     <button
@@ -1156,8 +1287,10 @@
               Socially Rewarded
             </span>
         </div>
+    </section>
 
-    <div>
+    </div>
+    <div class="results-column collective-results-column">
     
     <span
       id="femininity-penalized-errors"
@@ -1178,133 +1311,11 @@
         </p>
       </section>
 
-      <!-- Collective gender classification -->
-      <section class="detail-section">
-        <h3>Collective Classification Patterns</h3>
-
-        <div class="result-controls">
-          <div
-            class="toggle-group"
-            id="classification-module-toggle"
-          >
-            <button
-              type="button"
-              class="filter-toggle active"
-              data-module="demographics"
-            >
-              Demographics
-            </button>
-
-            <button
-              type="button"
-              class="filter-toggle"
-              data-module="media"
-            >
-              Media Usage
-            </button>
-          </div>
-
-          <label for="classification-factor-select">
-            Filter by
-          </label>
-
-          <select id="classification-factor-select">
-            <option value="all">All participants</option>
-            <option value="age">Age</option>
-            <option value="genderIdentity">
-              Gender identity
-            </option>
-            <option value="transgenderIdentity">
-              Transgender identity
-            </option>
-          </select>
-
-          <label for="classification-module-select">
-            Analysis module
-          </label>
-          
-          <select id="classification-module-select">
-            <option value="genderClassification">
-              Gender classification
-            </option>
-          
-            <option value="socialConsequence">
-              Social consequence
-            </option>
-          
-            <option value="crossClassification">
-              Gender classification × Social consequence
-            </option>
-          </select>
-        </div>
-
-        <div
-          id="collective-classification-chart"
-          class="group-chart-placeholder"
-        >
-          <p>
-            Collective classification results will appear when
-            aggregate data are connected.
-          </p>
-        </div>
-      </section>
     </div>
   </section>
+  
 
-  <!-- Explore collective patterns -->
-  <section class="result-section">
-    <h3>Explore Collective Patterns</h3>
-
-    <div class="result-controls">
-      <div
-        class="toggle-group"
-        id="collective-module-toggle"
-      >
-        <button
-          type="button"
-          class="collective-toggle active"
-          data-module="demographics"
-        >
-          Demographics
-        </button>
-
-        <button
-          type="button"
-          class="collective-toggle"
-          data-module="media"
-        >
-          Media Usage
-        </button>
-      </div>
-
-      <label for="collective-factor-select">
-        Select a factor
-      </label>
-
-      <select id="collective-factor-select">
-        <option value="age">Age</option>
-        <option value="genderIdentity">
-          Gender identity
-        </option>
-        <option value="transgenderIdentity">
-          Transgender identity
-        </option>
-      </select>
-    </div>
-
-    <div
-      id="collective-pattern-chart"
-      class="group-chart-placeholder"
-    >
-      <p>
-        Select a factor to explore collective response patterns.
-      </p>
-    </div>
-
-    <p class="result-note">
-      These patterns describe associations within the current sample.
-    </p>
-  </section>
+  
 
   <!-- Critical reveal -->
   <section class="critical-reveal">
