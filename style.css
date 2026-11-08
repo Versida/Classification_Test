@@ -430,11 +430,26 @@ button:hover {
   inset: 48px;
 }
 
+body.results-active {
+  display: block;
+  padding: 0;
+  background-color: #ffffff;
+}
 
+body.results-active .test-container {
+  width: 100%;
+  max-width: none;
+  min-height: 100vh;
+  padding: 36px 42px;
+  border: 0;
+}
 
 .results-screen {
+  width: 100%;
+  max-width: none;
   text-align: left;
 }
+
 
 .results-header {
   margin-bottom: 42px;
