@@ -1506,11 +1506,11 @@ function renderPersonalPatternExplanation(result) {
       "across the Rewarded and Penalized pairings.";
   } else if (masculinityDifference > 0) {
     masculinityText.textContent =
-      "You responded more quickly when Masculinity was " +
+      "▸ You responded more quickly when Masculinity was " +
       "paired with Socially Rewarded.";
   } else {
     masculinityText.textContent =
-      "You responded more quickly when Masculinity was " +
+      "▸ You responded more quickly when Masculinity was " +
       "paired with Socially Penalized.";
   }
 
@@ -1520,11 +1520,11 @@ function renderPersonalPatternExplanation(result) {
       "across the Rewarded and Penalized pairings.";
   } else if (femininityDifference > 0) {
     femininityText.textContent =
-      "You responded more quickly when Femininity was " +
+      "▸ You responded more quickly when Femininity was " +
       "paired with Socially Rewarded.";
   } else {
     femininityText.textContent =
-      "You responded more quickly when Femininity was " +
+      "▸ You responded more quickly when Femininity was " +
       "paired with Socially Penalized.";
   }
 
