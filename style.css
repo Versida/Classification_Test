@@ -474,12 +474,24 @@ button:hover {
   transition: width 700ms ease;
 }
 
-.compatible-bar {
+.masculinity-rewarded-bar {
   background-color: #2f7d32;
 }
 
-.reversed-bar {
+.masculinity-penalized-bar {
+  background-color: #78a879;
+}
+
+.femininity-rewarded-bar {
   background-color: #2454c6;
+}
+
+.femininity-penalized-bar {
+  background-color: #7895dd;
+}
+
+.result-explanation p {
+  margin: 10px 0;
 }
 
 .response-chart-value {
