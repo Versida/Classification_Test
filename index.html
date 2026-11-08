@@ -932,15 +932,325 @@
   </p>
 </section>
 
-<!-- Final completion -->
-<section id="part-six-completion" class="hidden">
-  <p class="part-label">Test complete</p>
+<!-- Results -->
+<section id="results-screen" class="hidden results-screen">
 
-  <h2>You have completed all six parts.</h2>
+  <header class="results-header">
+    <p class="part-label">Your Results</p>
+    <h2>Your response pattern</h2>
 
-  <p>
-    Your classifications and response patterns have been recorded.
-  </p>
+    <p>
+      These results describe how you responded within this
+      speculative classification experience. They are not a
+      psychological diagnosis.
+    </p>
+  </header>
+
+  <!-- Personal response pattern -->
+  <section class="result-section">
+    <h3>Personal Response Pattern</h3>
+
+    <div class="response-chart">
+      <div class="response-chart-row">
+        <div class="response-chart-label">
+          Masculinity + Socially Rewarded
+        </div>
+
+        <div class="response-bar-track">
+          <div
+            id="compatible-response-bar"
+            class="response-bar compatible-bar"
+          ></div>
+        </div>
+
+        <div
+          id="compatible-response-value"
+          class="response-chart-value"
+        ></div>
+      </div>
+
+      <div class="response-chart-row">
+        <div class="response-chart-label">
+          Femininity + Socially Rewarded
+        </div>
+
+        <div class="response-bar-track">
+          <div
+            id="reversed-response-bar"
+            class="response-bar reversed-bar"
+          ></div>
+        </div>
+
+        <div
+          id="reversed-response-value"
+          class="response-chart-value"
+        ></div>
+      </div>
+    </div>
+
+    <p id="personal-pattern-text" class="result-explanation"></p>
+  </section>
+
+  <!-- Pairing difference -->
+  <section class="result-section pairing-difference-section">
+    <h3>Pairing Difference</h3>
+
+    <p
+      id="pairing-difference-value"
+      class="pairing-difference-value"
+    ></p>
+
+    <p id="pairing-difference-text"></p>
+
+    <p class="result-note">
+      Pairing difference is a descriptive comparison of response
+      times in this experience. It is not a diagnostic bias score.
+    </p>
+  </section>
+
+  <!-- Initial mapping -->
+  <section class="result-section">
+    <h3>Your Initial Gender Mapping</h3>
+
+    <p>
+      These categories were created from your responses in Part 1.
+    </p>
+
+    <div class="mapping-columns">
+      <div class="mapping-column">
+        <h4 class="gender-category">Masculinity</h4>
+        <ul id="masculinity-mapping"></ul>
+      </div>
+
+      <div class="mapping-column">
+        <h4 class="gender-category">Femininity</h4>
+        <ul id="femininity-mapping"></ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Group distribution -->
+  <section class="result-section">
+    <h3>Pairing Difference Distribution</h3>
+
+    <div
+      id="distribution-chart"
+      class="group-chart-placeholder"
+    >
+      <p>
+        Group distribution will appear when collective data
+        are connected.
+      </p>
+    </div>
+  </section>
+
+  <!-- Overall group pattern -->
+  <section class="result-section">
+    <h3>Overall Pairing Pattern</h3>
+
+    <div
+      id="overall-pattern-chart"
+      class="group-chart-placeholder"
+    >
+      <p>
+        Overall pairing patterns will appear when collective data
+        are connected.
+      </p>
+    </div>
+  </section>
+
+  <!-- More details -->
+  <section class="result-section">
+    <button
+      type="button"
+      id="view-more-results-button"
+      class="secondary-button"
+      aria-expanded="false"
+    >
+      View more details
+    </button>
+
+    <div id="additional-results" class="hidden additional-results">
+
+      <!-- Corrections -->
+      <section class="detail-section">
+        <h3>Consistency and Corrections</h3>
+
+        <div class="correction-grid">
+          <div>
+            <span
+              id="compatible-error-count"
+              class="detail-number"
+            ></span>
+
+            <span>
+              corrections during Masculinity +
+              Socially Rewarded
+            </span>
+          </div>
+
+          <div>
+            <span
+              id="reversed-error-count"
+              class="detail-number"
+            ></span>
+
+            <span>
+              corrections during Femininity +
+              Socially Rewarded
+            </span>
+          </div>
+        </div>
+
+        <p class="result-note">
+          Corrections indicate moments when a response did not
+          match the category rules established earlier in the test.
+        </p>
+      </section>
+
+      <!-- Collective gender classification -->
+      <section class="detail-section">
+        <h3>Collective Gender Classification</h3>
+
+        <div class="result-controls">
+          <div
+            class="toggle-group"
+            id="classification-module-toggle"
+          >
+            <button
+              type="button"
+              class="filter-toggle active"
+              data-module="demographics"
+            >
+              Demographics
+            </button>
+
+            <button
+              type="button"
+              class="filter-toggle"
+              data-module="media"
+            >
+              Media Usage
+            </button>
+          </div>
+
+          <label for="classification-factor-select">
+            Filter by
+          </label>
+
+          <select id="classification-factor-select">
+            <option value="all">All participants</option>
+            <option value="age">Age</option>
+            <option value="genderIdentity">
+              Gender identity
+            </option>
+            <option value="transgenderIdentity">
+              Transgender identity
+            </option>
+          </select>
+
+          <label for="classification-question-select">
+            Description
+          </label>
+
+          <select id="classification-question-select"></select>
+        </div>
+
+        <div
+          id="collective-classification-chart"
+          class="group-chart-placeholder"
+        >
+          <p>
+            Collective classification results will appear when
+            aggregate data are connected.
+          </p>
+        </div>
+      </section>
+    </div>
+  </section>
+
+  <!-- Explore collective patterns -->
+  <section class="result-section">
+    <h3>Explore Collective Patterns</h3>
+
+    <div class="result-controls">
+      <div
+        class="toggle-group"
+        id="collective-module-toggle"
+      >
+        <button
+          type="button"
+          class="collective-toggle active"
+          data-module="demographics"
+        >
+          Demographics
+        </button>
+
+        <button
+          type="button"
+          class="collective-toggle"
+          data-module="media"
+        >
+          Media Usage
+        </button>
+      </div>
+
+      <label for="collective-factor-select">
+        Select a factor
+      </label>
+
+      <select id="collective-factor-select">
+        <option value="age">Age</option>
+        <option value="genderIdentity">
+          Gender identity
+        </option>
+        <option value="transgenderIdentity">
+          Transgender identity
+        </option>
+      </select>
+    </div>
+
+    <div
+      id="collective-pattern-chart"
+      class="group-chart-placeholder"
+    >
+      <p>
+        Select a factor to explore collective response patterns.
+      </p>
+    </div>
+
+    <p class="result-note">
+      These patterns describe associations within the current
+      sample. They do not demonstrate that a demographic or media
+      factor caused a response pattern.
+    </p>
+  </section>
+
+  <!-- Critical reveal -->
+  <section class="critical-reveal">
+    <p>
+      None of the behaviors mentioned a man or a woman.
+      You supplied the gender.
+    </p>
+
+    <p>
+      Your first responses became the rules for the rest of the journey.
+    </p>
+
+    <p>
+      Two categories were provided. You may have disagreed,
+      but you still had to make a choice.
+    </p>
+
+    <p>
+      Categorized choices became the rules you were later penalized for breaking.
+    </p>
+
+    <h3>
+      Did the test reveal your gender associations, reinforce them,
+      or do both at once?
+    </h3>
+  </section>
 </section>
 
   </main>
