@@ -45,6 +45,15 @@ const consequenceStimuli = [
 ];
 
 const introScreen = document.getElementById("intro-screen");
+
+const backgroundScreen = document.getElementById("background-screen");
+const backgroundForm = document.getElementById("background-form");
+const backgroundError = document.getElementById("background-error");
+const socialMediaOtherCheckbox = document.getElementById("social-media-other-checkbox");
+const socialMediaOtherInput = document.getElementById("social-media-other");
+const contentOtherCheckbox = document.getElementById("content-other-checkbox");
+const contentOtherInput = document.getElementById("content-other");
+
 const partOneScreen = document.getElementById("part-one-screen");
 
 const partTwoIntro = document.getElementById("part-two-intro");
@@ -157,8 +166,44 @@ let partSixResponses = [];
 
 startButton.addEventListener(
   "click",
-  startPartOne
+  showBackgroundForm
 );
+
+backgroundForm.addEventListener(
+  "submit",
+  saveBackgroundInformation
+);
+
+socialMediaOtherCheckbox.addEventListener(
+  "change",
+  function () {
+    socialMediaOtherInput.disabled =
+      !socialMediaOtherCheckbox.checked;
+
+    socialMediaOtherInput.required =
+      socialMediaOtherCheckbox.checked;
+
+    if (!socialMediaOtherCheckbox.checked) {
+      socialMediaOtherInput.value = "";
+    }
+  }
+);
+
+contentOtherCheckbox.addEventListener(
+  "change",
+  function () {
+    contentOtherInput.disabled =
+      !contentOtherCheckbox.checked;
+
+    contentOtherInput.required =
+      contentOtherCheckbox.checked;
+
+    if (!contentOtherCheckbox.checked) {
+      contentOtherInput.value = "";
+    }
+  }
+);
+
 
 beginPartTwoButton.addEventListener(
   "click",
@@ -191,7 +236,82 @@ window.addEventListener(
   true
 );
 
-window.addEventListener("keydown", handleKeyPress, true);
+function showBackgroundForm() {
+  introScreen.classList.add("hidden");
+  backgroundScreen.classList.remove("hidden");
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+}
+
+function saveBackgroundInformation(event) {
+  event.preventDefault();
+
+  const formData = new FormData(backgroundForm);
+
+  const socialMediaPlatforms =
+    formData.getAll("socialMediaPlatforms");
+
+  const contentPreferences =
+    formData.getAll("contentPreferences");
+
+  if (socialMediaPlatforms.length === 0) {
+    showBackgroundError(
+      "Please select at least one social media platform."
+    );
+    return;
+  }
+
+  if (contentPreferences.length === 0) {
+    showBackgroundError(
+      "Please select at least one content preference."
+    );
+    return;
+  }
+
+  const participantBackground = {
+    age: Number(formData.get("age")),
+    genderIdentity:
+      formData.get("genderIdentity"),
+    transgenderIdentity:
+      formData.get("transgenderIdentity"),
+    socialMediaPlatforms:
+      socialMediaPlatforms,
+    socialMediaOther:
+      formData.get("socialMediaOther") || null,
+    dailySocialMediaTime:
+      formData.get("dailySocialMediaTime"),
+    contentPreferences:
+      contentPreferences,
+    contentPreferenceOther:
+      formData.get("contentPreferenceOther") || null
+  };
+
+  sessionStorage.setItem(
+    "participantBackground",
+    JSON.stringify(participantBackground)
+  );
+
+  backgroundError.classList.add("hidden");
+  backgroundError.textContent = "";
+
+  backgroundScreen.classList.add("hidden");
+
+  startPartOne();
+}
+
+function showBackgroundError(message) {
+  backgroundError.textContent = message;
+  backgroundError.classList.remove("hidden");
+
+  backgroundError.scrollIntoView({
+    behavior: "smooth",
+    block: "center"
+  });
+}
+
 
 function startPartOne() {
   introScreen.classList.add("hidden");
@@ -261,6 +381,13 @@ function showPartTwoTrial() {
 }
 
 function handleKeyPress(event) {
+  if (
+  backgroundScreen &&
+  !backgroundScreen.classList.contains("hidden")
+  ) {
+    return;
+  }
+  
   if (
     activePart === 0 &&
     event.code === "Space" &&
