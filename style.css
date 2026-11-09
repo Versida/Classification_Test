@@ -535,11 +535,11 @@ body.results-active .test-container {
 }
 
 .personal-results-column::before {
-  content: "Your Personal Results";
+  content: "Personal Report";
 }
 
 .collective-results-column::before {
-  content: "Compare with Other Participants";
+  content: "Group Report";
 }
 
 .iat-result-statement {
