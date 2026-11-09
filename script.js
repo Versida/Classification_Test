@@ -2478,6 +2478,10 @@ function renderPairingDifferenceDistribution(
       the black line shows the group median.
     </p>
 
+    <p class="distribution-note">
+      A position farther from “No difference” means a larger response-time difference between the two pairings.
+    </p>
+
     <div class="distribution-legend">
       <span>
         <i class="legend-iqr"></i>
@@ -2498,10 +2502,6 @@ function renderPairingDifferenceDistribution(
     <div class="distribution-rows">
       ${distributionRows}
     </div>
-
-    <p class="distribution-note">
-      A position farther from “No difference” means a larger response-time difference between the two pairings.
-    </p>
   `;
 }
 
