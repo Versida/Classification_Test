@@ -552,6 +552,134 @@ body.results-active .test-container {
 }
 
 
+.distribution-rows {
+  display: grid;
+  gap: 24px;
+}
+
+.distribution-row-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 8px;
+}
+
+.distribution-label {
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.distribution-personal-value {
+  color: #555555;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.distribution-track {
+  position: relative;
+  height: 34px;
+  margin: 0 6px;
+}
+
+.distribution-range-line {
+  position: absolute;
+  top: 16px;
+  height: 2px;
+  background-color: #999999;
+}
+
+.distribution-iqr {
+  position: absolute;
+  top: 8px;
+  height: 18px;
+  background-color: #cac7c1;
+  border: 1px solid #777777;
+}
+
+.distribution-median {
+  position: absolute;
+  top: 5px;
+  width: 3px;
+  height: 24px;
+  background-color: #1f1f1f;
+  transform: translateX(-50%);
+}
+
+.distribution-personal-marker {
+  position: absolute;
+  top: 1px;
+  width: 10px;
+  height: 10px;
+  background-color: #c52f2f;
+  border-radius: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+}
+
+.distribution-zero-line {
+  position: absolute;
+  top: 4px;
+  width: 1px;
+  height: 26px;
+  background-color: #dddddd;
+  transform: translateX(-50%);
+}
+
+.distribution-axis-labels {
+  display: flex;
+  justify-content: space-between;
+  color: #777777;
+  font-size: 10px;
+}
+
+.distribution-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin: 0 0 20px;
+  color: #555555;
+  font-size: 11px;
+}
+
+.distribution-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.distribution-legend i {
+  display: inline-block;
+  flex: 0 0 auto;
+}
+
+.legend-iqr {
+  width: 18px;
+  height: 9px;
+  background-color: #cac7c1;
+  border: 1px solid #777777;
+}
+
+.legend-median {
+  width: 3px;
+  height: 14px;
+  background-color: #1f1f1f;
+}
+
+.legend-personal {
+  width: 9px;
+  height: 9px;
+  background-color: #c52f2f;
+  border-radius: 50%;
+}
+
+.distribution-note {
+  margin: 20px 0 0;
+  color: #666666;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+
 .collective-participant-count {
   margin: 0 0 16px;
   color: #666666;
