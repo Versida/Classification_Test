@@ -1499,21 +1499,68 @@ function showResultsPage(completeResult) {
 
   loadResponseTimePatterns();
 
-  masculinityRewardedErrors.textContent =
-    result.masculinityRewardedErrors;
+   masculinityRewardedErrors.textContent =
+    String(
+      result.masculinityRewardedErrors ?? 0
+    );
 
   masculinityPenalizedErrors.textContent =
-    result.masculinityPenalizedErrors;
+    String(
+      result.masculinityPenalizedErrors ?? 0
+    );
 
   femininityRewardedErrors.textContent =
-    result.femininityRewardedErrors;
+    String(
+      result.femininityRewardedErrors ?? 0
+    );
 
   femininityPenalizedErrors.textContent =
-    result.femininityPenalizedErrors;
+    String(
+      result.femininityPenalizedErrors ?? 0
+    );
 
-  renderInitialMapping(
+
+    console.log(
+    "Complete result:",
+    completeResult
+  );
+
+  console.log(
+    "Part 1 responses:",
     completeResult.partOneResponses
   );
+
+  console.log(
+    "Corrections:",
+    {
+      masculinityRewarded:
+        result.masculinityRewardedErrors,
+
+      masculinityPenalized:
+        result.masculinityPenalizedErrors,
+
+      femininityRewarded:
+        result.femininityRewardedErrors,
+
+      femininityPenalized:
+        result.femininityPenalizedErrors
+    }
+  );
+
+  
+  renderInitialMapping(
+    completeResult.partOneResponses || []
+  );
+
+  loadOverallPairingPattern();
+
+  loadPairingDifferenceDistribution(
+    result
+  );
+
+  loadCollectiveClassificationOverview();
+
+  loadResponseTimePatterns();
 
   window.scrollTo({
     top: 0,
