@@ -241,6 +241,8 @@ const classificationModuleSelect =
   document.getElementById("classification-module-select");
 const overallPatternChart =
   document.getElementById("overall-pattern-chart");
+const distributionChart =
+  document.getElementById("distribution-chart");
 
 
 let activePart = 0;
@@ -1444,7 +1446,12 @@ function showResultsPage(completeResult) {
 
   renderPairingDifferences(result);
   renderPersonalPatternExplanation(result);
+  
   loadOverallPairingPattern();
+  
+  loadPairingDifferenceDistribution(
+    result
+  );
 
   masculinityRewardedErrors.textContent =
     result.masculinityRewardedErrors;
@@ -1742,6 +1749,319 @@ async function loadOverallPairingPattern() {
     `;
   }
 }
+
+async function loadPairingDifferenceDistribution(
+  personalResult
+) {
+  distributionChart.innerHTML = `
+    <p>Loading distribution...</p>
+  `;
+
+  try {
+    const response = await fetch(
+      APP_CONFIG.supabaseUrl +
+        "/rest/v1/rpc/get_pairing_difference_distribution",
+      {
+        method: "POST",
+
+        headers: {
+          "Content-Type": "application/json",
+          "apikey":
+            APP_CONFIG.supabasePublishableKey,
+          "Authorization":
+            "Bearer " +
+            APP_CONFIG.supabasePublishableKey
+        },
+
+        body: JSON.stringify({
+          p_include_test:
+            APP_CONFIG.isTestSubmission
+        })
+      }
+    );
+
+    if (!response.ok) {
+      const errorMessage =
+        await response.text();
+
+      throw new Error(
+        "Unable to load pairing distribution: " +
+        errorMessage
+      );
+    }
+
+    const distributionData =
+      await response.json();
+
+    if (
+      !distributionData ||
+      distributionData.length === 0
+    ) {
+      distributionChart.innerHTML = `
+        <p>
+          Distribution results will appear
+          after participants complete the test.
+        </p>
+      `;
+
+      return;
+    }
+
+    renderPairingDifferenceDistribution(
+      distributionData,
+      personalResult
+    );
+  } catch (error) {
+    console.error(error);
+
+    distributionChart.innerHTML = `
+      <p>
+        Distribution results are temporarily unavailable.
+      </p>
+    `;
+  }
+}
+
+
+function renderPairingDifferenceDistribution(
+  distributionData,
+  personalResult
+) {
+  const personalDifferences = {
+    masculinity_consequence:
+      personalResult.masculinityRewardedMedian -
+      personalResult.masculinityPenalizedMedian,
+
+    femininity_consequence:
+      personalResult.femininityRewardedMedian -
+      personalResult.femininityPenalizedMedian,
+
+    rewarded_gender:
+      personalResult.masculinityRewardedMedian -
+      personalResult.femininityRewardedMedian,
+
+    penalized_gender:
+      personalResult.masculinityPenalizedMedian -
+      personalResult.femininityPenalizedMedian
+  };
+
+  const metricLabels = {
+    masculinity_consequence:
+      "Masculinity: consequence difference",
+
+    femininity_consequence:
+      "Femininity: consequence difference",
+
+    rewarded_gender:
+      "Socially Rewarded: gender difference",
+
+    penalized_gender:
+      "Socially Penalized: gender difference"
+  };
+
+  const preferredOrder = [
+    "masculinity_consequence",
+    "femininity_consequence",
+    "rewarded_gender",
+    "penalized_gender"
+  ];
+
+  const dataByMetric = {};
+
+  distributionData.forEach(function (item) {
+    dataByMetric[item.metric] = item;
+  });
+
+  const distributionRows = preferredOrder
+    .filter(function (metric) {
+      return dataByMetric[metric];
+    })
+    .map(function (metric) {
+      const item = dataByMetric[metric];
+
+      const minimum = Number(item.minimum);
+      const lowerQuartile =
+        Number(item.lower_quartile);
+      const median = Number(item.median);
+      const upperQuartile =
+        Number(item.upper_quartile);
+      const maximum = Number(item.maximum);
+
+      const personalValue =
+        personalDifferences[metric];
+
+      /*
+        Include zero and the current participant
+        within the visible chart range.
+      */
+      let domainMinimum = Math.min(
+        minimum,
+        personalValue,
+        0
+      );
+
+      let domainMaximum = Math.max(
+        maximum,
+        personalValue,
+        0
+      );
+
+      if (domainMinimum === domainMaximum) {
+        domainMinimum -= 1;
+        domainMaximum += 1;
+      }
+
+      const range =
+        domainMaximum - domainMinimum;
+
+      function calculatePosition(value) {
+        const position =
+          (
+            (value - domainMinimum) /
+            range
+          ) * 100;
+
+        return Math.max(
+          0,
+          Math.min(100, position)
+        );
+      }
+
+      const lowerQuartilePosition =
+        calculatePosition(lowerQuartile);
+
+      const upperQuartilePosition =
+        calculatePosition(upperQuartile);
+
+      const interquartileWidth =
+        Math.max(
+          2,
+          upperQuartilePosition -
+            lowerQuartilePosition
+        );
+
+      const medianPosition =
+        calculatePosition(median);
+
+      const personalPosition =
+        calculatePosition(personalValue);
+
+      const zeroPosition =
+        calculatePosition(0);
+
+      const signedPersonalValue =
+        personalValue > 0
+          ? "+" + personalValue
+          : String(personalValue);
+
+      return `
+        <div class="distribution-row">
+          <div class="distribution-row-header">
+            <span class="distribution-label">
+              ${metricLabels[metric]}
+            </span>
+
+            <span class="distribution-personal-value">
+              You: ${signedPersonalValue} ms
+            </span>
+          </div>
+
+          <div class="distribution-track">
+            <div
+              class="distribution-zero-line"
+              style="left: ${zeroPosition}%"
+              title="Zero difference"
+            ></div>
+
+            <div
+              class="distribution-range-line"
+              style="
+                left: ${calculatePosition(minimum)}%;
+                width:
+                  ${Math.max(
+                    1,
+                    calculatePosition(maximum) -
+                      calculatePosition(minimum)
+                  )}%;
+              "
+            ></div>
+
+            <div
+              class="distribution-iqr"
+              style="
+                left: ${lowerQuartilePosition}%;
+                width: ${interquartileWidth}%;
+              "
+              title="Middle 50% of participants"
+            ></div>
+
+            <div
+              class="distribution-median"
+              style="left: ${medianPosition}%"
+              title="Group median: ${median} ms"
+            ></div>
+
+            <div
+              class="distribution-personal-marker"
+              style="left: ${personalPosition}%"
+              title="Your result: ${signedPersonalValue} ms"
+            ></div>
+          </div>
+
+          <div class="distribution-axis-labels">
+            <span>${domainMinimum} ms</span>
+            <span>0</span>
+            <span>${domainMaximum} ms</span>
+          </div>
+        </div>
+      `;
+    })
+    .join("");
+
+  const participantCount =
+    Number(
+      distributionData[0].participant_count
+    );
+
+  distributionChart.classList.remove(
+    "group-chart-placeholder"
+  );
+
+  distributionChart.innerHTML = `
+    <p class="collective-participant-count">
+      Based on ${participantCount}
+      completed test${participantCount === 1 ? "" : "s"}.
+    </p>
+
+    <div class="distribution-legend">
+      <span>
+        <i class="legend-iqr"></i>
+        Middle 50%
+      </span>
+
+      <span>
+        <i class="legend-median"></i>
+        Group median
+      </span>
+
+      <span>
+        <i class="legend-personal"></i>
+        Your result
+      </span>
+    </div>
+
+    <div class="distribution-rows">
+      ${distributionRows}
+    </div>
+
+    <p class="distribution-note">
+      Negative values mean the first pairing
+      in the comparison was faster. Positive
+      values mean the second pairing was faster.
+    </p>
+  `;
+}
+
 
 function renderOverallPairingPattern(result) {
   const patterns = [
