@@ -2081,6 +2081,11 @@ function renderPairingDifferenceDistribution(
       completed test${participantCount === 1 ? "" : "s"}.
     </p>
 
+    <p class="distribution-explanation">
+      Each row compares how quickly you responded under two different category pairings.
+      The red dot shows your result, while the grey range shows where the median of participants were located.
+    </p>
+
     <div class="distribution-legend">
       <span>
         <i class="legend-iqr"></i>
@@ -2103,9 +2108,7 @@ function renderPairingDifferenceDistribution(
     </div>
 
     <p class="distribution-note">
-      Negative values mean the first pairing
-      in the comparison was faster. Positive
-      values mean the second pairing was faster.
+      A position farther from “No difference” means a larger response-time difference between the two pairings.
     </p>
   `;
 }
