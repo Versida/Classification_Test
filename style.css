@@ -560,6 +560,154 @@ body.results-active .test-container {
 }
 
 
+.classification-chart-explanation {
+  margin: 0 0 18px;
+  color: #666666;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.classification-overview-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 12px;
+  font-size: 12px;
+}
+
+.classification-overview-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.classification-overview-legend i {
+  width: 12px;
+  height: 12px;
+}
+
+.legend-masculinity {
+  background-color: #2f7f33;
+}
+
+.legend-femininity {
+  background-color: #315acb;
+}
+
+.classification-overview-rows,
+.classification-metric-rows {
+  display: grid;
+  gap: 18px;
+}
+
+.classification-item-label {
+  margin: 0 0 6px;
+  color: #1f1f1f;
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.classification-stacked-bar {
+  display: flex;
+  width: 100%;
+  height: 22px;
+  overflow: hidden;
+  background-color: #e8e6e1;
+}
+
+.classification-stacked-bar > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  color: #ffffff;
+  font-size: 10px;
+}
+
+.classification-masculinity {
+  background-color: #2f7f33;
+}
+
+.classification-femininity {
+  background-color: #315acb;
+}
+
+.classification-metric-row {
+  padding-bottom: 14px;
+  border-bottom: 1px solid #e2dfd9;
+}
+
+.classification-metric-row:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.classification-metric-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 7px;
+  font-size: 12px;
+}
+
+.classification-metric-header span:last-child {
+  white-space: nowrap;
+}
+
+.classification-time-row {
+  display: grid;
+  grid-template-columns: 1fr 62px;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+}
+
+.classification-time-track {
+  height: 18px;
+  overflow: hidden;
+  background-color: #e8e6e1;
+}
+
+.classification-time-fill {
+  height: 100%;
+}
+
+.consequence-rewarded,
+.pairing-fr {
+  color: #315acb;
+}
+
+.consequence-penalized,
+.pairing-fp {
+  color: #7b98dc;
+}
+
+.classification-time-fill.consequence-rewarded,
+.classification-time-fill.pairing-fr {
+  background-color: #315acb;
+}
+
+.classification-time-fill.consequence-penalized,
+.classification-time-fill.pairing-fp {
+  background-color: #7b98dc;
+}
+
+.classification-time-fill.pairing-mr {
+  background-color: #2f7f33;
+}
+
+.classification-time-fill.pairing-mp {
+  background-color: #7eac80;
+}
+
+.classification-correction-rate {
+  margin: 5px 0 0;
+  color: #666666;
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+
 .distribution-rows {
   display: grid;
   gap: 24px;
