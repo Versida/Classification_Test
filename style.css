@@ -698,6 +698,103 @@ body.results-active .test-container {
   white-space: nowrap;
 }
 
+
+.pattern-factor-groups {
+  display: grid;
+  gap: 30px;
+}
+
+.pattern-factor-group {
+  padding: 16px;
+  border: 1px solid #d8d4ce;
+  background-color: #ffffff;
+}
+
+.pattern-factor-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+  margin-bottom: 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e2dfd9;
+}
+
+.pattern-factor-header h4 {
+  margin: 0;
+  font-size: 15px;
+}
+
+.pattern-factor-header span {
+  color: #666666;
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.pattern-group-rows {
+  display: grid;
+  gap: 12px;
+}
+
+.pattern-group-row {
+  display: grid;
+  grid-template-columns:
+    minmax(175px, 1fr)
+    minmax(120px, 1.5fr)
+    62px;
+  align-items: center;
+  gap: 10px;
+}
+
+.pattern-group-label,
+.pattern-group-value {
+  color: #1f1f1f;
+  font-size: 11px;
+  line-height: 1.3;
+}
+
+.pattern-group-value {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.pattern-group-track {
+  height: 16px;
+  overflow: hidden;
+  background-color: #e8e6e1;
+}
+
+.pattern-group-fill {
+  height: 100%;
+}
+
+.pattern-group-fill.pairing-mr {
+  background-color: #2f7f33;
+}
+
+.pattern-group-fill.pairing-mp {
+  background-color: #7eac80;
+}
+
+.pattern-group-fill.pairing-fr {
+  background-color: #315acb;
+}
+
+.pattern-group-fill.pairing-fp {
+  background-color: #7b98dc;
+}
+
+@media (max-width: 700px) {
+  .pattern-group-row {
+    grid-template-columns: 1fr 60px;
+  }
+
+  .pattern-group-label {
+    grid-column: 1 / -1;
+  }
+}
+
+
 .classification-filter-note {
   margin: 0 0 16px;
   color: #666666;
