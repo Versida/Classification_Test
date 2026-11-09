@@ -1845,18 +1845,42 @@ function renderPairingDifferenceDistribution(
       personalResult.femininityPenalizedMedian
   };
 
-  const metricLabels = {
-    masculinity_consequence:
-      "Masculinity: consequence difference",
-
-    femininity_consequence:
-      "Femininity: consequence difference",
-
-    rewarded_gender:
-      "Socially Rewarded: gender difference",
-
-    penalized_gender:
-      "Socially Penalized: gender difference"
+  const metricInformation = {
+    masculinity_consequence: {
+      title:
+        "Masculinity paired with social consequences",
+      firstPairing:
+        "Socially Rewarded",
+      secondPairing:
+        "Socially Penalized"
+    },
+  
+    femininity_consequence: {
+      title:
+        "Femininity paired with social consequences",
+      firstPairing:
+        "Socially Rewarded",
+      secondPairing:
+        "Socially Penalized"
+    },
+  
+    rewarded_gender: {
+      title:
+        "Gender categories paired with Socially Rewarded",
+      firstPairing:
+        "Masculinity",
+      secondPairing:
+        "Femininity"
+    },
+  
+    penalized_gender: {
+      title:
+        "Gender categories paired with Socially Penalized",
+      firstPairing:
+        "Masculinity",
+      secondPairing:
+        "Femininity"
+    }
   };
 
   const preferredOrder = [
@@ -1954,11 +1978,35 @@ function renderPairingDifferenceDistribution(
           ? "+" + personalValue
           : String(personalValue);
 
+      const information =
+        metricInformation[metric];
+      
+      let personalInterpretation;
+      
+      if (personalValue < 0) {
+        personalInterpretation =
+          information.firstPairing +
+          " was faster by " +
+          Math.abs(personalValue) +
+          " ms";
+      } else if (personalValue > 0) {
+        personalInterpretation =
+          information.secondPairing +
+          " was faster by " +
+          Math.abs(personalValue) +
+          " ms";
+      } else {
+        personalInterpretation =
+          "Both pairings had the same response time";
+      }
+            
+
       return `
         <div class="distribution-row">
           <div class="distribution-row-header">
             <span class="distribution-label">
-              ${metricLabels[metric]}
+              ${information.title}
+              
             </span>
 
             <span class="distribution-personal-value">
