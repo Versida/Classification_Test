@@ -239,6 +239,13 @@ const femininityPenalizedErrors =
 
 const classificationModuleSelect =
   document.getElementById("classification-module-select");
+const collectiveClassificationChart =
+  document.getElementById(
+    "collective-classification-chart"
+  );
+
+let collectiveClassificationData = [];
+
 const overallPatternChart =
   document.getElementById("overall-pattern-chart");
 const distributionChart =
@@ -366,6 +373,14 @@ function toggleAdditionalResults() {
   );
 }
 
+classificationModuleSelect.addEventListener(
+  "change",
+  function () {
+    renderCollectiveClassificationModule(
+      classificationModuleSelect.value
+    );
+  }
+);
 
 function showBackgroundForm() {
   const newSessionId = crypto.randomUUID();
@@ -1452,6 +1467,370 @@ function showResultsPage(completeResult) {
   loadPairingDifferenceDistribution(
     result
   );
+
+  loadCollectiveClassificationOverview();
+
+  async function loadCollectiveClassificationOverview() {
+  collectiveClassificationChart.innerHTML = `
+    <p>Loading classification results...</p>
+  `;
+
+  try {
+    const response = await fetch(
+      APP_CONFIG.supabaseUrl +
+        "/rest/v1/rpc/get_collective_classification_overview",
+      {
+        method: "POST",
+
+        headers: {
+          "Content-Type": "application/json",
+          "apikey":
+            APP_CONFIG.supabasePublishableKey,
+          "Authorization":
+            "Bearer " +
+            APP_CONFIG.supabasePublishableKey
+        },
+
+        body: JSON.stringify({
+          p_include_test:
+            APP_CONFIG.isTestSubmission
+        })
+      }
+    );
+
+    if (!response.ok) {
+      const errorMessage =
+        await response.text();
+
+      throw new Error(
+        "Unable to load classification overview: " +
+        errorMessage
+      );
+    }
+
+    collectiveClassificationData =
+      await response.json();
+
+    if (collectiveClassificationData.length === 0) {
+      collectiveClassificationChart.innerHTML = `
+        <p>
+          Classification results will appear
+          after participants complete the test.
+        </p>
+      `;
+
+      return;
+    }
+
+    collectiveClassificationChart.classList.remove(
+      "group-chart-placeholder"
+    );
+
+    renderCollectiveClassificationModule(
+      classificationModuleSelect.value
+    );
+  } catch (error) {
+    console.error(error);
+
+    collectiveClassificationChart.innerHTML = `
+      <p>
+        Classification results are temporarily unavailable.
+      </p>
+    `;
+  }
+}
+
+function renderCollectiveClassificationModule(
+  moduleName
+) {
+  const moduleData =
+    collectiveClassificationData.filter(
+      function (item) {
+        return item.module === moduleName;
+      }
+    );
+
+  if (moduleData.length === 0) {
+    collectiveClassificationChart.innerHTML = `
+      <p>No results are available for this module.</p>
+    `;
+
+    return;
+  }
+
+  if (moduleName === "genderClassification") {
+    renderGenderClassificationOverview(
+      moduleData
+    );
+
+    return;
+  }
+
+  if (moduleName === "socialConsequence") {
+    renderSocialConsequenceOverview(
+      moduleData
+    );
+
+    return;
+  }
+
+  renderCrossClassificationOverview(
+    moduleData
+  );
+}
+
+
+function renderGenderClassificationOverview(data) {
+  const groupedItems = {};
+
+  data.forEach(function (item) {
+    if (!groupedItems[item.item_label]) {
+      groupedItems[item.item_label] = {
+        order: Number(item.item_order),
+        masculinity: 0,
+        femininity: 0
+      };
+    }
+
+    if (item.category_label === "Masculinity") {
+      groupedItems[item.item_label].masculinity =
+        Number(item.percentage);
+    }
+
+    if (item.category_label === "Femininity") {
+      groupedItems[item.item_label].femininity =
+        Number(item.percentage);
+    }
+  });
+
+  const rows = Object.entries(groupedItems)
+    .sort(function (first, second) {
+      return first[1].order - second[1].order;
+    })
+    .map(function ([label, values]) {
+      return `
+        <div class="classification-overview-row">
+          <p class="classification-item-label">
+            ${label}
+          </p>
+
+          <div class="classification-stacked-bar">
+            <div
+              class="classification-masculinity"
+              style="width: ${values.masculinity}%"
+            >
+              ${
+                values.masculinity > 12
+                  ? values.masculinity + "%"
+                  : ""
+              }
+            </div>
+
+            <div
+              class="classification-femininity"
+              style="width: ${values.femininity}%"
+            >
+              ${
+                values.femininity > 12
+                  ? values.femininity + "%"
+                  : ""
+              }
+            </div>
+          </div>
+        </div>
+      `;
+    })
+    .join("");
+
+  collectiveClassificationChart.innerHTML = `
+    <div class="classification-overview-legend">
+      <span>
+        <i class="legend-masculinity"></i>
+        Masculinity
+      </span>
+
+      <span>
+        <i class="legend-femininity"></i>
+        Femininity
+      </span>
+    </div>
+
+    <p class="classification-chart-explanation">
+      Each bar shows how participants classified
+      the same gender-neutral description.
+    </p>
+
+    <div class="classification-overview-rows">
+      ${rows}
+    </div>
+  `;
+}
+
+
+function renderSocialConsequenceOverview(data) {
+  const sortedData = [...data].sort(
+    function (first, second) {
+      return (
+        Number(first.item_order) -
+        Number(second.item_order)
+      );
+    }
+  );
+
+  const longestTime = Math.max(
+    ...sortedData.map(function (item) {
+      return Number(item.median_response_time);
+    }),
+    1
+  );
+
+  const rows = sortedData
+    .map(function (item) {
+      const responseTime =
+        Number(item.median_response_time);
+
+      const correctionRate =
+        Number(item.correction_rate);
+
+      const width =
+        responseTime / longestTime * 100;
+
+      const categoryClass =
+        item.category_label === "Rewarded"
+          ? "consequence-rewarded"
+          : "consequence-penalized";
+
+      return `
+        <div class="classification-metric-row">
+          <div class="classification-metric-header">
+            <span>${item.item_label}</span>
+
+            <span class="${categoryClass}">
+              Socially ${item.category_label}
+            </span>
+          </div>
+
+          <div class="classification-time-row">
+            <div class="classification-time-track">
+              <div
+                class="classification-time-fill ${categoryClass}"
+                style="width: ${width}%"
+              ></div>
+            </div>
+
+            <span>${responseTime} ms</span>
+          </div>
+
+          <p class="classification-correction-rate">
+            ${correctionRate}% made at least one
+            incorrect attempt.
+          </p>
+        </div>
+      `;
+    })
+    .join("");
+
+  collectiveClassificationChart.innerHTML = `
+    <p class="classification-chart-explanation">
+      Bars show the group median response time.
+      The note below each bar shows how often
+      participants initially selected the other category.
+    </p>
+
+    <div class="classification-metric-rows">
+      ${rows}
+    </div>
+  `;
+}
+
+
+function renderCrossClassificationOverview(data) {
+  const sortedData = [...data].sort(
+    function (first, second) {
+      return (
+        Number(first.item_order) -
+        Number(second.item_order)
+      );
+    }
+  );
+
+  const longestTime = Math.max(
+    ...sortedData.map(function (item) {
+      return Number(item.median_response_time);
+    }),
+    1
+  );
+
+  const rows = sortedData
+    .map(function (item) {
+      const responseTime =
+        Number(item.median_response_time);
+
+      const correctionRate =
+        Number(item.correction_rate);
+
+      const width =
+        responseTime / longestTime * 100;
+
+      let pairingClass = "";
+
+      if (
+        item.item_label ===
+        "Masculinity + Socially Rewarded"
+      ) {
+        pairingClass = "pairing-mr";
+      } else if (
+        item.item_label ===
+        "Masculinity + Socially Penalized"
+      ) {
+        pairingClass = "pairing-mp";
+      } else if (
+        item.item_label ===
+        "Femininity + Socially Rewarded"
+      ) {
+        pairingClass = "pairing-fr";
+      } else {
+        pairingClass = "pairing-fp";
+      }
+
+      return `
+        <div class="classification-metric-row">
+          <p class="classification-item-label">
+            ${item.item_label}
+          </p>
+
+          <div class="classification-time-row">
+            <div class="classification-time-track">
+              <div
+                class="classification-time-fill ${pairingClass}"
+                style="width: ${width}%"
+              ></div>
+            </div>
+
+            <span>${responseTime} ms</span>
+          </div>
+
+          <p class="classification-correction-rate">
+            ${correctionRate}% made at least one
+            incorrect attempt.
+          </p>
+        </div>
+      `;
+    })
+    .join("");
+
+  collectiveClassificationChart.innerHTML = `
+    <p class="classification-chart-explanation">
+      Bars compare the group median response time
+      across the four combined category pairings.
+    </p>
+
+    <div class="classification-metric-rows">
+      ${rows}
+    </div>
+  `;
+}
+  
 
   masculinityRewardedErrors.textContent =
     result.masculinityRewardedErrors;
