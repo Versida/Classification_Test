@@ -386,6 +386,13 @@ classificationFactorSelect.addEventListener(
   }
 );
 
+collectiveFactorSelect.addEventListener(
+  "change",
+  function () {
+    loadResponseTimePatterns();
+  }
+);
+
 
 function showBackgroundForm() {
   const newSessionId = crypto.randomUUID();
@@ -1476,12 +1483,9 @@ function showResultsPage(completeResult) {
   renderPersonalPatternExplanation(result);
   
   loadOverallPairingPattern();
-  
-  loadPairingDifferenceDistribution(
-    result
-  );
-
+  loadPairingDifferenceDistribution(result);
   loadCollectiveClassificationOverview();
+  loadResponseTimePatterns();
 
   async function loadCollectiveClassificationOverview() {
   collectiveClassificationChart.innerHTML = `
@@ -1583,6 +1587,27 @@ function showResultsPage(completeResult) {
   renderCrossClassificationOverview(
     moduleData
   );
+
+    masculinityRewardedErrors.textContent =
+    result.masculinityRewardedErrors;
+
+  masculinityPenalizedErrors.textContent =
+    result.masculinityPenalizedErrors;
+
+  femininityRewardedErrors.textContent =
+    result.femininityRewardedErrors;
+
+  femininityPenalizedErrors.textContent =
+    result.femininityPenalizedErrors;
+
+  renderInitialMapping(
+    completeResult.partOneResponses
+  );
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
 }
 
 
@@ -1775,35 +1800,6 @@ function renderGenderClassificationOverview(
   `;
 }
 
-collectiveFactorSelect.addEventListener(
-  "change",
-  function () {
-    loadResponseTimePatterns();
-  }
-);
-
-  masculinityRewardedErrors.textContent =
-    result.masculinityRewardedErrors;
-
-  masculinityPenalizedErrors.textContent =
-    result.masculinityPenalizedErrors;
-
-  femininityRewardedErrors.textContent =
-    result.femininityRewardedErrors;
-
-  femininityPenalizedErrors.textContent =
-    result.femininityPenalizedErrors;
-
-  renderInitialMapping(
-    completeResult.partOneResponses
-  );
-
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth"
-  });
-}
-
 
 function renderPairingDifferences(result) {
   const comparisons = [
@@ -1836,8 +1832,6 @@ function renderPairingDifferences(result) {
       secondValue: result.femininityPenalizedMedian
     }
   ];
-
-  loadResponseTimePatterns();
 
   const calculatedComparisons =
     comparisons.map(function (comparison) {
