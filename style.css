@@ -551,6 +551,14 @@ body.results-active .test-container {
   line-height: 1.55;
 }
 
+.result-section-description {
+  margin: 0 0 16px;
+  color: #666666;
+  font-size: 12px;
+  font-weight: normal;
+  line-height: 1.5;
+}
+
 
 .distribution-rows {
   display: grid;
@@ -712,10 +720,10 @@ body.results-active .test-container {
 
 .collective-participant-count {
   margin: 0 0 16px;
-  color: #1f1f1f;
+  color: #666666;
   font-size: 12px;
   font-weight: normal;
-  line-height: 1.3;
+  line-height: 1.5;
 }
 
 .collective-pattern-bars {
