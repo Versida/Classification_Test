@@ -1,7 +1,7 @@
 const APP_CONFIG = {
   // false：完全不傳資料
   // true：傳送至 Supabase
-  saveToSupabase: false,
+  saveToSupabase: true,
 
   // 測試寫入時使用 true
   // 正式公開時改成 false
