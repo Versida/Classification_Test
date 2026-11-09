@@ -652,6 +652,34 @@ body.results-active .test-container {
   flex: 0 0 auto;
 }
 
+.distribution-note {
+  margin: 20px 0 0;
+  color: #666666;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+
+.distribution-explanation {
+  margin: 0 0 20px;
+  color: #555555;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.distribution-direction-labels {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 5px;
+  color: #555555;
+  font-size: 10px;
+}
+
+.distribution-direction-labels span:last-child {
+  text-align: right;
+}
+
 .legend-iqr {
   width: 18px;
   height: 9px;
@@ -670,13 +698,6 @@ body.results-active .test-container {
   height: 9px;
   background-color: #c52f2f;
   border-radius: 50%;
-}
-
-.distribution-note {
-  margin: 20px 0 0;
-  color: #666666;
-  font-size: 11px;
-  line-height: 1.5;
 }
 
 
