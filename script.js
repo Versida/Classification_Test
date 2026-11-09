@@ -249,6 +249,11 @@ const overallPatternChart =
 const distributionChart =
   document.getElementById("distribution-chart");
 
+const resultLoadingScreen =
+  document.getElementById(
+    "result-loading-screen"
+  );
+
 
 let activePart = 0;
 let currentTrial = 0;
@@ -1084,6 +1089,9 @@ async function finishPartSix() {
   activePart = 0;
 
   partSixScreen.classList.add("hidden");
+  resultLoadingScreen.classList.remove(
+    "hidden"
+  ); 
 
   sessionStorage.setItem(
     "partSixResponses",
@@ -1120,6 +1128,10 @@ async function finishPartSix() {
     );
   }
 
+  resultLoadingScreen.classList.add(
+    "hidden"
+  );
+  
   showResultsPage(completeResult);
 }
 
