@@ -7,8 +7,8 @@ const APP_CONFIG = {
   // 正式公開時改成 false
   isTestSubmission: true,
 
-  supabaseUrl: "YOUR_SUPABASE_PROJECT_URL",
-  supabasePublishableKey: "YOUR_SUPABASE_PUBLISHABLE_KEY"
+  supabaseUrl: "https://kdftqgixzjdwpxiuanjd.supabase.co",
+  supabasePublishableKey: "sb_publishable_yuL8A3mMfix6uDPmO1yNUQ_PWBZXYHO"
 };
 
 function getOrCreateSessionId() {
