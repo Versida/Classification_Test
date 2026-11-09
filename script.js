@@ -237,8 +237,6 @@ const femininityRewardedErrors =
 const femininityPenalizedErrors =
   document.getElementById("femininity-penalized-errors");
 
-const classificationModuleSelect =
-  document.getElementById("classification-module-select");
 const collectiveClassificationChart =
   document.getElementById(
     "collective-classification-chart"
@@ -373,14 +371,6 @@ function toggleAdditionalResults() {
   );
 }
 
-classificationModuleSelect.addEventListener(
-  "change",
-  function () {
-    renderCollectiveClassificationModule(
-      classificationModuleSelect.value
-    );
-  }
-);
 
 function showBackgroundForm() {
   const newSessionId = crypto.randomUUID();
@@ -1526,9 +1516,20 @@ function showResultsPage(completeResult) {
       "group-chart-placeholder"
     );
 
-    renderCollectiveClassificationModule(
-      classificationModuleSelect.value
+    const genderClassificationData =
+      collec tiveClassificationData.filter(
+        function (item) {
+          return (
+            item.module ===
+            "genderClassification"
+          );
+        }
+      );
+    
+    renderGenderClassificationOverview(
+      genderClassificationData
     );
+    
   } catch (error) {
     console.error(error);
 
@@ -1540,23 +1541,7 @@ function showResultsPage(completeResult) {
   }
 }
 
-function renderCollectiveClassificationModule(
-  moduleName
-) {
-  const moduleData =
-    collectiveClassificationData.filter(
-      function (item) {
-        return item.module === moduleName;
-      }
-    );
 
-  if (moduleData.length === 0) {
-    collectiveClassificationChart.innerHTML = `
-      <p>No results are available for this module.</p>
-    `;
-
-    return;
-  }
 
   if (moduleName === "genderClassification") {
     renderGenderClassificationOverview(
@@ -1661,171 +1646,6 @@ function renderGenderClassificationOverview(data) {
     </p>
 
     <div class="classification-overview-rows">
-      ${rows}
-    </div>
-  `;
-}
-
-
-function renderSocialConsequenceOverview(data) {
-  const sortedData = [...data].sort(
-    function (first, second) {
-      return (
-        Number(first.item_order) -
-        Number(second.item_order)
-      );
-    }
-  );
-
-  const longestTime = Math.max(
-    ...sortedData.map(function (item) {
-      return Number(item.median_response_time);
-    }),
-    1
-  );
-
-  const rows = sortedData
-    .map(function (item) {
-      const responseTime =
-        Number(item.median_response_time);
-
-      const correctionRate =
-        Number(item.correction_rate);
-
-      const width =
-        responseTime / longestTime * 100;
-
-      const categoryClass =
-        item.category_label === "Rewarded"
-          ? "consequence-rewarded"
-          : "consequence-penalized";
-
-      return `
-        <div class="classification-metric-row">
-          <div class="classification-metric-header">
-            <span>${item.item_label}</span>
-
-            <span class="${categoryClass}">
-              Socially ${item.category_label}
-            </span>
-          </div>
-
-          <div class="classification-time-row">
-            <div class="classification-time-track">
-              <div
-                class="classification-time-fill ${categoryClass}"
-                style="width: ${width}%"
-              ></div>
-            </div>
-
-            <span>${responseTime} ms</span>
-          </div>
-
-          <p class="classification-correction-rate">
-            ${correctionRate}% made at least one
-            incorrect attempt.
-          </p>
-        </div>
-      `;
-    })
-    .join("");
-
-  collectiveClassificationChart.innerHTML = `
-    <p class="classification-chart-explanation">
-      Bars show the group median response time.
-      The note below each bar shows how often
-      participants initially selected the other category.
-    </p>
-
-    <div class="classification-metric-rows">
-      ${rows}
-    </div>
-  `;
-}
-
-
-function renderCrossClassificationOverview(data) {
-  const sortedData = [...data].sort(
-    function (first, second) {
-      return (
-        Number(first.item_order) -
-        Number(second.item_order)
-      );
-    }
-  );
-
-  const longestTime = Math.max(
-    ...sortedData.map(function (item) {
-      return Number(item.median_response_time);
-    }),
-    1
-  );
-
-  const rows = sortedData
-    .map(function (item) {
-      const responseTime =
-        Number(item.median_response_time);
-
-      const correctionRate =
-        Number(item.correction_rate);
-
-      const width =
-        responseTime / longestTime * 100;
-
-      let pairingClass = "";
-
-      if (
-        item.item_label ===
-        "Masculinity + Socially Rewarded"
-      ) {
-        pairingClass = "pairing-mr";
-      } else if (
-        item.item_label ===
-        "Masculinity + Socially Penalized"
-      ) {
-        pairingClass = "pairing-mp";
-      } else if (
-        item.item_label ===
-        "Femininity + Socially Rewarded"
-      ) {
-        pairingClass = "pairing-fr";
-      } else {
-        pairingClass = "pairing-fp";
-      }
-
-      return `
-        <div class="classification-metric-row">
-          <p class="classification-item-label">
-            ${item.item_label}
-          </p>
-
-          <div class="classification-time-row">
-            <div class="classification-time-track">
-              <div
-                class="classification-time-fill ${pairingClass}"
-                style="width: ${width}%"
-              ></div>
-            </div>
-
-            <span>${responseTime} ms</span>
-          </div>
-
-          <p class="classification-correction-rate">
-            ${correctionRate}% made at least one
-            incorrect attempt.
-          </p>
-        </div>
-      `;
-    })
-    .join("");
-
-  collectiveClassificationChart.innerHTML = `
-    <p class="classification-chart-explanation">
-      Bars compare the group median response time
-      across the four combined category pairings.
-    </p>
-
-    <div class="classification-metric-rows">
       ${rows}
     </div>
   `;
