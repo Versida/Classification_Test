@@ -2058,8 +2058,18 @@ function renderPairingDifferenceDistribution(
 
           <div class="distribution-axis-labels">
             <span>${domainMinimum} ms</span>
-            <span>0</span>
+            <span>No difference</span>
             <span>${domainMaximum} ms</span>
+          </div>
+          
+          <div class="distribution-direction-labels">
+            <span>
+              ← ${information.firstPairing} faster
+            </span>
+          
+            <span>
+              ${information.secondPairing} faster →
+            </span>
           </div>
         </div>
       `;
@@ -2082,8 +2092,11 @@ function renderPairingDifferenceDistribution(
     </p>
 
     <p class="distribution-explanation">
-      Each row compares how quickly you responded under two different category pairings.
-      The red dot shows your result, while the grey range shows where the median of participants were located.
+      Each row compares how quickly you responded
+      under two different category pairings.
+      The red dot shows your result, the grey box
+      shows the middle half of participants, and
+      the black line shows the group median.
     </p>
 
     <div class="distribution-legend">
