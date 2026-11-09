@@ -239,6 +239,8 @@ const femininityPenalizedErrors =
 
 const classificationModuleSelect =
   document.getElementById("classification-module-select");
+const overallPatternChart =
+  document.getElementById("overall-pattern-chart");
 
 
 let activePart = 0;
@@ -1435,6 +1437,7 @@ function showResultsPage(completeResult) {
 
   renderPairingDifferences(result);
   renderPersonalPatternExplanation(result);
+  loadOverallPairingPattern();
 
   masculinityRewardedErrors.textContent =
     result.masculinityRewardedErrors;
@@ -1662,6 +1665,164 @@ function renderInitialMapping(partOneResponses) {
       femininityMapping.appendChild(listItem);
     }
   });
+}
+
+async function loadOverallPairingPattern() {
+  overallPatternChart.innerHTML = `
+    <p>Loading collective results...</p>
+  `;
+
+  try {
+    const response = await fetch(
+      APP_CONFIG.supabaseUrl +
+        "/rest/v1/rpc/get_overall_pairing_pattern",
+      {
+        method: "POST",
+
+        headers: {
+          "Content-Type": "application/json",
+          "apikey":
+            APP_CONFIG.supabasePublishableKey,
+          "Authorization":
+            "Bearer " +
+            APP_CONFIG.supabasePublishableKey
+        },
+
+        body: JSON.stringify({
+          p_include_test:
+            APP_CONFIG.isTestSubmission
+        })
+      }
+    );
+
+    if (!response.ok) {
+      const errorMessage =
+        await response.text();
+
+      throw new Error(
+        "Unable to load collective results: " +
+        errorMessage
+      );
+    }
+
+    const data = await response.json();
+    const collectiveResult = data[0];
+
+    if (
+      !collectiveResult ||
+      Number(collectiveResult.participant_count) === 0
+    ) {
+      overallPatternChart.innerHTML = `
+        <p>
+          Collective results will appear after
+          participants complete the test.
+        </p>
+      `;
+
+      return;
+    }
+
+    renderOverallPairingPattern(
+      collectiveResult
+    );
+  } catch (error) {
+    console.error(error);
+
+    overallPatternChart.innerHTML = `
+      <p>
+        Collective results are temporarily unavailable.
+      </p>
+    `;
+  }
+}
+
+function renderOverallPairingPattern(result) {
+  const patterns = [
+    {
+      label:
+        "Masculinity + Socially Rewarded",
+      value:
+        Number(
+          result.masculinity_rewarded_median
+        ),
+      className: "masculinity-rewarded"
+    },
+    {
+      label:
+        "Masculinity + Socially Penalized",
+      value:
+        Number(
+          result.masculinity_penalized_median
+        ),
+      className: "masculinity-penalized"
+    },
+    {
+      label:
+        "Femininity + Socially Rewarded",
+      value:
+        Number(
+          result.femininity_rewarded_median
+        ),
+      className: "femininity-rewarded"
+    },
+    {
+      label:
+        "Femininity + Socially Penalized",
+      value:
+        Number(
+          result.femininity_penalized_median
+        ),
+      className: "femininity-penalized"
+    }
+  ];
+
+  const longestTime = Math.max(
+    ...patterns.map(function (pattern) {
+      return pattern.value;
+    }),
+    1
+  );
+
+  const patternRows = patterns
+    .map(function (pattern) {
+      const width =
+        pattern.value / longestTime * 100;
+
+      return `
+        <div class="collective-pattern-row">
+          <span class="collective-pattern-label">
+            ${pattern.label}
+          </span>
+
+          <div class="collective-pattern-track">
+            <div
+              class="collective-pattern-fill ${pattern.className}"
+              style="width: ${width}%"
+            ></div>
+          </div>
+
+          <span class="collective-pattern-value">
+            ${pattern.value} ms
+          </span>
+        </div>
+      `;
+    })
+    .join("");
+
+  overallPatternChart.classList.remove(
+    "group-chart-placeholder"
+  );
+
+  overallPatternChart.innerHTML = `
+    <p class="collective-participant-count">
+      Based on ${result.participant_count}
+      completed test${Number(result.participant_count) === 1 ? "" : "s"}.
+    </p>
+
+    <div class="collective-pattern-bars">
+      ${patternRows}
+    </div>
+  `;
 }
 
 
