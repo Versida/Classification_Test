@@ -366,6 +366,13 @@ function toggleAdditionalResults() {
 
 
 function showBackgroundForm() {
+  const newSessionId = crypto.randomUUID();
+
+  sessionStorage.setItem(
+    "testSessionId",
+    newSessionId
+  );
+
   introScreen.classList.add("hidden");
   backgroundScreen.classList.remove("hidden");
 
