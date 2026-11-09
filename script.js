@@ -1434,10 +1434,14 @@ function buildCompleteResult() {
 
 function showResultsPage(completeResult) {
   const result = completeResult.finalResult;
-  
-  document.body.classList.add("results-active");
 
-  resultsScreen.classList.remove("hidden");
+  document.body.classList.add(
+    "results-active"
+  );
+
+  resultsScreen.classList.remove(
+    "hidden"
+  );
 
   const pairingMedians = [
     result.masculinityRewardedMedian,
@@ -1480,14 +1484,45 @@ function showResultsPage(completeResult) {
   );
 
   renderPairingDifferences(result);
-  renderPersonalPatternExplanation(result);
-  
+
+  renderPersonalPatternExplanation(
+    result
+  );
+
   loadOverallPairingPattern();
-  loadPairingDifferenceDistribution(result);
+
+  loadPairingDifferenceDistribution(
+    result
+  );
+
   loadCollectiveClassificationOverview();
+
   loadResponseTimePatterns();
 
-  async function loadCollectiveClassificationOverview() {
+  masculinityRewardedErrors.textContent =
+    result.masculinityRewardedErrors;
+
+  masculinityPenalizedErrors.textContent =
+    result.masculinityPenalizedErrors;
+
+  femininityRewardedErrors.textContent =
+    result.femininityRewardedErrors;
+
+  femininityPenalizedErrors.textContent =
+    result.femininityPenalizedErrors;
+
+  renderInitialMapping(
+    completeResult.partOneResponses
+  );
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+}
+
+
+async function loadCollectiveClassificationOverview() {
   collectiveClassificationChart.innerHTML = `
     <p>Loading classification results...</p>
   `;
@@ -1503,9 +1538,12 @@ function showResultsPage(completeResult) {
         method: "POST",
 
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type":
+            "application/json",
+
           "apikey":
             APP_CONFIG.supabasePublishableKey,
+
           "Authorization":
             "Bearer " +
             APP_CONFIG.supabasePublishableKey
@@ -1564,50 +1602,6 @@ function showResultsPage(completeResult) {
       </p>
     `;
   }
-}
-
-
-
-  if (moduleName === "genderClassification") {
-    renderGenderClassificationOverview(
-      moduleData
-    );
-
-    return;
-  }
-
-  if (moduleName === "socialConsequence") {
-    renderSocialConsequenceOverview(
-      moduleData
-    );
-
-    return;
-  }
-
-  renderCrossClassificationOverview(
-    moduleData
-  );
-
-    masculinityRewardedErrors.textContent =
-    result.masculinityRewardedErrors;
-
-  masculinityPenalizedErrors.textContent =
-    result.masculinityPenalizedErrors;
-
-  femininityRewardedErrors.textContent =
-    result.femininityRewardedErrors;
-
-  femininityPenalizedErrors.textContent =
-    result.femininityPenalizedErrors;
-
-  renderInitialMapping(
-    completeResult.partOneResponses
-  );
-
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth"
-  });
 }
 
 
