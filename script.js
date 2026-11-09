@@ -2010,7 +2010,7 @@ function renderPairingDifferenceDistribution(
             </span>
 
             <span class="distribution-personal-value">
-              You: ${signedPersonalValue} ms
+              Your result: ${personalInterpretation}
             </span>
           </div>
 
@@ -2052,7 +2052,7 @@ function renderPairingDifferenceDistribution(
             <div
               class="distribution-personal-marker"
               style="left: ${personalPosition}%"
-              title="Your result: ${signedPersonalValue} ms"
+              title="Your result: ${personalInterpretation}"
             ></div>
           </div>
 
