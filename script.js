@@ -199,6 +199,8 @@ const classificationFactorSelect =
   document.getElementById("classification-factor-select");
 const collectiveFactorSelect =
   document.getElementById("collective-factor-select");
+const collectivePatternChart =
+  document.getElementById("collective-pattern-chart");
 
 
 const masculinityRewardedBar =
@@ -1183,6 +1185,7 @@ document
         classificationFactorSelect,
         button.dataset.module
       );
+      loadResponseTimePatterns();
     });
   });
 
@@ -1771,7 +1774,13 @@ function renderGenderClassificationOverview(
     </div>
   `;
 }
-  
+
+collectiveFactorSelect.addEventListener(
+  "change",
+  function () {
+    loadResponseTimePatterns();
+  }
+);
 
   masculinityRewardedErrors.textContent =
     result.masculinityRewardedErrors;
@@ -1827,6 +1836,8 @@ function renderPairingDifferences(result) {
       secondValue: result.femininityPenalizedMedian
     }
   ];
+
+  loadResponseTimePatterns();
 
   const calculatedComparisons =
     comparisons.map(function (comparison) {
@@ -2623,4 +2634,212 @@ async function saveResultToSupabase(completeResult) {
       "Supabase submission failed: " + errorMessage
     );
   }
+}
+
+
+async function loadResponseTimePatterns() {
+  collectivePatternChart.innerHTML = `
+    <p>Loading response-time patterns...</p>
+  `;
+
+  const selectedFactor =
+    collectiveFactorSelect.value;
+
+  try {
+    const response = await fetch(
+      APP_CONFIG.supabaseUrl +
+        "/rest/v1/rpc/get_response_time_patterns",
+      {
+        method: "POST",
+
+        headers: {
+          "Content-Type": "application/json",
+          "apikey":
+            APP_CONFIG.supabasePublishableKey,
+          "Authorization":
+            "Bearer " +
+            APP_CONFIG.supabasePublishableKey
+        },
+
+        body: JSON.stringify({
+          p_factor: selectedFactor,
+
+          p_include_test:
+            APP_CONFIG.isTestSubmission
+        })
+      }
+    );
+
+    if (!response.ok) {
+      const errorMessage =
+        await response.text();
+
+      throw new Error(
+        "Unable to load response-time patterns: " +
+        errorMessage
+      );
+    }
+
+    const patternData =
+      await response.json();
+
+    if (!patternData || patternData.length === 0) {
+      collectivePatternChart.innerHTML = `
+        <p>
+          No response-time patterns are available
+          for this factor.
+        </p>
+      `;
+
+      return;
+    }
+
+    collectivePatternChart.classList.remove(
+      "group-chart-placeholder"
+    );
+
+    renderResponseTimePatterns(
+      patternData,
+      selectedFactor
+    );
+  } catch (error) {
+    console.error(error);
+
+    collectivePatternChart.innerHTML = `
+      <p>
+        Response-time patterns are temporarily unavailable.
+      </p>
+    `;
+  }
+}
+
+
+function renderResponseTimePatterns(
+  data,
+  selectedFactor
+) {
+  const pairings = [
+    {
+      key: "masculinity_rewarded",
+      label:
+        "Masculinity + Socially Rewarded",
+      className: "pairing-mr"
+    },
+    {
+      key: "masculinity_penalized",
+      label:
+        "Masculinity + Socially Penalized",
+      className: "pairing-mp"
+    },
+    {
+      key: "femininity_rewarded",
+      label:
+        "Femininity + Socially Rewarded",
+      className: "pairing-fr"
+    },
+    {
+      key: "femininity_penalized",
+      label:
+        "Femininity + Socially Penalized",
+      className: "pairing-fp"
+    }
+  ];
+
+  const allTimes = [];
+
+  data.forEach(function (group) {
+    pairings.forEach(function (pairing) {
+      allTimes.push(
+        Number(group[pairing.key])
+      );
+    });
+  });
+
+  const longestTime = Math.max(
+    ...allTimes,
+    1
+  );
+
+  const groupSections = data
+    .map(function (group) {
+      const rows = pairings
+        .map(function (pairing) {
+          const responseTime =
+            Number(group[pairing.key]);
+
+          const width =
+            responseTime /
+            longestTime *
+            100;
+
+          return `
+            <div class="pattern-group-row">
+              <span class="pattern-group-label">
+                ${pairing.label}
+              </span>
+
+              <div class="pattern-group-track">
+                <div
+                  class="pattern-group-fill ${pairing.className}"
+                  style="width: ${width}%"
+                ></div>
+              </div>
+
+              <span class="pattern-group-value">
+                ${responseTime} ms
+              </span>
+            </div>
+          `;
+        })
+        .join("");
+
+      return `
+        <section class="pattern-factor-group">
+          <div class="pattern-factor-header">
+            <h4>${group.factor_group}</h4>
+
+            <span>
+              ${group.group_size}
+              participant${
+                Number(group.group_size) === 1
+                  ? ""
+                  : "s"
+              }
+            </span>
+          </div>
+
+          <div class="pattern-group-rows">
+            ${rows}
+          </div>
+        </section>
+      `;
+    })
+    .join("");
+
+  const multipleSelectionNote =
+    selectedFactor ===
+      "socialMediaPlatforms" ||
+    selectedFactor ===
+      "contentPreferences"
+      ? `
+        <p class="classification-filter-note">
+          Participants may appear in more than one
+          group because they could select multiple options.
+        </p>
+      `
+      : "";
+
+  collectivePatternChart.innerHTML = `
+    <p class="classification-chart-explanation">
+      Bars show the group median response time
+      for each combined category pairing.
+      Shorter bars indicate faster responses.
+    </p>
+
+    ${multipleSelectionNote}
+
+    <div class="pattern-factor-groups">
+      ${groupSections}
+    </div>
+  `;
 }
