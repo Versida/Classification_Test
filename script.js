@@ -1,9 +1,31 @@
 const APP_CONFIG = {
+  // false：完全不傳資料
+  // true：傳送至 Supabase
   saveToSupabase: false,
 
+  // 測試寫入時使用 true
+  // 正式公開時改成 false
+  isTestSubmission: true,
+
   supabaseUrl: "YOUR_SUPABASE_PROJECT_URL",
-  supabaseAnonKey: "YOUR_SUPABASE_ANON_KEY"
+  supabasePublishableKey: "YOUR_SUPABASE_PUBLISHABLE_KEY"
 };
+
+function getOrCreateSessionId() {
+  let sessionId =
+    sessionStorage.getItem("testSessionId");
+
+  if (!sessionId) {
+    sessionId = crypto.randomUUID();
+
+    sessionStorage.setItem(
+      "testSessionId",
+      sessionId
+    );
+  }
+
+  return sessionId;
+}
 
 const genderStimuli = [
   "Financially supports a household",
@@ -1647,8 +1669,8 @@ async function saveResultToSupabase(completeResult) {
   if (
     !APP_CONFIG.supabaseUrl ||
     APP_CONFIG.supabaseUrl.includes("YOUR_") ||
-    !APP_CONFIG.supabaseAnonKey ||
-    APP_CONFIG.supabaseAnonKey.includes("YOUR_")
+    !APP_CONFIG.supabasePublishableKey ||
+    APP_CONFIG.supabasePublishableKey.includes("YOUR_")
   ) {
     throw new Error(
       "Supabase URL or anon key has not been configured."
@@ -1659,6 +1681,9 @@ async function saveResultToSupabase(completeResult) {
     completeResult.participantBackground;
 
   const databaseRecord = {
+    session_id: getOrCreateSessionId(),
+    is_test: APP_CONFIG.isTestSubmission,
+  
     age: background.age,
     gender_identity: background.genderIdentity,
     transgender_identity:
@@ -1709,9 +1734,9 @@ async function saveResultToSupabase(completeResult) {
 
       headers: {
         "Content-Type": "application/json",
-        "apikey": APP_CONFIG.supabaseAnonKey,
+        "apikey": APP_CONFIG.supabasePublishableKey,
         "Authorization":
-          "Bearer " + APP_CONFIG.supabaseAnonKey,
+          "Bearer " + APP_CONFIG.supabasePublishableKey,
         "Prefer": "return=minimal"
       },
 
