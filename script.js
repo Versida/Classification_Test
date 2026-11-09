@@ -372,6 +372,14 @@ function toggleAdditionalResults() {
 }
 
 
+classificationFactorSelect.addEventListener(
+  "change",
+  function () {
+    loadCollectiveClassificationOverview();
+  }
+);
+
+
 function showBackgroundForm() {
   const newSessionId = crypto.randomUUID();
 
@@ -1465,10 +1473,13 @@ function showResultsPage(completeResult) {
     <p>Loading classification results...</p>
   `;
 
+  const selectedFactor =
+    classificationFactorSelect.value;
+
   try {
     const response = await fetch(
       APP_CONFIG.supabaseUrl +
-        "/rest/v1/rpc/get_collective_classification_overview",
+        "/rest/v1/rpc/get_collective_gender_classification",
       {
         method: "POST",
 
@@ -1482,6 +1493,8 @@ function showResultsPage(completeResult) {
         },
 
         body: JSON.stringify({
+          p_factor: selectedFactor,
+
           p_include_test:
             APP_CONFIG.isTestSubmission
         })
@@ -1493,19 +1506,22 @@ function showResultsPage(completeResult) {
         await response.text();
 
       throw new Error(
-        "Unable to load classification overview: " +
+        "Unable to load gender classification: " +
         errorMessage
       );
     }
 
-    collectiveClassificationData =
+    const classificationData =
       await response.json();
 
-    if (collectiveClassificationData.length === 0) {
+    if (
+      !classificationData ||
+      classificationData.length === 0
+    ) {
       collectiveClassificationChart.innerHTML = `
         <p>
-          Classification results will appear
-          after participants complete the test.
+          No classification results are available
+          for this factor.
         </p>
       `;
 
@@ -1516,20 +1532,10 @@ function showResultsPage(completeResult) {
       "group-chart-placeholder"
     );
 
-    const genderClassificationData =
-      collec tiveClassificationData.filter(
-        function (item) {
-          return (
-            item.module ===
-            "genderClassification"
-          );
-        }
-      );
-    
     renderGenderClassificationOverview(
-      genderClassificationData
+      classificationData,
+      selectedFactor
     );
-    
   } catch (error) {
     console.error(error);
 
@@ -1565,67 +1571,167 @@ function showResultsPage(completeResult) {
 }
 
 
-function renderGenderClassificationOverview(data) {
-  const groupedItems = {};
+function renderGenderClassificationOverview(
+  data,
+  selectedFactor
+) {
+  const groupedResults = {};
 
   data.forEach(function (item) {
-    if (!groupedItems[item.item_label]) {
-      groupedItems[item.item_label] = {
-        order: Number(item.item_order),
-        masculinity: 0,
-        femininity: 0
+    const factorGroup =
+      item.factor_group;
+
+    if (!groupedResults[factorGroup]) {
+      groupedResults[factorGroup] = {
+        groupSize: Number(item.group_size),
+        items: {}
       };
     }
 
-    if (item.category_label === "Masculinity") {
-      groupedItems[item.item_label].masculinity =
-        Number(item.percentage);
+    if (
+      !groupedResults[factorGroup]
+        .items[item.item_label]
+    ) {
+      groupedResults[factorGroup]
+        .items[item.item_label] = {
+          order: Number(item.item_order),
+          masculinity: 0,
+          femininity: 0
+        };
     }
 
-    if (item.category_label === "Femininity") {
-      groupedItems[item.item_label].femininity =
-        Number(item.percentage);
+    if (
+      item.category_label === "Masculinity"
+    ) {
+      groupedResults[factorGroup]
+        .items[item.item_label]
+        .masculinity =
+          Number(item.percentage);
+    }
+
+    if (
+      item.category_label === "Femininity"
+    ) {
+      groupedResults[factorGroup]
+        .items[item.item_label]
+        .femininity =
+          Number(item.percentage);
     }
   });
 
-  const rows = Object.entries(groupedItems)
-    .sort(function (first, second) {
-      return first[1].order - second[1].order;
-    })
-    .map(function ([label, values]) {
-      return `
-        <div class="classification-overview-row">
-          <p class="classification-item-label">
-            ${label}
-          </p>
+  const factorSections =
+    Object.entries(groupedResults)
+      .sort(function (first, second) {
+        return first[0].localeCompare(
+          second[0],
+          undefined,
+          {
+            numeric: true,
+            sensitivity: "base"
+          }
+        );
+      })
+      .map(function (
+        [factorGroup, groupResult]
+      ) {
+        const itemRows =
+          Object.entries(groupResult.items)
+            .sort(function (first, second) {
+              return (
+                first[1].order -
+                second[1].order
+              );
+            })
+            .map(function (
+              [label, values]
+            ) {
+              return `
+                <div
+                  class="classification-overview-row"
+                >
+                  <p
+                    class="classification-item-label"
+                  >
+                    ${label}
+                  </p>
 
-          <div class="classification-stacked-bar">
+                  <div
+                    class="classification-stacked-bar"
+                  >
+                    <div
+                      class="classification-masculinity"
+                      style="
+                        width:
+                          ${values.masculinity}%;
+                      "
+                    >
+                      ${
+                        values.masculinity > 12
+                          ? values.masculinity + "%"
+                          : ""
+                      }
+                    </div>
+
+                    <div
+                      class="classification-femininity"
+                      style="
+                        width:
+                          ${values.femininity}%;
+                      "
+                    >
+                      ${
+                        values.femininity > 12
+                          ? values.femininity + "%"
+                          : ""
+                      }
+                    </div>
+                  </div>
+                </div>
+              `;
+            })
+            .join("");
+
+        return `
+          <section
+            class="classification-factor-group"
+          >
             <div
-              class="classification-masculinity"
-              style="width: ${values.masculinity}%"
+              class="classification-factor-header"
             >
-              ${
-                values.masculinity > 12
-                  ? values.masculinity + "%"
-                  : ""
-              }
+              <h4>${factorGroup}</h4>
+
+              <span>
+                ${groupResult.groupSize}
+                participant${
+                  groupResult.groupSize === 1
+                    ? ""
+                    : "s"
+                }
+              </span>
             </div>
 
             <div
-              class="classification-femininity"
-              style="width: ${values.femininity}%"
+              class="classification-overview-rows"
             >
-              ${
-                values.femininity > 12
-                  ? values.femininity + "%"
-                  : ""
-              }
+              ${itemRows}
             </div>
-          </div>
-        </div>
-      `;
-    })
-    .join("");
+          </section>
+        `;
+      })
+      .join("");
+
+  const overlappingGroupNote =
+    selectedFactor ===
+      "socialMediaPlatforms" ||
+    selectedFactor ===
+      "contentPreferences"
+      ? `
+        <p class="classification-filter-note">
+          Participants may appear in more than one
+          group because they could select multiple options.
+        </p>
+      `
+      : "";
 
   collectiveClassificationChart.innerHTML = `
     <div class="classification-overview-legend">
@@ -1641,12 +1747,15 @@ function renderGenderClassificationOverview(data) {
     </div>
 
     <p class="classification-chart-explanation">
-      Each bar shows how participants classified
-      the same gender-neutral description.
+      Each bar shows how participants in the
+      selected group classified the same
+      gender-neutral description.
     </p>
 
-    <div class="classification-overview-rows">
-      ${rows}
+    ${overlappingGroupNote}
+
+    <div class="classification-factor-groups">
+      ${factorSections}
     </div>
   `;
 }
