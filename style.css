@@ -600,6 +600,48 @@ body.results-active .test-container {
   gap: 18px;
 }
 
+
+.classification-factor-groups {
+  display: grid;
+  gap: 30px;
+}
+
+.classification-factor-group {
+  padding: 16px;
+  border: 1px solid #d8d4ce;
+  background-color: #ffffff;
+}
+
+.classification-factor-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+  margin-bottom: 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e2dfd9;
+}
+
+.classification-factor-header h4 {
+  margin: 0;
+  color: #1f1f1f;
+  font-size: 15px;
+}
+
+.classification-factor-header span {
+  color: #666666;
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.classification-filter-note {
+  margin: 0 0 16px;
+  color: #666666;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+
 .classification-item-label {
   margin: 0 0 6px;
   color: #1f1f1f;
