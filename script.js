@@ -1179,15 +1179,6 @@ const mediaFactorOptions = [
   }
 ];
 
-document
-  .querySelectorAll(".filter-toggle")
-  .forEach(function (button) {
-    button.addEventListener("click", function () {
-      activateToggle(
-        ".filter-toggle",
-        button
-      );
-
       updateFactorSelect(
         classificationFactorSelect,
         button.dataset.module
@@ -1209,6 +1200,8 @@ document
         collectiveFactorSelect,
         button.dataset.module
       );
+
+      loadResponseTimePatterns();
     });
   });
 
@@ -1489,16 +1482,6 @@ function showResultsPage(completeResult) {
     result
   );
 
-  loadOverallPairingPattern();
-
-  loadPairingDifferenceDistribution(
-    result
-  );
-
-  loadCollectiveClassificationOverview();
-
-  loadResponseTimePatterns();
-
    masculinityRewardedErrors.textContent =
     String(
       result.masculinityRewardedErrors ?? 0
@@ -1518,34 +1501,6 @@ function showResultsPage(completeResult) {
     String(
       result.femininityPenalizedErrors ?? 0
     );
-
-
-    console.log(
-    "Complete result:",
-    completeResult
-  );
-
-  console.log(
-    "Part 1 responses:",
-    completeResult.partOneResponses
-  );
-
-  console.log(
-    "Corrections:",
-    {
-      masculinityRewarded:
-        result.masculinityRewardedErrors,
-
-      masculinityPenalized:
-        result.masculinityPenalizedErrors,
-
-      femininityRewarded:
-        result.femininityRewardedErrors,
-
-      femininityPenalized:
-        result.femininityPenalizedErrors
-    }
-  );
 
   
   renderInitialMapping(
