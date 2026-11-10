@@ -1179,13 +1179,6 @@ const mediaFactorOptions = [
   }
 ];
 
-      updateFactorSelect(
-        classificationFactorSelect,
-        button.dataset.module
-      );
-      loadResponseTimePatterns();
-    });
-  });
 
 document
   .querySelectorAll(".collective-toggle")
