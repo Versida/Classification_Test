@@ -5,7 +5,7 @@ const APP_CONFIG = {
 
   // 測試寫入時使用 true
   // 正式公開時改成 false
-  isTestSubmission: true,
+  isTestSubmission: false,
 
   supabaseUrl: "https://kdftqgixzjdwpxiuanjd.supabase.co",
   supabasePublishableKey: "sb_publishable_yuL8A3mMfix6uDPmO1yNUQ_PWBZXYHO"
